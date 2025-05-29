@@ -1,0 +1,6 @@
+module ObjectView
+  module FormHelper
+    def ov_formish
+    end
+  end
+end
