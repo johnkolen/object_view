@@ -26,3 +26,21 @@ Contribution directions go here.
 
 ## License
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+
+## Useful stuff
+
+Add a helper test
+```bash
+rails generate rspec:helper elements
+```
+
+To make a model
+```bash
+cd rspec/dummy
+rails generate model Person name:string
+```
+
+Build the gem
+```bash
+gem build object_view.gemspec
+```

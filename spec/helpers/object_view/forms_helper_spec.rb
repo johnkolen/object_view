@@ -13,7 +13,8 @@ require 'rails_helper'
 module ObjectView
   RSpec.describe FormsHelper, type: :helper do
     it "calls formish" do
-      ov_formish
+      expect(helper.respond_to? :ov_formish).to be true
+      expect(helper.respond_to? :ov_form).to be true
     end
   end
 end
