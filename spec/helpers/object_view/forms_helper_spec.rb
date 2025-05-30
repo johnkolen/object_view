@@ -12,9 +12,15 @@ require 'rails_helper'
 # end
 module ObjectView
   RSpec.describe FormsHelper, type: :helper do
-    it "calls formish" do
-      expect(helper.respond_to? :ov_formish).to be true
-      expect(helper.respond_to? :ov_form).to be true
+    let(:object) { Person.new }
+    context "total access form" do
+      it "containing a single attribute" do
+        assert_form object, :name do
+          helper.ov_form object do
+            helper.ov_text_field :name
+          end
+        end
+      end
     end
   end
 end

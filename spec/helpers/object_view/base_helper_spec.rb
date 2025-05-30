@@ -14,14 +14,9 @@ module ObjectView
   class KlassTest
   end
   RSpec.describe BaseHelper, type: :helper do
-    it "calls formish" do
-      expect(helper.respond_to? :ov_obj).to be true
-      expect(helper.respond_to? :ov_formish).to be true
-      expect(helper.respond_to? :ov_form).to be true
-    end
     let(:kt_obj) { KlassTest.new }
     it { helper.ov_obj = :obj; expect(helper.ov_obj).to eq :obj }
-    it { helper.ov_form = :obj; expect(helper.ov_form).to eq :obj }
+    it { helper.ov_form = :obj; expect(helper.get_ov_form).to eq :obj }
     it { helper.ov_access_class = :obj
       expect(helper.ov_access_class).to eq :obj }
     it { helper.ov_obj = kt_obj
@@ -37,7 +32,7 @@ module ObjectView
         helper.ov_obj = :obj
         helper.ov_form = :form
         expect(helper.ov_obj).to eq :obj
-        expect(helper.ov_form).to eq :form
+        expect(helper.get_ov_form).to eq :form
       end
       expect(helper.ov_obj).to eq :hold
     end

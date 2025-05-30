@@ -1,7 +1,30 @@
 module ObjectView
   module FormsHelper
-    def ov_formish
-      puts "called formish"
+    def ov_form(obj = nil, **options, &block)
+      raise "ov_form object is nil" if obj.nil?
+      _ov_hold_state do
+        #puts "*" * 30
+        #puts "form node: #{ov_access_class.node.inspect}"
+        rv = "<!-- access block form #{obj.class} -->"
+        #options[:allow] = {why: true}
+        ov_allow? obj, :edit, **(options[:allow]||{}) do
+          #puts "  a?> form node: #{ov_access_class.node.inspect}"
+          @ov_obj = obj || @ov_obj
+          p = {}
+          if options[:turbo]
+            p = { tf: 1 }
+          end
+          f = form_with(model: @ov_obj,
+                        url: ov_obj_path(p),
+                        class: "ov-form",
+                        **options) do |form|
+            @ov_form = form
+            capture &block
+          end
+          rv = tag.div f, class: "ov-form-wrapper"
+        end
+        rv
+      end
     end
   end
 end

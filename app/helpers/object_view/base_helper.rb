@@ -12,7 +12,8 @@ module ObjectView
       @ov_form = form
     end
 
-    def ov_form
+    # Using get_, otherwise it collides with the form maker
+    def get_ov_form
       @ov_form
     end
 
@@ -88,6 +89,11 @@ module ObjectView
       end
     ensure
       @ov_access, @ov_allow_override = hold
+    end
+
+    def ov_render *args, **opts
+      #puts "render #{args.inspect}, #{opts.inspect}"
+      render *args, **opts
     end
   end
 end
