@@ -5,7 +5,7 @@ FactoryBot.define do
     person
   end
   factory :phone_number_sample do
-    number { "(%3d)%3d-%4d" % [100 + rand(900), 100 + rand(900), rand(10000)] }
+    number { "(%3d)%3d-%4d" % [ 100 + rand(900), 100 + rand(900), rand(10000) ] }
     active { true }
     person
   end

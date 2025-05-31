@@ -216,11 +216,11 @@ module ObjectView
     ##############################################################
 
     def _ov_x_field(oattr, labelx, inputx, displayx, **options)
-      rv = ov_allow? oattr, @ov_access #, why: true
+      rv = ov_allow? oattr, @ov_access # , why: true
       can_edit = @ov_access == :edit && @ov_form && rv
-      #puts "can_edit #{oattr} = #{can_edit}"
-      can_view = !can_edit && ov_allow?(oattr, :view) #, why: true)
-      #puts "can_view #{oattr} = #{can_view}"
+      # puts "can_edit #{oattr} = #{can_edit}"
+      can_view = !can_edit && ov_allow?(oattr, :view) # , why: true)
+      # puts "can_view #{oattr} = #{can_view}"
       blocked = "<!-- access block #{@ov_obj.class}.#{oattr} -->"
 
       return blocked unless can_edit || can_view

@@ -3,7 +3,7 @@ require "rails/generators/resource_helpers"
 
 
 module ObjectView
-  #class ControllerGenerator < Rails::Generators::ScaffoldControllerGenerator
+  # class ControllerGenerator < Rails::Generators::ScaffoldControllerGenerator
   class ControllerGenerator < Rails::Generators::NamedBase
     include Rails::Generators::ResourceHelpers
     source_root File.expand_path("templates", __dir__)
@@ -20,7 +20,7 @@ module ObjectView
              default: [], banner: "field:type field:type"
 
     def create_controller_files
-      #template_file = options.api? ? "api_controller.rb" : "controller.rb"
+      # template_file = options.api? ? "api_controller.rb" : "controller.rb"
       template_file = "controller.rb"
       template template_file,
                File.join("app/controllers",
@@ -53,7 +53,7 @@ module ObjectView
     hook_for :test_framework, as: :scaffold
 
     private
-    def inject_into kind, name, f,  t
+    def inject_into(kind, name, f,  t)
       File.open(f) do |file|
         unless file.read.match(/#{t}/m)
           send("inject_into_#{kind}", f, name.to_s, f, t)
@@ -63,9 +63,9 @@ module ObjectView
 
     def permitted_params
       klass = eval(class_name)
-      #klass.attribute_types.each do |attr, type|
+      # klass.attribute_types.each do |attr, type|
       klass.attribute_types.map(&:first).map(&:to_sym).
-        difference([:id, :created_at, :updated_at]).
+        difference([ :id, :created_at, :updated_at ]).
         map(&:inspect).join(", ")
     end
 
@@ -94,7 +94,7 @@ module ObjectView
         end
         puts "-" * 30
         h
-      end.map{|k,v| "#{k}: #{v}"}.join(", ")
+      end.map { |k, v| "#{k}: #{v}" }.join(", ")
     end
 
     def attachments?(name)

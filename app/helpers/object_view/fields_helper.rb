@@ -62,15 +62,15 @@ module ObjectView
 
     ###################################
 
-    def _partial oattr
+    def _partial(oattr)
       "#{oattr.to_s.pluralize}/#{oattr}"
     end
 
-    def _template oattr
+    def _template(oattr)
       "#{oattr.to_s.pluralize}/#{oattr}"
     end
 
-    def _locals oattr
+    def _locals(oattr)
       { oattr => @ov_obj }
     end
 
@@ -97,7 +97,7 @@ module ObjectView
       elems.join.html_safe
     end
 
-    def _ov_blocked obj, attr=nil
+    def _ov_blocked(obj, attr = nil)
       if attr
         "<!-- #{@ov_obj.class}.#{attr} blocked for #{@ov_access}-->"
       else
@@ -113,7 +113,7 @@ module ObjectView
     # Generate the content for all the fields of a single oattr
     # from a one-to-one association
     def _ov_fields_for_form_one(oattr, **options, &block)
-      #puts "_ov_fields_for_form_one"
+      # puts "_ov_fields_for_form_one"
       obj = @ov_obj.send(oattr)
       raise "no obj: one(#{oattr}) #{@ov_obj}" unless obj
       return "" unless obj
@@ -128,7 +128,7 @@ module ObjectView
     # Generate the content for all the fields of all the oattr
     # from a one-to-many association
     def _ov_fields_for_form_many(oattr, **options, &block)
-      #puts "_ov_fields_for_form_many"
+      # puts "_ov_fields_for_form_many"
       label = @ov_obj.send("#{oattr}_label")
       out = [ '<ul class="ov-fields-for" data-ov-fields-for-target="list">',
               ov_add ]
@@ -155,7 +155,7 @@ module ObjectView
     def _ov_fields_for_form_element(oattr, obj, css_name, num, **options, &block)
       puts "*" * 30
       puts "fields_for_form_element node: #{ov_access_class.node.inspect}"
-      #puts "_ov_fields_for_form_element"
+      # puts "_ov_fields_for_form_element"
       _ov_hold_state do
         @ov_form.fields_for oattr, obj  do |form|
           @ov_form = form
@@ -164,15 +164,15 @@ module ObjectView
           elem = "<!-- access block #{oattr} element -->"
           fields = if block_given?
                      rv = ""
-                     #options[:allow] = { why: true }
+                     # options[:allow] = { why: true }
                      ov_allow? @ov_obj, @ov_access, **(options[:allow] || {}) do
                        rv = capture(&block)
                      end
                      rv
-                   else
+          else
                      # no allow? since render will do it
                      ov_render(_template(oattr), oattr => @ov_obj)
-                   end
+          end
           li_id = "#{css_name}-li-#{num}"
           # include object"s id  if it's been persisted
           pid = @ov_obj.persisted? ? @ov_form.hidden_field(:id) : ""
@@ -195,6 +195,5 @@ module ObjectView
         end
       end
     end
-
   end
 end

@@ -14,6 +14,10 @@ module ObjectView
   class KlassTest
   end
   RSpec.describe BaseHelper, type: :helper do
+    # RSpec automatically loads ButtonHelper, but not the rest
+    # so we do it explicitly
+    include ObjectView::ApplicationHelper
+
     let(:kt_obj) { KlassTest.new }
     it { helper.ov_obj = :obj; expect(helper.ov_obj).to eq :obj }
     it { helper.ov_form = :obj; expect(helper.get_ov_form).to eq :obj }

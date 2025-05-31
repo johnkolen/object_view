@@ -27,7 +27,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_30_005252) do
     t.integer "person_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["person_id"], name: "index_phone_numbers_on_person_id"
+    t.index [ "person_id" ], name: "index_phone_numbers_on_person_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -37,7 +37,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_30_005252) do
     t.integer "role_id", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["person_id"], name: "index_users_on_person_id"
+    t.index [ "person_id" ], name: "index_users_on_person_id"
   end
 
   add_foreign_key "phone_numbers", "people"

@@ -50,8 +50,8 @@ class PhoneNumbersController < ApplicationController
 
   def self.phone_number_params
     [
-    :number, :active, :person_id,
-    
+    :number, :active, :person_id
+
     ]
   end
 
@@ -64,6 +64,5 @@ class PhoneNumbersController < ApplicationController
     # Only allow a list of trusted parameters through.
     def phone_number_params
       params.fetch(:phone_number, {})
-
     end
 end

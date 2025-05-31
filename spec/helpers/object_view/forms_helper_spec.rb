@@ -12,8 +12,19 @@ require 'rails_helper'
 # end
 module ObjectView
   RSpec.describe FormsHelper, type: :helper do
-    let(:object) { Person.new }
+    # RSpec automatically loads ButtonHelper, but not the rest
+    # so we do it explicitly
+    include ObjectView::ApplicationHelper
+
+    let(:object) { User.new }
     context "total access form" do
+      it "containing a single attribute" do
+        assert_form object, :email do
+          helper.ov_form object do
+            helper.ov_text_field :email
+          end
+        end
+      end
       it "containing a single attribute" do
         assert_form object, :name do
           helper.ov_form object do

@@ -16,12 +16,12 @@ Gem::Specification.new do |spec|
 
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = "http://github.com/foo"
-  #spec.metadata["changelog_uri"] = "TODO: Put your gem's CHANGELOG.md URL here."
+  # spec.metadata["changelog_uri"] = "TODO: Put your gem's CHANGELOG.md URL here."
 
   spec.files = Dir.chdir(File.expand_path(__dir__)) do
     Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
   end
-  spec.test_files = Dir["spec/**/*_spec.rb"].select{|x| !(/^spec\/dummy/ =~ x)}
+  spec.test_files = Dir["spec/**/*_spec.rb"].select { |x| !(/^spec\/dummy/ =~ x) }
 
   spec.required_ruby_version = '>= 3.3.0'
   spec.add_dependency "rails", "~> 8.0"

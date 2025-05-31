@@ -6,9 +6,9 @@ module ObjectView
         puts "*" * 30
         puts "display node: #{ov_access_class.node.inspect}"
         rv = "<!-- access block display #{obj.class} -->"
-        #options[:allow] = {why: true}
+        # options[:allow] = {why: true}
         ov_allow? obj, :view, **(options[:allow] || {}) do
-          #puts "  a?> display node: #{ov_access_class.node.inspect}"
+          # puts "  a?> display node: #{ov_access_class.node.inspect}"
           return capture &block if @ov_form
           @ov_obj = obj || @ov_obj
           old = @ov_obj

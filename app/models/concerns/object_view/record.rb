@@ -23,7 +23,7 @@ module ObjectView
         h
       end
 
-      def get_form fn="form"
+      def get_form(fn = "form")
         cn = class_name_u
         path = "app/views/#{cn.pluralize}/_#{fn}.html.erb"
         h = {}

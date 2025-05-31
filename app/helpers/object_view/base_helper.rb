@@ -1,5 +1,6 @@
 module ObjectView
   module BaseHelper
+    puts "loading BaseBelper"
     def ov_obj=(obj)
       @ov_obj = obj
     end
@@ -17,19 +18,19 @@ module ObjectView
       @ov_form
     end
 
-    #def dep_object_view(obj)
+    # def dep_object_view(obj)
     #  @ov_obj = obj
-    #end
+    # end
 
     def ov_access_class
       @ov_access_class || ObjectView::AccessAlways
     end
 
-    def ov_access_class= klass
+    def ov_access_class=(klass)
       @ov_access_class = klass
     end
 
-    def ov_with_access_class klass, &block
+    def ov_with_access_class(klass, &block)
       hold = @ov_access_class
       @ov_access_class = klass
       yield
@@ -54,19 +55,19 @@ module ObjectView
       @ov_obj.class.to_s.underscore.humanize(capitalize: false)
     end
 
-    def _ov_hold_state &block
-      hold = [@ov_obj, @ov_form]
+    def _ov_hold_state(&block)
+      hold = [ @ov_obj, @ov_form ]
       yield
     ensure
       @ov_obj, @ov_form = hold
     end
 
-    def ov_obj_path params = {}
+    def ov_obj_path(params = {})
       polymorphic_path(@ov_obj, params: params)
     end
 
     def ov_allow? resource, label, **options, &block
-      hold = [@ov_access, @ov_allow_override]
+      hold = [ @ov_access, @ov_allow_override ]
       @ov_access ||= label
       if options[:why]
         puts "-" * 30
@@ -92,7 +93,7 @@ module ObjectView
     end
 
     def ov_render *args, **opts
-      #puts "render #{args.inspect}, #{opts.inspect}"
+      # puts "render #{args.inspect}, #{opts.inspect}"
       render *args, **opts
     end
   end

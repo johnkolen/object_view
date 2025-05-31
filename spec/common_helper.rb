@@ -1,22 +1,34 @@
 module CommonHelper
-  def fake_form &block
+  def fake_form **options, &block
     helper.form_with model: object do |form|
       helper.ov_form = form
       helper.ov_obj = object
+      elems = nil
       r = helper.ov_allow? object, :edit do
-        yield
+        elems = yield
       end
       expect(r).to be(true), "can't access object"
+      if options[:elements] == :only
+        elems
+      else
+        r
+      end
     end
   end
 
-  def fake_display &block
+  def fake_display **options, &block
     helper.ov_form = nil
+    elems = nil
     r = helper.ov_allow? object, :view do
       helper.ov_obj = object
-      yield
+      elems = yield
     end
     expect(r).to be(true), "can't access object"
+    if options[:elements] == :only
+      elems
+    else
+      r
+    end
   end
 
   def assert_input elem, obj, attr, **options, &block
@@ -77,28 +89,28 @@ module CommonHelper
     _assert_comp yield, :form, *args, **options
   end
 
-  def assert_button label, path, method, &block
+  def assert_button(label, path = nil, method = nil, &block)
     elem = yield
     expect(elem).to match /#{label}/
 
     node = Nokogiri.HTML(elem)
-    assert_dom node, "button[path=?]", path, 0
-    assert_dom node, "button[method=?]", method, 0
+    assert_dom node, "button[path=?]", path, 0 if path
+    assert_dom node, "button[method=?]", method, 0 if method
   end
 
-  DELTA = {form: 0, display: 1}
+  DELTA = { form: 0, display: 1 }
   def _assert_comp elem, kind, obj, *rest, **options
     pp(elem) if options[:pp]
     head = obj.class.to_s.underscore
     attr = rest.last
     d = DELTA[kind]
-    tail = rest.map{|x| "[#{x}]" }.join
+    tail = rest.map { |x| "[#{x}]" }.join
     x = rest.pop
-    mid = rest.map{|x| "[#{x}]" }.join
+    mid = rest.map { |x| "[#{x}]" }.join
     rest.push x
     path = "#{head}#{tail}"
     node = Nokogiri.HTML(elem)
-    @attributes ||= [rest.last]
+    @attributes ||= [ rest.last ]
     no_input = options[:no_input] || []
     no_label = options[:no_label] || []
     no_display = options[:no_display] || []
@@ -117,7 +129,7 @@ module CommonHelper
       end
     else
       assert_dom node, "form[class*=?]", "ov-form", 0
-      assert_dom node, "div[class*=?]", "ov-display", {minimum: 1} do
+      assert_dom node, "div[class*=?]", "ov-display", { minimum: 1 } do
         @attributes.each do |attr|
           assert_dom node, "label[for=?]", attr,
                      no_label.member?(attr) ? 0 : 1

@@ -52,7 +52,7 @@ module ObjectView
     def self.person_params
       [
       :name, :date_of_birth, :ssn, :age, :happy,
-      phone_numbers_attributes: [[:number, :active, :person_id, :id, :_destroy]]
+      phone_numbers_attributes: [ [ :number, :active, :person_id, :id, :_destroy ] ]
       ]
     end
 
