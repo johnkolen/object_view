@@ -5,5 +5,6 @@ module ObjectView
     include ButtonsHelper
     include ElementsHelper
     include FormsHelper
+    include MessagesHelper
   end
 end
