@@ -14,19 +14,15 @@ module ObjectView
                 class: options[:class] || BUTTON_PRIMARY_CLASS
     end
 
-    def _skip?(obj)
-      obj.is_a? Array
-    end
-
     def _ov_button_guard(obj, label, &block)
       obj ||= @ov_obj
-      return if _skip? obj
+      return if obj.is_a? TablesHelper::HeaderFor
       return unless ov_allow? obj, label
-      yield
+      yield obj
     end
 
     def ov_edit(obj = nil, **options)
-      _ov_button_guard obj, :edit do
+      _ov_button_guard obj, :edit do |obj|
         ov_button_to "Edit",
                      options[:path] || edit_polymorphic_path(obj),
                      **options
@@ -34,7 +30,7 @@ module ObjectView
     end
 
     def ov_show(obj = nil, **options)
-      _ov_button_guard obj, :view do
+      _ov_button_guard obj, :view do  |obj|
         ov_button_to "Show",
                      polymorphic_path(obj),
                      **options
@@ -42,7 +38,7 @@ module ObjectView
     end
 
   def ov_delete(obj = nil, **options)
-    _ov_button_guard obj, :delete do
+    _ov_button_guard obj, :delete do |obj|
       ov_button_to "Delete",
                    polymorphic_path(obj),
                    method: options[:method] || :delete,

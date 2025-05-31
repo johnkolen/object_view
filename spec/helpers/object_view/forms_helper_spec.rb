@@ -14,7 +14,7 @@ module ObjectView
   RSpec.describe FormsHelper, type: :helper do
     # RSpec automatically loads ButtonHelper, but not the rest
     # so we do it explicitly
-    include ObjectView::ApplicationHelper
+    #include ObjectView::ApplicationHelper
 
     let(:object) { create(:user) }
     context "total access form" do

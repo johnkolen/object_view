@@ -111,6 +111,20 @@ module CommonHelper
     end
   end
 
+  def assert_table(klass, object=nil, **options, &block)
+    elem = yield
+    node = Nokogiri::HTML(elem)
+    pp(elem) if options[:pp]
+    assert_dom node, "table[class*=?]", "ov-display" do
+      assert_dom "tr[class*=?]", "ov-table-row-head", 1 do
+        assert_dom node, "td[class*=?]", "ov-table-hdr"
+      end
+      assert_dom "tr[class*=?]", "ov-table-row" do
+        assert_dom node, "td[class*=?]", "ov-table-col"
+      end
+    end
+  end
+
   DELTA = { form: 0, display: 1 }
   def _assert_comp elem, kind, obj, *rest, **options
     pp(elem) if options[:pp]

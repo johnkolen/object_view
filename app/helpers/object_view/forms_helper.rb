@@ -1,6 +1,6 @@
 module ObjectView
   module FormsHelper
-    puts "loading FrrmsBelper"
+    puts "loading FromsBelper"
 
     def ov_form(obj = nil, **options, &block)
       raise "ov_form object is nil" if obj.nil?
@@ -27,8 +27,7 @@ module ObjectView
               end
             end
           else
-            rv = ov_render(partial: _partial_form(@ov_obj),
-                           locals: _locals(@ov_obj.class_name_u.to_sym))
+            rv = ov_render_partial
           end
         end
         rv

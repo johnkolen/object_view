@@ -1,6 +1,7 @@
 module ObjectView
   module BaseHelper
     puts "loading BaseBelper"
+
     def ov_obj=(obj)
       @ov_obj = obj
     end
@@ -97,13 +98,23 @@ module ObjectView
       render *args, **opts
     end
 
+    def ov_render_partial obj=nil, f=nil
+      p = _partial_src(obj || @ov_obj, f)
+      l = _locals(obj || @ov_obj)
+      ov_render(partial: p, locals: l)
+    end
+
     # TODO: change to _ov_*
     def _partial(oattr)
       "#{oattr.to_s.pluralize}/#{oattr}"
     end
 
-    def _partial_form(obj, f = nil)
-      "#{obj.class_name_plural_u}/#{f || 'form'}"
+    def _partial_src(obj, f = nil)
+      if obj.is_a? TablesHelper::HeaderFor
+        "#{obj.class_name_plural_u}/#{f || 'form'}"
+      else
+        "#{obj.class_name_plural_u}/#{f || 'form'}"
+      end
     end
 
     def _template(oattr)
@@ -113,6 +124,8 @@ module ObjectView
     def _locals(oattr)
       if oattr.is_a? Symbol
         { oattr => @ov_obj }
+      elsif oattr.is_a? TablesHelper::HeaderFor
+        { oattr.class_name_u.to_sym => oattr }
       else
         { oattr.class_name_u.to_sym => oattr }
       end

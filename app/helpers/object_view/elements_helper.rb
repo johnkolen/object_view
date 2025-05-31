@@ -40,6 +40,7 @@ module ObjectView
                   :_ov_checkbox_display,
                   **options)
     end
+    alias ov_boolean_field ov_checkbox
 
     def ov_date_field(oattr, **options)
       _ov_x_field(oattr,
@@ -225,7 +226,7 @@ module ObjectView
 
       return blocked unless can_edit || can_view
       return ov_col(oattr, **options) if @ov_table_row
-      return if @ov_obj.is_a? Array  # table header
+      return if @ov_obj.is_a? TablesHelper::HeaderFor  # table header
       id = oattr
       raise "wtf @ov_obj is nil" if @ov_obj.nil?
 

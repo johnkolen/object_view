@@ -46,7 +46,7 @@ module ObjectView
     end
     it do
       obj = create(:user)
-      expect(helper.ov_render(partial: _partial_form(obj),
+      expect(helper.ov_render(partial: _partial_src(obj),
                               locals: _locals(obj))).to match /ov-form-wrapper/
     ensure
       obj.destroy
