@@ -12,6 +12,7 @@ module ObjectView
 
     module ClassMethods
       attr_accessor :dims
+
       def dim *list
         @dims ||= {}
         list.each do |x|
@@ -23,7 +24,9 @@ module ObjectView
           end
         end
       end
+
       def is_dim?(x)
+        @dims ||= {}
         self.dims[x.to_sym]
       end
     end

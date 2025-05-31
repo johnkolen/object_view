@@ -1,4 +1,3 @@
 module ApplicationHelper
-  include ObjectView::BaseHelper
-  include ObjectView::FormHelper
+ puts "loaded ApplicationHellper"
 end

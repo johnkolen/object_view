@@ -44,3 +44,8 @@ Build the gem
 ```bash
 gem build object_view.gemspec
 ```
+
+Add a generator
+```bash
+rails generate generator views
+```

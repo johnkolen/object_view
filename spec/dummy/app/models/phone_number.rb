@@ -2,6 +2,7 @@ class PhoneNumber < ApplicationRecord
   belongs_to :person
 
   include ObjectView::MetaAttributes
+  include ObjectView::Dims
 
   # use same regex for both client- and server-side validation
   # single quotes due to the regex backslashes

@@ -8,7 +8,10 @@ module ObjectView
       :none
     end
     def self.user
-      :nouser
+      @user || :nouser
+    end
+    def self.user= u
+      @user = u
     end
     def self.explain
       "allways allow"

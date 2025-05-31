@@ -1,3 +1,3 @@
 module ApplicationHelper
-  include ObjectViewHelper
+  include ObjectView::ApplicationHelper
 end

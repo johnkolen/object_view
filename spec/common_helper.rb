@@ -77,6 +77,15 @@ module CommonHelper
     _assert_comp yield, :form, *args, **options
   end
 
+  def assert_button label, path, method, &block
+    elem = yield
+    expect(elem).to match /#{label}/
+
+    node = Nokogiri.HTML(elem)
+    assert_dom node, "button[path=?]", path, 0
+    assert_dom node, "button[method=?]", method, 0
+  end
+
   DELTA = {form: 0, display: 1}
   def _assert_comp elem, kind, obj, *rest, **options
     pp(elem) if options[:pp]
