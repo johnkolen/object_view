@@ -5,7 +5,8 @@ module ObjectView
       if options[:if] == :exists
         return nil unless obj
       end
-      raise "missing attribute: #{oattr} in #{@ov_obj.class}" unless obj
+      # return nil unless obj
+      # raise "missing attribute: #{oattr} in #{@ov_obj.class}" unless obj
 
       _ov_hold_state do
         if @ov_form
@@ -62,18 +63,6 @@ module ObjectView
 
     ###################################
 
-    def _partial(oattr)
-      "#{oattr.to_s.pluralize}/#{oattr}"
-    end
-
-    def _template(oattr)
-      "#{oattr.to_s.pluralize}/#{oattr}"
-    end
-
-    def _locals(oattr)
-      { oattr => @ov_obj }
-    end
-
     def _get_all_objects(oattr, **options)
       elems = []
       if ov_one_to_one? oattr
@@ -115,7 +104,7 @@ module ObjectView
     def _ov_fields_for_form_one(oattr, **options, &block)
       # puts "_ov_fields_for_form_one"
       obj = @ov_obj.send(oattr)
-      raise "no obj: one(#{oattr}) #{@ov_obj}" unless obj
+      # raise "no obj: one(#{oattr}) #{@ov_obj}" unless obj
       return "" unless obj
       _ov_fields_for_form_element(oattr,
                                   obj,

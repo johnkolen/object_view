@@ -98,6 +98,19 @@ module CommonHelper
     assert_dom node, "button[method=?]", method, 0 if method
   end
 
+  def assert_modal(**options, &block)
+    elem = yield
+    node = Nokogiri::HTML(elem)
+    pp(elem) if options[:pp]
+    assert_dom node, "div[data-controller=?]", "modal-object" do
+      assert_dom node, "div[class*=?]", "ov-modal" do
+        assert_dom node, "div[class*=?]", "ov-modal-header"
+        assert_dom node, "div[class*=?]", "ov-modal-body"
+        assert_dom node, "div[class*=?]", "ov-modal-footer"
+      end
+    end
+  end
+
   DELTA = { form: 0, display: 1 }
   def _assert_comp elem, kind, obj, *rest, **options
     pp(elem) if options[:pp]
@@ -141,5 +154,10 @@ module CommonHelper
     end
   ensure
     @attributes = nil
+  end
+
+  def pp(x)
+    node = Nokogiri::HTML(x)
+    puts node.to_xhtml(indent: 2)
   end
 end

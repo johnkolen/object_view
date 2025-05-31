@@ -96,5 +96,26 @@ module ObjectView
       # puts "render #{args.inspect}, #{opts.inspect}"
       render *args, **opts
     end
+
+    # TODO: change to _ov_*
+    def _partial(oattr)
+      "#{oattr.to_s.pluralize}/#{oattr}"
+    end
+
+    def _partial_form(obj, f = nil)
+      "#{obj.class_name_plural_u}/#{f || 'form'}"
+    end
+
+    def _template(oattr)
+      "#{oattr.to_s.pluralize}/#{oattr}"
+    end
+
+    def _locals(oattr)
+      if oattr.is_a? Symbol
+        { oattr => @ov_obj }
+      else
+        { oattr.class_name_u.to_sym => oattr }
+      end
+    end
   end
 end

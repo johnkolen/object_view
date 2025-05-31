@@ -16,10 +16,11 @@ gem "rubocop-rails-omakase", require: false
 # gem "debug", ">= 1.0.0"
 
 group :development, :test do
-  gem "faker"
+  gem "faker", "~> 3.5"
   gem "capybara", ">= 2.15"
-  gem "database_cleaner"
+  gem "database_cleaner-active_record", "~> 2.2.1"
   gem "rspec-rails", "~> 8.0.0"
-  gem "factory_bot_rails"
+  gem "factory_bot_rails", "~> 6.4"
   gem "rails-controller-testing"
+  gem "turbo-rails", "~> 2.0.13"
 end

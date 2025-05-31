@@ -1,6 +1,7 @@
 module ObjectView
   module FormsHelper
     puts "loading FrrmsBelper"
+
     def ov_form(obj = nil, **options, &block)
       raise "ov_form object is nil" if obj.nil?
       _ov_hold_state do
@@ -15,14 +16,20 @@ module ObjectView
           if options[:turbo]
             p = { tf: 1 }
           end
-          f = form_with(model: @ov_obj,
+          if block_given?
+            rv = tag.div class: "ov-form-wrapper" do
+              form_with(model: @ov_obj,
                         url: ov_obj_path(p),
                         class: "ov-form",
                         **options) do |form|
-            @ov_form = form
-            capture &block
+                @ov_form = form
+                capture &block
+              end
+            end
+          else
+            rv = ov_render(partial: _partial_form(@ov_obj),
+                           locals: _locals(@ov_obj.class_name_u.to_sym))
           end
-          rv = tag.div f, class: "ov-form-wrapper"
         end
         rv
       end

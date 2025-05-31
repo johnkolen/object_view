@@ -9,6 +9,10 @@ module ObjectView
         self.class.to_s.underscore
       end
 
+      def class_name_plural_u
+        self.class.to_s.pluralize.underscore
+      end
+
       def get_template
         cn = class_name_u
         path = "app/views/#{cn.pluralize}/_#{cn}.html.erb"
@@ -37,6 +41,7 @@ module ObjectView
         h
       end
     end
+
     module ClassMethods
     end
   end

@@ -44,5 +44,12 @@ module ObjectView
       helper.ov_obj = Person.new
       expect(helper.ov_obj_path).to eq "/people"
     end
+    it do
+      obj = create(:user)
+      expect(helper.ov_render(partial: _partial_form(obj),
+                              locals: _locals(obj))).to match /ov-form-wrapper/
+    ensure
+      obj.destroy
+    end
   end
 end

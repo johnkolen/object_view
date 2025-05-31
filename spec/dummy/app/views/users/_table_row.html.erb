@@ -1,0 +1,8 @@
+<%= ov_table_row user do %>
+  <%= ov_string_field :email %>
+  <%= ov_string_field :encrypted_password %>
+  <%= ov_fields_for :person %>
+  <%= ov_integer_field :role_id %>
+  <%= ov_datetime_field :created_at %>
+  <%= ov_datetime_field :updated_at %>
+<% end %>

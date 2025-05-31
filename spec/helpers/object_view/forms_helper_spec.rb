@@ -16,7 +16,7 @@ module ObjectView
     # so we do it explicitly
     include ObjectView::ApplicationHelper
 
-    let(:object) { User.new }
+    let(:object) { create(:user) }
     context "total access form" do
       it "containing a single attribute" do
         assert_form object, :email do
@@ -25,11 +25,9 @@ module ObjectView
           end
         end
       end
-      it "containing a single attribute" do
-        assert_form object, :name do
-          helper.ov_form object do
-            helper.ov_text_field :name
-          end
+      it "containing a multiple attributes" do
+        assert_form object, :email  do
+          helper.ov_form object
         end
       end
     end
