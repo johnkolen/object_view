@@ -733,3 +733,588 @@ FOREIGN KEY ("person_id")
   [1m[36mActiveRecord::InternalMetadata Update (0.0ms)[0m  [1m[33mUPDATE "ar_internal_metadata" SET "value" = 'test', "updated_at" = '2025-05-31 16:13:18.588368' WHERE "ar_internal_metadata"."key" = 'environment' /*application='Dummy'*/[0m
   [1m[36mActiveRecord::InternalMetadata Load (0.0ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'schema_sha1' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='Dummy'*/[0m
   [1m[36mActiveRecord::InternalMetadata Create (0.0ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ('schema_sha1', '13b85d9f1b940d4dc40e40351e975d134af8e7c8', '2025-05-31 16:13:18.588771', '2025-05-31 16:13:18.588771') RETURNING "key" /*application='Dummy'*/[0m
+Started GET "/people" for ::1 at 2025-05-31 12:46:07 -0600
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='Dummy'*/[0m
+Processing by PeopleController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering people/index.html.erb within layouts/application
+  Rendered people/_table_row.html.erb (Duration: 0.2ms | GC: 0.0ms)
+  [1m[36mPerson Load (0.2ms)[0m  [1m[34mSELECT "people".* FROM "people" /*action='index',application='Dummy',controller='people'*/[0m
+  ↳ app/views/people/index.html.erb:9
+  Rendered people/index.html.erb within layouts/application (Duration: 14.1ms | GC: 0.2ms)
+  Rendered layout layouts/application.html.erb (Duration: 17.0ms | GC: 0.2ms)
+Completed 200 OK in 518ms (Views: 18.7ms | ActiveRecord: 1.0ms (1 query, 0 cached) | GC: 84.1ms)
+
+
+Started GET "/assets/application-07d5b32c.css" for ::1 at 2025-05-31 12:46:08 -0600
+Started GET "/people/new" for ::1 at 2025-05-31 12:46:13 -0600
+Processing by PeopleController#new as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering people/new.html.erb within layouts/application
+  Rendered people/_form.html.erb (Duration: 5.0ms | GC: 0.0ms)
+  Rendered people/new.html.erb within layouts/application (Duration: 5.8ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 6.1ms | GC: 0.0ms)
+Completed 200 OK in 41ms (Views: 6.4ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/people" for ::1 at 2025-05-31 12:46:55 -0600
+Processing by PeopleController#create as HTML
+  Parameters: {"authenticity_token"=>"[FILTERED]", "person"=>{"name"=>"Joe", "date_of_birth"=>"2025-05-31", "ssn"=>"[FILTERED]", "age"=>"33", "happy"=>"1", "created_at"=>"2025-05-31T12:46", "updated_at"=>"2025-05-31T12:46"}}
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*action='create',application='Dummy',controller='people'*/[0m
+  ↳ app/controllers/people_controller.rb:29:in `create'
+  [1m[36mPerson Create (1.0ms)[0m  [1m[32mINSERT INTO "people" ("name", "date_of_birth", "ssn", "age", "happy", "created_at", "updated_at") VALUES ('Joe', '2025-05-31', '987-65-4321', 33, 1, '2025-05-31 18:46:55.898614', '2025-05-31 18:46:55.898614') RETURNING "id" /*action='create',application='Dummy',controller='people'*/[0m
+  ↳ app/controllers/people_controller.rb:29:in `create'
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mCOMMIT TRANSACTION /*action='create',application='Dummy',controller='people'*/[0m
+  ↳ app/controllers/people_controller.rb:29:in `create'
+Redirected to http://localhost:3333/people/1
+Completed 302 Found in 33ms (ActiveRecord: 1.3ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/people/1" for ::1 at 2025-05-31 12:46:55 -0600
+Processing by PeopleController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mPerson Load (0.1ms)[0m  [1m[34mSELECT "people".* FROM "people" WHERE "people"."id" = 1 LIMIT 1 /*action='show',application='Dummy',controller='people'*/[0m
+  ↳ app/controllers/people_controller.rb:61:in `set_person'
+  Rendering layout layouts/application.html.erb
+  Rendering people/show.html.erb within layouts/application
+  Rendered people/_person.html.erb (Duration: 1.7ms | GC: 0.0ms)
+  Rendered people/show.html.erb within layouts/application (Duration: 2.8ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 2.9ms | GC: 0.0ms)
+Completed 500 Internal Server Error in 22ms (ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+  
+ActionView::Template::Error (undefined method `ov_display' for an instance of #<Class:0x0000000148f57dc0>)
+Caused by: NoMethodError (undefined method `ov_display' for an instance of #<Class:0x0000000148f57dc0>)
+
+Information for: ActionView::Template::Error (undefined method `ov_display' for an instance of #<Class:0x0000000148f57dc0>):
+    1: <%= ov_display person do %>
+    2:   <%= ov_string_field :name %>
+    3:   <%= ov_date_field :date_of_birth %>
+    4:   <%= ov_string_field :ssn %>
+  
+app/views/people/_person.html.erb:1
+app/views/people/show.html.erb:5
+
+Information for cause: NoMethodError (undefined method `ov_display' for an instance of #<Class:0x0000000148f57dc0>):
+  
+app/views/people/_person.html.erb:1
+app/views/people/show.html.erb:5
+Started GET "/favicon.ico" for ::1 at 2025-05-31 12:46:56 -0600
+  
+ActionController::RoutingError (No route matches [GET] "/favicon.ico"):
+  
+Started GET "/people/1" for ::1 at 2025-05-31 12:49:21 -0600
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='Dummy'*/[0m
+Processing by PeopleController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mPerson Load (0.0ms)[0m  [1m[34mSELECT "people".* FROM "people" WHERE "people"."id" = 1 LIMIT 1 /*action='show',application='Dummy',controller='people'*/[0m
+  ↳ app/controllers/people_controller.rb:61:in `set_person'
+  Rendering layout layouts/application.html.erb
+  Rendering people/show.html.erb within layouts/application
+  Rendered people/_person.html.erb (Duration: 1.0ms | GC: 0.1ms)
+  Rendered people/show.html.erb within layouts/application (Duration: 1.5ms | GC: 0.1ms)
+  Rendered layout layouts/application.html.erb (Duration: 1.6ms | GC: 0.1ms)
+Completed 500 Internal Server Error in 470ms (ActiveRecord: 0.8ms (1 query, 0 cached) | GC: 83.9ms)
+
+
+  
+ActionView::Template::Error (undefined method `ov_display' for an instance of #<Class:0x000000013ca14f68>)
+Caused by: NoMethodError (undefined method `ov_display' for an instance of #<Class:0x000000013ca14f68>)
+
+Information for: ActionView::Template::Error (undefined method `ov_display' for an instance of #<Class:0x000000013ca14f68>):
+    1: <%= ov_display person do %>
+    2:   <%= ov_string_field :name %>
+    3:   <%= ov_date_field :date_of_birth %>
+    4:   <%= ov_string_field :ssn %>
+  
+app/views/people/_person.html.erb:1
+app/views/people/show.html.erb:5
+
+Information for cause: NoMethodError (undefined method `ov_display' for an instance of #<Class:0x000000013ca14f68>):
+  
+app/views/people/_person.html.erb:1
+app/views/people/show.html.erb:5
+Started GET "/people" for ::1 at 2025-05-31 12:49:26 -0600
+Processing by PeopleController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering people/index.html.erb within layouts/application
+  Rendered people/_table_row.html.erb (Duration: 0.3ms | GC: 0.0ms)
+  [1m[36mPerson Load (0.0ms)[0m  [1m[34mSELECT "people".* FROM "people" /*action='index',application='Dummy',controller='people'*/[0m
+  ↳ app/views/people/index.html.erb:9
+  Rendered people/_table_row.html.erb (Duration: 1.1ms | GC: 0.1ms)
+  Rendered people/index.html.erb within layouts/application (Duration: 19.2ms | GC: 0.3ms)
+  Rendered layout layouts/application.html.erb (Duration: 21.6ms | GC: 0.4ms)
+Completed 200 OK in 53ms (Views: 21.7ms | ActiveRecord: 0.3ms (1 query, 0 cached) | GC: 0.4ms)
+
+
+Started GET "/people" for ::1 at 2025-05-31 12:53:49 -0600
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='Dummy'*/[0m
+Processing by PeopleController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering people/index.html.erb within layouts/application
+  Rendered people/_table_row.html.erb (Duration: 0.2ms | GC: 0.0ms)
+  [1m[36mPerson Load (0.0ms)[0m  [1m[34mSELECT "people".* FROM "people" /*action='index',application='Dummy',controller='people'*/[0m
+  ↳ app/views/people/index.html.erb:9
+  Rendered people/_table_row.html.erb (Duration: 2.3ms | GC: 0.0ms)
+  Rendered people/index.html.erb within layouts/application (Duration: 14.5ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 16.6ms | GC: 0.0ms)
+Completed 200 OK in 502ms (Views: 17.7ms | ActiveRecord: 0.8ms (1 query, 0 cached) | GC: 83.6ms)
+
+
+Started GET "/people" for ::1 at 2025-05-31 12:55:47 -0600
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='Dummy'*/[0m
+Processing by PeopleController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering people/index.html.erb within layouts/application
+  Rendered people/_table_row.html.erb (Duration: 0.2ms | GC: 0.0ms)
+  [1m[36mPerson Load (0.2ms)[0m  [1m[34mSELECT "people".* FROM "people" /*action='index',application='Dummy',controller='people'*/[0m
+  ↳ app/views/people/index.html.erb:9
+  Rendered people/_table_row.html.erb (Duration: 2.3ms | GC: 0.0ms)
+  Rendered people/index.html.erb within layouts/application (Duration: 16.3ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 18.3ms | GC: 0.0ms)
+Completed 200 OK in 522ms (Views: 19.8ms | ActiveRecord: 1.0ms (1 query, 0 cached) | GC: 82.4ms)
+
+
+Started GET "/people" for ::1 at 2025-05-31 13:14:35 -0600
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='Dummy'*/[0m
+Processing by PeopleController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering people/index.html.erb within layouts/application
+  Rendered people/_table_row.html.erb (Duration: 0.2ms | GC: 0.0ms)
+  [1m[36mPerson Load (0.2ms)[0m  [1m[34mSELECT "people".* FROM "people" /*action='index',application='Dummy',controller='people'*/[0m
+  ↳ app/views/people/index.html.erb:9
+  Rendered people/_table_row.html.erb (Duration: 2.3ms | GC: 0.0ms)
+  Rendered people/index.html.erb within layouts/application (Duration: 16.4ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 18.5ms | GC: 0.0ms)
+Completed 200 OK in 530ms (Views: 19.9ms | ActiveRecord: 1.0ms (1 query, 0 cached) | GC: 81.2ms)
+
+
+Started GET "/assets/application-5e49403b.css" for ::1 at 2025-05-31 13:14:36 -0600
+Started GET "/people" for ::1 at 2025-05-31 17:21:22 -0600
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='Dummy'*/[0m
+Processing by PeopleController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering people/index.html.erb within layouts/application
+  Rendered people/_table_row.html.erb (Duration: 0.2ms | GC: 0.0ms)
+  [1m[36mPerson Load (0.2ms)[0m  [1m[34mSELECT "people".* FROM "people" /*action='index',application='Dummy',controller='people'*/[0m
+  ↳ app/views/people/index.html.erb:9
+  Rendered people/_table_row.html.erb (Duration: 2.6ms | GC: 0.0ms)
+  Rendered people/index.html.erb within layouts/application (Duration: 16.9ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 21.8ms | GC: 0.0ms)
+Completed 200 OK in 529ms (Views: 23.4ms | ActiveRecord: 1.0ms (1 query, 0 cached) | GC: 77.5ms)
+
+
+Started GET "/assets/application-91a0e8eb.css" for ::1 at 2025-05-31 17:21:23 -0600
+Started GET "/people" for ::1 at 2025-05-31 17:21:51 -0600
+Processing by PeopleController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering people/index.html.erb within layouts/application
+  Rendered people/_table_row.html.erb (Duration: 0.2ms | GC: 0.0ms)
+  [1m[36mPerson Load (0.1ms)[0m  [1m[34mSELECT "people".* FROM "people" /*action='index',application='Dummy',controller='people'*/[0m
+  ↳ app/views/people/index.html.erb:9
+  Rendered people/_table_row.html.erb (Duration: 0.6ms | GC: 0.0ms)
+  Rendered people/index.html.erb within layouts/application (Duration: 2.1ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 5.0ms | GC: 0.0ms)
+Completed 200 OK in 53ms (Views: 5.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/people/1/edit" for ::1 at 2025-05-31 17:22:30 -0600
+Processing by PeopleController#edit as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mPerson Load (0.1ms)[0m  [1m[34mSELECT "people".* FROM "people" WHERE "people"."id" = 1 LIMIT 1 /*action='edit',application='Dummy',controller='people'*/[0m
+  ↳ app/controllers/people_controller.rb:61:in `set_person'
+  Rendering layout layouts/application.html.erb
+  Rendering people/edit.html.erb within layouts/application
+  Rendered people/_form.html.erb (Duration: 3.5ms | GC: 0.0ms)
+  Rendered people/edit.html.erb within layouts/application (Duration: 4.3ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 4.5ms | GC: 0.0ms)
+Completed 200 OK in 52ms (Views: 4.8ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/.well-known/appspecific/com.chrome.devtools.json" for ::1 at 2025-05-31 17:23:23 -0600
+  
+ActionController::RoutingError (No route matches [GET] "/.well-known/appspecific/com.chrome.devtools.json"):
+  
+Started GET "/people/1/edit" for ::1 at 2025-05-31 17:23:47 -0600
+Processing by PeopleController#edit as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mPerson Load (0.1ms)[0m  [1m[34mSELECT "people".* FROM "people" WHERE "people"."id" = 1 LIMIT 1 /*action='edit',application='Dummy',controller='people'*/[0m
+  ↳ app/controllers/people_controller.rb:61:in `set_person'
+  Rendering layout layouts/application.html.erb
+  Rendering people/edit.html.erb within layouts/application
+  Rendered people/_form.html.erb (Duration: 1.1ms | GC: 0.2ms)
+  Rendered people/edit.html.erb within layouts/application (Duration: 1.4ms | GC: 0.2ms)
+  Rendered layout layouts/application.html.erb (Duration: 5.2ms | GC: 0.2ms)
+Completed 200 OK in 55ms (Views: 5.4ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 1.1ms)
+
+
+Started GET "/.well-known/appspecific/com.chrome.devtools.json" for ::1 at 2025-05-31 17:23:47 -0600
+  
+ActionController::RoutingError (No route matches [GET] "/.well-known/appspecific/com.chrome.devtools.json"):
+  
+Started GET "/people/1/edit" for ::1 at 2025-05-31 17:25:11 -0600
+Processing by PeopleController#edit as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mPerson Load (0.1ms)[0m  [1m[34mSELECT "people".* FROM "people" WHERE "people"."id" = 1 LIMIT 1 /*action='edit',application='Dummy',controller='people'*/[0m
+  ↳ app/controllers/people_controller.rb:61:in `set_person'
+  Rendering layout layouts/application.html.erb
+  Rendering people/edit.html.erb within layouts/application
+  Rendered people/_form.html.erb (Duration: 0.8ms | GC: 0.0ms)
+  Rendered people/edit.html.erb within layouts/application (Duration: 1.0ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 1.3ms | GC: 0.0ms)
+Completed 200 OK in 59ms (Views: 1.4ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 12.1ms)
+
+
+Started GET "/.well-known/appspecific/com.chrome.devtools.json" for ::1 at 2025-05-31 17:25:11 -0600
+Started GET "/assets/application-33b0f599.css" for ::1 at 2025-05-31 17:25:11 -0600
+  
+ActionController::RoutingError (No route matches [GET] "/.well-known/appspecific/com.chrome.devtools.json"):
+  
+Started GET "/people/1/edit" for ::1 at 2025-05-31 17:28:16 -0600
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='Dummy'*/[0m
+Processing by PeopleController#edit as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mPerson Load (0.2ms)[0m  [1m[34mSELECT "people".* FROM "people" WHERE "people"."id" = 1 LIMIT 1 /*action='edit',application='Dummy',controller='people'*/[0m
+  ↳ app/controllers/people_controller.rb:61:in `set_person'
+  Rendering layout layouts/application.html.erb
+  Rendering people/edit.html.erb within layouts/application
+  Rendered people/_form.html.erb (Duration: 3.8ms | GC: 0.0ms)
+  Rendered people/edit.html.erb within layouts/application (Duration: 4.4ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 7.1ms | GC: 0.0ms)
+Completed 200 OK in 522ms (Views: 9.6ms | ActiveRecord: 1.0ms (1 query, 0 cached) | GC: 79.7ms)
+
+
+Started GET "/.well-known/appspecific/com.chrome.devtools.json" for ::1 at 2025-05-31 17:28:16 -0600
+Started GET "/assets/application-80dd7eb4.css" for ::1 at 2025-05-31 17:28:16 -0600
+  
+ActionController::RoutingError (No route matches [GET] "/.well-known/appspecific/com.chrome.devtools.json"):
+  
+Started GET "/people/1/edit" for ::1 at 2025-05-31 17:28:47 -0600
+Processing by PeopleController#edit as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mPerson Load (0.1ms)[0m  [1m[34mSELECT "people".* FROM "people" WHERE "people"."id" = 1 LIMIT 1 /*action='edit',application='Dummy',controller='people'*/[0m
+  ↳ app/controllers/people_controller.rb:61:in `set_person'
+  Rendering layout layouts/application.html.erb
+  Rendering people/edit.html.erb within layouts/application
+  Rendered people/_form.html.erb (Duration: 1.0ms | GC: 0.0ms)
+  Rendered people/edit.html.erb within layouts/application (Duration: 1.2ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 1.6ms | GC: 0.0ms)
+Completed 200 OK in 52ms (Views: 1.8ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/.well-known/appspecific/com.chrome.devtools.json" for ::1 at 2025-05-31 17:28:47 -0600
+Started GET "/assets/application-36fad932.css" for ::1 at 2025-05-31 17:28:47 -0600
+  
+ActionController::RoutingError (No route matches [GET] "/.well-known/appspecific/com.chrome.devtools.json"):
+  
+Started GET "/" for ::1 at 2025-05-31 18:50:04 -0600
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='Dummy'*/[0m
+Processing by Rails::WelcomeController#index as HTML
+  Rendering /Users/johnkolen/.rvm/gems/ruby-3.3.3@data4he/gems/railties-8.0.2/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /Users/johnkolen/.rvm/gems/ruby-3.3.3@data4he/gems/railties-8.0.2/lib/rails/templates/rails/welcome/index.html.erb (Duration: 0.3ms | GC: 0.0ms)
+Completed 200 OK in 510ms (Views: 2.3ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 95.9ms)
+
+
+Started GET "/.well-known/appspecific/com.chrome.devtools.json" for ::1 at 2025-05-31 18:50:05 -0600
+  
+ActionController::RoutingError (No route matches [GET] "/.well-known/appspecific/com.chrome.devtools.json"):
+  
+Started GET "/people/visual" for ::1 at 2025-05-31 18:50:15 -0600
+Processing by PeopleController#show as HTML
+  Parameters: {"id"=>"visual"}
+  [1m[36mPerson Load (0.0ms)[0m  [1m[34mSELECT "people".* FROM "people" WHERE "people"."id" = NULL LIMIT 1 /*action='show',application='Dummy',controller='people'*/[0m
+  ↳ app/controllers/people_controller.rb:61:in `set_person'
+Completed 404 Not Found in 65ms (ActiveRecord: 0.9ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+  
+ActiveRecord::RecordNotFound (Couldn't find Person with 'id'=visual):
+  
+app/controllers/people_controller.rb:61:in `set_person'
+Started GET "/.well-known/appspecific/com.chrome.devtools.json" for ::1 at 2025-05-31 18:50:16 -0600
+  
+ActionController::RoutingError (No route matches [GET] "/.well-known/appspecific/com.chrome.devtools.json"):
+  
+Started GET "/people" for ::1 at 2025-05-31 18:50:20 -0600
+Processing by PeopleController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering people/index.html.erb within layouts/application
+  Rendered people/_table_row.html.erb (Duration: 0.3ms | GC: 0.0ms)
+  [1m[36mPerson Load (0.1ms)[0m  [1m[34mSELECT "people".* FROM "people" /*action='index',application='Dummy',controller='people'*/[0m
+  ↳ app/views/people/index.html.erb:9
+  Rendered people/_table_row.html.erb (Duration: 1.3ms | GC: 0.0ms)
+  Rendered people/index.html.erb within layouts/application (Duration: 27.4ms | GC: 8.5ms)
+  Rendered layout layouts/application.html.erb (Duration: 30.8ms | GC: 9.0ms)
+Completed 200 OK in 78ms (Views: 32.2ms | ActiveRecord: 0.3ms (1 query, 0 cached) | GC: 10.5ms)
+
+
+Started GET "/.well-known/appspecific/com.chrome.devtools.json" for ::1 at 2025-05-31 18:50:20 -0600
+Started GET "/assets/application-5e49403b.css" for ::1 at 2025-05-31 18:50:20 -0600
+  
+ActionController::RoutingError (No route matches [GET] "/.well-known/appspecific/com.chrome.devtools.json"):
+  
+Started GET "/people" for ::1 at 2025-05-31 18:51:30 -0600
+Processing by PeopleController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering people/index.html.erb within layouts/application
+  Rendered people/_table_row.html.erb (Duration: 0.1ms | GC: 0.0ms)
+  [1m[36mPerson Load (0.1ms)[0m  [1m[34mSELECT "people".* FROM "people" /*action='index',application='Dummy',controller='people'*/[0m
+  ↳ app/views/people/index.html.erb:9
+  Rendered people/_table_row.html.erb (Duration: 0.6ms | GC: 0.0ms)
+  Rendered people/index.html.erb within layouts/application (Duration: 2.0ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 2.3ms | GC: 0.0ms)
+Completed 200 OK in 47ms (Views: 2.4ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/.well-known/appspecific/com.chrome.devtools.json" for ::1 at 2025-05-31 18:51:30 -0600
+  
+ActionController::RoutingError (No route matches [GET] "/.well-known/appspecific/com.chrome.devtools.json"):
+  
+Started GET "/people" for ::1 at 2025-05-31 18:51:32 -0600
+Processing by PeopleController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering people/index.html.erb within layouts/application
+  Rendered people/_table_row.html.erb (Duration: 0.1ms | GC: 0.0ms)
+  [1m[36mPerson Load (0.1ms)[0m  [1m[34mSELECT "people".* FROM "people" /*action='index',application='Dummy',controller='people'*/[0m
+  ↳ app/views/people/index.html.erb:9
+  Rendered people/_table_row.html.erb (Duration: 0.6ms | GC: 0.0ms)
+  Rendered people/index.html.erb within layouts/application (Duration: 2.1ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 2.4ms | GC: 0.0ms)
+Completed 200 OK in 48ms (Views: 2.5ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/.well-known/appspecific/com.chrome.devtools.json" for ::1 at 2025-05-31 18:51:32 -0600
+  
+ActionController::RoutingError (No route matches [GET] "/.well-known/appspecific/com.chrome.devtools.json"):
+  
+Started GET "/people/1/edit" for ::1 at 2025-05-31 18:52:47 -0600
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='Dummy'*/[0m
+Processing by PeopleController#edit as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mPerson Load (0.2ms)[0m  [1m[34mSELECT "people".* FROM "people" WHERE "people"."id" = 1 LIMIT 1 /*action='edit',application='Dummy',controller='people'*/[0m
+  ↳ app/controllers/people_controller.rb:61:in `set_person'
+  Rendering layout layouts/application.html.erb
+  Rendering people/edit.html.erb within layouts/application
+  Rendered people/_form.html.erb (Duration: 3.8ms | GC: 0.0ms)
+  Rendered people/edit.html.erb within layouts/application (Duration: 4.5ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 7.4ms | GC: 0.0ms)
+Completed 200 OK in 538ms (Views: 10.0ms | ActiveRecord: 1.0ms (1 query, 0 cached) | GC: 80.9ms)
+
+
+Started GET "/.well-known/appspecific/com.chrome.devtools.json" for ::1 at 2025-05-31 18:52:47 -0600
+Started GET "/assets/application-db21a67a.css" for ::1 at 2025-05-31 18:52:47 -0600
+  
+ActionController::RoutingError (No route matches [GET] "/.well-known/appspecific/com.chrome.devtools.json"):
+  
+Started GET "/people/1/edit" for ::1 at 2025-05-31 18:53:02 -0600
+Processing by PeopleController#edit as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mPerson Load (0.2ms)[0m  [1m[34mSELECT "people".* FROM "people" WHERE "people"."id" = 1 LIMIT 1 /*action='edit',application='Dummy',controller='people'*/[0m
+  ↳ app/controllers/people_controller.rb:61:in `set_person'
+  Rendering layout layouts/application.html.erb
+  Rendering people/edit.html.erb within layouts/application
+  Rendered people/_form.html.erb (Duration: 1.3ms | GC: 0.0ms)
+  Rendered people/edit.html.erb within layouts/application (Duration: 1.7ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 2.0ms | GC: 0.0ms)
+Completed 200 OK in 49ms (Views: 2.2ms | ActiveRecord: 0.2ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/.well-known/appspecific/com.chrome.devtools.json" for ::1 at 2025-05-31 18:53:02 -0600
+  
+ActionController::RoutingError (No route matches [GET] "/.well-known/appspecific/com.chrome.devtools.json"):
+  
+Started GET "/people/1/edit" for ::1 at 2025-05-31 18:53:05 -0600
+Processing by PeopleController#edit as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mPerson Load (0.1ms)[0m  [1m[34mSELECT "people".* FROM "people" WHERE "people"."id" = 1 LIMIT 1 /*action='edit',application='Dummy',controller='people'*/[0m
+  ↳ app/controllers/people_controller.rb:61:in `set_person'
+  Rendering layout layouts/application.html.erb
+  Rendering people/edit.html.erb within layouts/application
+  Rendered people/_form.html.erb (Duration: 1.2ms | GC: 0.2ms)
+  Rendered people/edit.html.erb within layouts/application (Duration: 1.5ms | GC: 0.2ms)
+  Rendered layout layouts/application.html.erb (Duration: 1.7ms | GC: 0.2ms)
+Completed 200 OK in 48ms (Views: 1.9ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.4ms)
+
+
+Started GET "/.well-known/appspecific/com.chrome.devtools.json" for ::1 at 2025-05-31 18:53:05 -0600
+  
+ActionController::RoutingError (No route matches [GET] "/.well-known/appspecific/com.chrome.devtools.json"):
+  
+Started GET "/people/1/edit" for ::1 at 2025-05-31 18:53:18 -0600
+Processing by PeopleController#edit as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mPerson Load (0.1ms)[0m  [1m[34mSELECT "people".* FROM "people" WHERE "people"."id" = 1 LIMIT 1 /*action='edit',application='Dummy',controller='people'*/[0m
+  ↳ app/controllers/people_controller.rb:61:in `set_person'
+  Rendering layout layouts/application.html.erb
+  Rendering people/edit.html.erb within layouts/application
+  Rendered people/_form.html.erb (Duration: 0.9ms | GC: 0.0ms)
+  Rendered people/edit.html.erb within layouts/application (Duration: 1.2ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 1.6ms | GC: 0.0ms)
+Completed 200 OK in 50ms (Views: 1.7ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 1.1ms)
+
+
+Started GET "/.well-known/appspecific/com.chrome.devtools.json" for ::1 at 2025-05-31 18:53:18 -0600
+Started GET "/assets/application-605d86cc.css" for ::1 at 2025-05-31 18:53:18 -0600
+  
+ActionController::RoutingError (No route matches [GET] "/.well-known/appspecific/com.chrome.devtools.json"):
+  
+Started GET "/people/1/edit" for ::1 at 2025-05-31 18:53:39 -0600
+Processing by PeopleController#edit as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mPerson Load (0.1ms)[0m  [1m[34mSELECT "people".* FROM "people" WHERE "people"."id" = 1 LIMIT 1 /*action='edit',application='Dummy',controller='people'*/[0m
+  ↳ app/controllers/people_controller.rb:61:in `set_person'
+  Rendering layout layouts/application.html.erb
+  Rendering people/edit.html.erb within layouts/application
+  Rendered people/_form.html.erb (Duration: 1.0ms | GC: 0.0ms)
+  Rendered people/edit.html.erb within layouts/application (Duration: 1.3ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 1.6ms | GC: 0.0ms)
+Completed 200 OK in 51ms (Views: 1.8ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.8ms)
+
+
+Started GET "/.well-known/appspecific/com.chrome.devtools.json" for ::1 at 2025-05-31 18:53:39 -0600
+  
+ActionController::RoutingError (No route matches [GET] "/.well-known/appspecific/com.chrome.devtools.json"):
+  
+Started GET "/people/1/edit" for ::1 at 2025-05-31 18:53:45 -0600
+Processing by PeopleController#edit as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mPerson Load (0.1ms)[0m  [1m[34mSELECT "people".* FROM "people" WHERE "people"."id" = 1 LIMIT 1 /*action='edit',application='Dummy',controller='people'*/[0m
+  ↳ app/controllers/people_controller.rb:61:in `set_person'
+  Rendering layout layouts/application.html.erb
+  Rendering people/edit.html.erb within layouts/application
+  Rendered people/_form.html.erb (Duration: 1.0ms | GC: 0.0ms)
+  Rendered people/edit.html.erb within layouts/application (Duration: 1.3ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 1.5ms | GC: 0.0ms)
+Completed 200 OK in 48ms (Views: 1.7ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/.well-known/appspecific/com.chrome.devtools.json" for ::1 at 2025-05-31 18:53:45 -0600
+  
+ActionController::RoutingError (No route matches [GET] "/.well-known/appspecific/com.chrome.devtools.json"):
+  
+Started GET "/people/1/edit" for ::1 at 2025-05-31 18:54:09 -0600
+Processing by PeopleController#edit as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mPerson Load (0.1ms)[0m  [1m[34mSELECT "people".* FROM "people" WHERE "people"."id" = 1 LIMIT 1 /*action='edit',application='Dummy',controller='people'*/[0m
+  ↳ app/controllers/people_controller.rb:61:in `set_person'
+  Rendering layout layouts/application.html.erb
+  Rendering people/edit.html.erb within layouts/application
+  Rendered people/_form.html.erb (Duration: 1.0ms | GC: 0.0ms)
+  Rendered people/edit.html.erb within layouts/application (Duration: 1.3ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 1.6ms | GC: 0.0ms)
+Completed 200 OK in 50ms (Views: 1.8ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/.well-known/appspecific/com.chrome.devtools.json" for ::1 at 2025-05-31 18:54:09 -0600
+Started GET "/assets/application-223927ee.css" for ::1 at 2025-05-31 18:54:09 -0600
+  
+ActionController::RoutingError (No route matches [GET] "/.well-known/appspecific/com.chrome.devtools.json"):
+  
+Started GET "/people/1/edit" for ::1 at 2025-05-31 18:54:22 -0600
+Processing by PeopleController#edit as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mPerson Load (0.1ms)[0m  [1m[34mSELECT "people".* FROM "people" WHERE "people"."id" = 1 LIMIT 1 /*action='edit',application='Dummy',controller='people'*/[0m
+  ↳ app/controllers/people_controller.rb:61:in `set_person'
+  Rendering layout layouts/application.html.erb
+  Rendering people/edit.html.erb within layouts/application
+  Rendered people/_form.html.erb (Duration: 1.0ms | GC: 0.0ms)
+  Rendered people/edit.html.erb within layouts/application (Duration: 1.3ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 1.7ms | GC: 0.0ms)
+Completed 200 OK in 50ms (Views: 1.9ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.4ms)
+
+
+Started GET "/.well-known/appspecific/com.chrome.devtools.json" for ::1 at 2025-05-31 18:54:22 -0600
+Started GET "/assets/application-175f1dd6.css" for ::1 at 2025-05-31 18:54:22 -0600
+  
+ActionController::RoutingError (No route matches [GET] "/.well-known/appspecific/com.chrome.devtools.json"):
+  
+Started GET "/people/1/edit" for ::1 at 2025-05-31 18:55:02 -0600
+Processing by PeopleController#edit as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mPerson Load (0.1ms)[0m  [1m[34mSELECT "people".* FROM "people" WHERE "people"."id" = 1 LIMIT 1 /*action='edit',application='Dummy',controller='people'*/[0m
+  ↳ app/controllers/people_controller.rb:61:in `set_person'
+  Rendering layout layouts/application.html.erb
+  Rendering people/edit.html.erb within layouts/application
+  Rendered people/_form.html.erb (Duration: 1.1ms | GC: 0.0ms)
+  Rendered people/edit.html.erb within layouts/application (Duration: 1.4ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 1.7ms | GC: 0.0ms)
+Completed 200 OK in 51ms (Views: 1.9ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.1ms)
+
+
+Started GET "/.well-known/appspecific/com.chrome.devtools.json" for ::1 at 2025-05-31 18:55:02 -0600
+Started GET "/assets/application-4cf16135.css" for ::1 at 2025-05-31 18:55:02 -0600
+  
+ActionController::RoutingError (No route matches [GET] "/.well-known/appspecific/com.chrome.devtools.json"):
+  
+Started GET "/people/1/edit" for ::1 at 2025-05-31 18:55:18 -0600
+Processing by PeopleController#edit as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mPerson Load (0.1ms)[0m  [1m[34mSELECT "people".* FROM "people" WHERE "people"."id" = 1 LIMIT 1 /*action='edit',application='Dummy',controller='people'*/[0m
+  ↳ app/controllers/people_controller.rb:61:in `set_person'
+  Rendering layout layouts/application.html.erb
+  Rendering people/edit.html.erb within layouts/application
+  Rendered people/_form.html.erb (Duration: 0.9ms | GC: 0.0ms)
+  Rendered people/edit.html.erb within layouts/application (Duration: 1.2ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 1.5ms | GC: 0.0ms)
+Completed 200 OK in 50ms (Views: 1.6ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/.well-known/appspecific/com.chrome.devtools.json" for ::1 at 2025-05-31 18:55:18 -0600
+Started GET "/assets/application-bf52a16c.css" for ::1 at 2025-05-31 18:55:18 -0600
+  
+ActionController::RoutingError (No route matches [GET] "/.well-known/appspecific/com.chrome.devtools.json"):
+  
+Started GET "/people/1/edit" for ::1 at 2025-05-31 18:55:19 -0600
+Processing by PeopleController#edit as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mPerson Load (0.1ms)[0m  [1m[34mSELECT "people".* FROM "people" WHERE "people"."id" = 1 LIMIT 1 /*action='edit',application='Dummy',controller='people'*/[0m
+  ↳ app/controllers/people_controller.rb:61:in `set_person'
+  Rendering layout layouts/application.html.erb
+  Rendering people/edit.html.erb within layouts/application
+  Rendered people/_form.html.erb (Duration: 1.3ms | GC: 0.2ms)
+  Rendered people/edit.html.erb within layouts/application (Duration: 1.6ms | GC: 0.2ms)
+  Rendered layout layouts/application.html.erb (Duration: 1.9ms | GC: 0.2ms)
+Completed 200 OK in 50ms (Views: 2.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.2ms)
+
+
+Started GET "/.well-known/appspecific/com.chrome.devtools.json" for ::1 at 2025-05-31 18:55:19 -0600
+  
+ActionController::RoutingError (No route matches [GET] "/.well-known/appspecific/com.chrome.devtools.json"):
+  
+Started GET "/people/1/edit" for ::1 at 2025-05-31 18:56:46 -0600
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='Dummy'*/[0m
+Processing by PeopleController#edit as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mPerson Load (0.0ms)[0m  [1m[34mSELECT "people".* FROM "people" WHERE "people"."id" = 1 LIMIT 1 /*action='edit',application='Dummy',controller='people'*/[0m
+  ↳ app/controllers/people_controller.rb:61:in `set_person'
+  Rendering layout layouts/application.html.erb
+  Rendering people/edit.html.erb within layouts/application
+  Rendered people/_form.html.erb (Duration: 3.8ms | GC: 0.0ms)
+  Rendered people/edit.html.erb within layouts/application (Duration: 4.5ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 7.5ms | GC: 0.0ms)
+Completed 200 OK in 539ms (Views: 9.9ms | ActiveRecord: 0.9ms (1 query, 0 cached) | GC: 83.9ms)
+
+
+Started GET "/.well-known/appspecific/com.chrome.devtools.json" for ::1 at 2025-05-31 18:56:47 -0600
+  
+ActionController::RoutingError (No route matches [GET] "/.well-known/appspecific/com.chrome.devtools.json"):
+  
+Started GET "/people/1/edit" for ::1 at 2025-05-31 18:57:39 -0600
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='Dummy'*/[0m
+Processing by PeopleController#edit as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mPerson Load (0.0ms)[0m  [1m[34mSELECT "people".* FROM "people" WHERE "people"."id" = 1 LIMIT 1 /*action='edit',application='Dummy',controller='people'*/[0m
+  ↳ app/controllers/people_controller.rb:61:in `set_person'
+  Rendering layout layouts/application.html.erb
+  Rendering people/edit.html.erb within layouts/application
+  Rendered people/_form.html.erb (Duration: 3.4ms | GC: 0.0ms)
+  Rendered people/edit.html.erb within layouts/application (Duration: 3.9ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 6.7ms | GC: 0.0ms)
+Completed 200 OK in 496ms (Views: 8.6ms | ActiveRecord: 0.8ms (1 query, 0 cached) | GC: 79.3ms)
+
+
+Started GET "/.well-known/appspecific/com.chrome.devtools.json" for ::1 at 2025-05-31 18:57:40 -0600
+  
+ActionController::RoutingError (No route matches [GET] "/.well-known/appspecific/com.chrome.devtools.json"):
+  

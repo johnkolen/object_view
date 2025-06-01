@@ -49,3 +49,8 @@ Add a generator
 ```bash
 rails generate generator views
 ```
+
+Application needs
+```bash
+rake dartsass:install
+```

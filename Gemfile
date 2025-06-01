@@ -9,8 +9,11 @@ gem "sqlite3"
 
 gem "propshaft"
 
-# Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
-gem "rubocop-rails-omakase", require: false
+gem "importmap-rails"
+gem "turbo-rails", "~> 2.0.13"
+gem "stimulus-rails"
+gem "cssbundling-rails"
+gem "dartsass-rails"
 
 # Start debugger with binding.b [https://github.com/ruby/debug]
 # gem "debug", ">= 1.0.0"
@@ -22,5 +25,6 @@ group :development, :test do
   gem "rspec-rails", "~> 8.0.0"
   gem "factory_bot_rails", "~> 6.4"
   gem "rails-controller-testing"
-  gem "turbo-rails", "~> 2.0.13"
+  # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
+  gem "rubocop-rails-omakase", require: false
 end

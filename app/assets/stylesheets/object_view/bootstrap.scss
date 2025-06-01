@@ -1,0 +1,14 @@
+@import '//bootstrap/scss/bootstrap';
+@import '//bootstrap-icons/font/bootstrap-icons';
+
+
+.ov-field {
+    background-color: gray;
+
+}
+
+@import 'object_view/base';
+@import 'object_view/buttons';
+@import 'object_view/displays';
+@import 'object_view/forms';
+@import 'object_view/tables';
