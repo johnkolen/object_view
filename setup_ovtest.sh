@@ -3,7 +3,7 @@
 fgrep "object_view" Gemfile || cat ../ovtest.gemfile >> Gemfile
 
 bundle install
-
+exit
 bin/rake object_view:install
 
 if ! [ -e app/views/static ]; then

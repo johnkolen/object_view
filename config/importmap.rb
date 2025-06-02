@@ -5,5 +5,6 @@
 #pin "@hotwired/stimulus", to: "stimulus.min.js"
 #pin "@hotwired/stimulus-loading", to: "stimulus-loading.js"
 #pin_all_from "app/javascript/controllers", under: "controllers"
-pin_all_from "app/javascript/controllers", under: "object_view/controllers"
+pin_all_from ObjectView::Engine.root.join("app/javascript/controllers"),
+             under: "object_view/controllers"
 #pin "bootstrap", to: "bootstrap.bundle.min.js"
