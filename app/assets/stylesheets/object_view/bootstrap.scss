@@ -1,5 +1,7 @@
-@import '//bootstrap/scss/bootstrap';
-@import '//bootstrap-icons/font/bootstrap-icons';
+/*
+@import 'bootstrap/scss/bootstrap';
+@import 'bootstrap-icons/font/bootstrap-icons';
+*/
 
 
 .ov-field {
@@ -7,8 +9,8 @@
 
 }
 
-@import 'object_view/base';
-@import 'object_view/buttons';
-@import 'object_view/displays';
-@import 'object_view/forms';
-@import 'object_view/tables';
+@import './base';
+@import './buttons';
+@import './displays';
+@import './forms';
+@import './tables';

@@ -56,7 +56,7 @@ module ObjectView
     def inject_into(kind, name, f,  t)
       File.open(f) do |file|
         unless file.read.match(/#{t}/m)
-          send("inject_into_#{kind}", f, name.to_s, f, t)
+          send("inject_into_#{kind}", f, name.to_s, t)
         end
       end
     end
