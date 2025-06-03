@@ -43,6 +43,7 @@ module ObjectView
       def build_or_create(sym)
         case sym.to_s
         when /^create_(.*)/
+          puts "creating #{$1}"
           x = create $1.to_sym
           self.class.destroy_list << x
           x
@@ -54,14 +55,15 @@ module ObjectView
       end
 
       def setup_object
-        if object && object.is_a? Symbol
+        if object && object.is_a?(Symbol)
           self.class.object = build_or_create object
         end
       end
 
       def setup_objects
         self.class.objects = self.class.objects.map do |x|
-          if x && x.is_a? Symbol
+          if x && x.is_a?(Symbol)
+            puts x.inspect
             build_or_create x
           else
             x
@@ -100,8 +102,8 @@ module ObjectView
       end
 
       module ClassMethods
-        attr_accessor destroy_list
-        attr_accessor access_class
+        attr_accessor :destroy_list
+        attr_accessor :access_class
 
         def commonSetup **options
           @options = options.dup
@@ -111,20 +113,39 @@ module ObjectView
         def object
           @object || @options[:object]
         end
+
         def object= obj
           @object = obj
         end
+
         def objects
           @objects || @options[:objects]
         end
+
         def objects= objs
           @objects = objs
         end
+
         def user
           @user || @options[:user]
         end
+
         def user= user
           @user = user
+        end
+
+        def object_class
+          tgt = @options[:object] || (@options[:objects] || []).first
+          if /(create|build)_(.*)/ =~ tgt
+            $2.classify.constantize
+          end
+        end
+
+        def object_entity
+          tgt = @options[:object] || (@options[:objects] || []).first
+          if /(create|build)_(.*)/ =~ tgt
+            $2
+          end
         end
       end
     end

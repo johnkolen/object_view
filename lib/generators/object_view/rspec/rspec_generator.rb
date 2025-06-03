@@ -13,12 +13,11 @@ module ObjectView
       <<~RUBY
             factory :#{factory_name}#{explicit_class_option} do
           #{factory_attributes(NORMAL).gsub(/^/, "    ")}
-            end
 
-            factory :#{factory_name}_sample#{explicit_class_option} do
-          #{factory_attributes(SAMPLE).gsub(/^/, "    ")}
+              factory :#{factory_name}_sample#{explicit_class_option} do
+            #{factory_attributes(SAMPLE).gsub(/^/, "    ")}
+              end
             end
-
         RUBY
     end
 
@@ -78,28 +77,25 @@ module ObjectView
     end
 
     def add_to_rails_helper
-      inject_into_file "spec/rails_helper.rb",
-                       "require ObjectView::Engine.root.join(\"spec/object_view/rspec/helpers\")\n",
-                       after: "require 'rspec/rails'"
-      includes = <<~RUBY
+      unless grep? "spec/rails_helper.rb", "ObjectView"
+        inject_into_file "spec/rails_helper.rb",
+                         "require ObjectView::Engine.root.join(\"spec/object_view/rspec/helpers\")\n",
+                         after: "require 'rspec/rails'\n"
+        includes = <<~RUBY
         config.before(:suite) { DatabaseCleaner.clean_with(:truncation) }
         config.before(:each) { DatabaseCleaner.strategy = :transaction }
         config.before(:each, js: true) { DatabaseCleaner.strategy = :transaction }
         config.before(:each) { DatabaseCleaner.start }
         config.before(:each) { DatabaseCleaner.clean }
         config.include FactoryBot::Syntax::Methods
-        config.include Devise::Test::ControllerHelpers, type: :controller
-        config.include Devise::Test::ControllerHelpers, type: :view
-        config.include Devise::Test::IntegrationHelpers, type: :request
-        config.include Devise::Test::IntegrationHelpers, type: :system
-        config.include ControllerSetup, type: :view
-        config.include ControllerSetup, type: :request
-        config.include ControllerSetup, type: :helper
-        config.include ObjectView::Rspec::Requests, type: request
-      RUBY
-      inject_into_file "spec/rails_helper.rb",
-                       "\n"+includes.gsub(/^/,"  "),
-                       after: "# config.filter_gems_from_backtrace(\"gem name\")"
+        config.include ObjectView::Rspec::Setup, type: :request
+        config.include ObjectView::Rspec::Requests, type: :request
+        RUBY
+        after_tgt = "# config.filter_gems_from_backtrace(\"gem name\")\n"
+        inject_into_file "spec/rails_helper.rb",
+                         "\n"+includes.gsub(/^/,"  "),
+                         after: after_tgt
+      end
     end
 
     private

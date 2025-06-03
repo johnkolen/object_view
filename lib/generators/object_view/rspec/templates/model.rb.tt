@@ -1,0 +1,6 @@
+require 'rails_helper'
+
+RSpec.describe <%= class_name %>, type: :model do
+  it { puts create(:<%= name %>).inspect }
+  it { puts create(:<%= name %>_sample).inspect }
+end

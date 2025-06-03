@@ -1,6 +1,6 @@
 #!/bin/bash
 
-fgrep "object_view" Gemfile || cat ../ovtest.gemfile >> Gemfile
+fgrep "object_view" Gemfile || cat ../object_view/ovtest.gemfile >> Gemfile
 
 bundle install
 

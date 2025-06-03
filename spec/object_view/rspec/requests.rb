@@ -1,6 +1,9 @@
+require_relative 'common'
+
 module ObjectView
   module Rspec
     module Requests
+      include Common
 
       def requests_get path, **options
         get path
@@ -30,7 +33,7 @@ module ObjectView
           before :all do
             setup_object
             setup_objects
-            setup_access
+            setup_user
           end
           after :all do
             cleanup_objects
@@ -59,6 +62,14 @@ module ObjectView
           it "GET /show renders a successful response" do
             requests_get edit_polymorphic_url(object), **options
           end
+        end
+
+        def ctx(label, &block)
+          @zzz ||= []
+          @zzz << label
+          yield
+        ensure
+          @zzz.pop
         end
 
         def ctx_path
