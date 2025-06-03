@@ -1,0 +1,10 @@
+#----
+gem "object_view", path: "../object_view"
+
+group :development, :test do
+  gem "faker", "~> 3.5"
+  gem "database_cleaner-active_record", "~> 2.2.1"
+  gem "rspec-rails", "~> 8.0.0"
+  gem "factory_bot_rails", "~> 6.4"
+  gem "rails-controller-testing"
+end

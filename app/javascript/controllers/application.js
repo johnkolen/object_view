@@ -7,3 +7,5 @@ application.debug = false
 window.Stimulus   = application
 
 export { application }
+
+console.log("object_view/controllers/application.js loaded")

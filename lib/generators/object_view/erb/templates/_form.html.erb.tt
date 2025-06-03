@@ -3,6 +3,8 @@
 <% klass = eval(class_name) -%>
 <% klass.attribute_types.each do |attr, type| -%>
 <% next if attr == "id" -%>
+<% next if attr == "created_at" -%>
+<% next if attr == "updated_at" -%>
 <% if type.type == :integer && klass.respond_to?(:fields_for?) && klass.fields_for?(attr) -%>
 <% if klass.is_dim? attr -%>
   <%%= ov_select :<%= attr.sub("_id", "") -%> %>

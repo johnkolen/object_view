@@ -3,6 +3,7 @@ module ObjectView
     puts "loading ObjectView::ApplicationHellper"
     include BaseHelper
     include ButtonsHelper
+    include DisplaysHelper
     include ElementsHelper
     include FieldsHelper
     include FormsHelper
