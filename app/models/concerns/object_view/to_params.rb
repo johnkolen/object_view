@@ -33,7 +33,7 @@ module ObjectView
       def add_values(h, keys)
         case keys
         when Symbol
-          h[keys.to_s] = send(keys)
+          h[keys.to_sym] = send(keys)
         when Hash
           keys.each do |k, attrs|
             if /(.*)_attributes/ =~ k.to_s
@@ -43,9 +43,9 @@ module ObjectView
                 r.each_with_index do |v, idx|
                   z[idx] = v.add_values({}, attrs)
                 end
-                h[k.to_s] = z
+                h[k.to_sym] = z
               else
-                h[k.to_s] = r.add_values({}, attrs)
+                h[k.to_sym] = r.add_values({}, attrs)
               end
             end
           end
@@ -60,7 +60,7 @@ module ObjectView
       def to_params **additional
         c = "#{self.class.name.pluralize}Controller"
         p = "#{self.class.name.underscore}_params"
-        add_values({}, eval(c).send(p)).merge! additional
+        add_values({}, c.constantize.send(p)).merge! additional
       end
     end
   end

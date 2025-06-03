@@ -43,7 +43,6 @@ module ObjectView
       def build_or_create(sym)
         case sym.to_s
         when /^create_(.*)/
-          puts "creating #{$1}"
           x = create $1.to_sym
           self.class.destroy_list << x
           x
@@ -63,7 +62,6 @@ module ObjectView
       def setup_objects
         self.class.objects = self.class.objects.map do |x|
           if x && x.is_a?(Symbol)
-            puts x.inspect
             build_or_create x
           else
             x

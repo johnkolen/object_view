@@ -1,6 +1,6 @@
 module ObjectView
   module BaseHelper
-    puts "loading BaseBelper"
+    puts "loading #{self}"
 
     def ov_obj=(obj)
       @ov_obj = obj

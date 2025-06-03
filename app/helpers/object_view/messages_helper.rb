@@ -1,6 +1,6 @@
 module ObjectView
   module MessagesHelper
-    puts "loading MessagesBelper"
+    puts "loading #{self}"
 
     def ov_errors
       return nil unless @ov_obj && @ov_obj.errors.any?

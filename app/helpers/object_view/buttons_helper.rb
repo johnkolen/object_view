@@ -1,6 +1,6 @@
 module ObjectView
   module ButtonsHelper
-    puts "loading ButtonsBelper"
+    puts "loading #{self}"
     BUTTON_PRIMARY_CLASS = "btn btn-primary"
     BUTTON_SECONDARY_CLASS = "btn btn-secondary"
     BUTTON_DANGER_CLASS = "btn btn-secondary"
