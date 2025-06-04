@@ -1,19 +1,47 @@
 # ObjectView
-Short description and motivation.
+ObjectView is a Rails gem for simplifying creation of models, forms, and displays.
 
 ## Usage
-How to use my plugin.
+ObjectView lets you define models and the construct a collection of forms and displays incorporating
+them.
+
+Here's how to create a simple person model and generate an interface for it.
+```base
+$ bin/rails generate model person name:string age:integer
+$ bin/rails db:migrate
+$ bin/rails generate object_view:scaffold person
+```
+
+The object_view:scaffold generate looks at the model and is aware of attributes and associations
+while it constructs a controller, views, and tests.
 
 ## Installation
+Here's the workflow for a new project using ObjectView as of Rails 8.
+
+```bash
+$ rails new myapp -c bootstrap
+$ cd myapp
+```
+
 Add this line to your application's Gemfile:
 
 ```ruby
-gem "object_view"
+gem "object_view", path: "../object_view"
+
+group :development, :test do
+  gem "faker", "~> 3.5"
+  gem "database_cleaner-active_record", "~> 2.2.1"
+  gem "rspec-rails", "~> 8.0.0"
+  gem "factory_bot_rails", "~> 6.4"
+  gem "rails-controller-testing", "~>1.0.5"
+end
 ```
 
 And then execute:
 ```bash
-$ bundle
+$ bundle install
+$ bin/rails generate rspec:install
+$ bin/rake object_view:install
 ```
 
 Or install it yourself as:
@@ -26,31 +54,3 @@ Contribution directions go here.
 
 ## License
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
-
-## Useful stuff
-
-Add a helper test
-```bash
-rails generate rspec:helper elements
-```
-
-To make a model
-```bash
-cd rspec/dummy
-rails generate model Person name:string
-```
-
-Build the gem
-```bash
-gem build object_view.gemspec
-```
-
-Add a generator
-```bash
-rails generate generator views
-```
-
-Application needs
-```bash
-rake dartsass:install
-```

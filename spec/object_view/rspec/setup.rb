@@ -11,19 +11,6 @@ module ObjectView
         end
       end
 
-      def view_setup
-        klass_setup
-        if @klass
-          assign(:klass, @klass)
-          assign(:klass_str, @klass_str)
-          assign(:klass_sym, @klass_sym)
-          assign(:klass_p_str, @klass_p_str)
-        end
-        assign(@klass_sym, object) if @klass_sym
-        assign(:object, object)
-        assign(:objects, objects)
-      end
-
       def object
         self.class.object
       end
@@ -60,7 +47,7 @@ module ObjectView
       end
 
       def setup_objects
-        self.class.objects = self.class.objects.map do |x|
+        self.class.objects = (self.class.objects || []).map do |x|
           if x && x.is_a?(Symbol)
             build_or_create x
           else

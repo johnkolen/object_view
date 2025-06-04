@@ -1,0 +1,11 @@
+require 'rails_helper'
+
+RSpec.describe "<%= plural_name %>/index", type: :view do
+  viewsSetup objects: [
+               :create_<%= name %>_sample,
+               :create_<%= name %>_sample
+             ],
+             user: :admin_user
+
+  views_index
+end

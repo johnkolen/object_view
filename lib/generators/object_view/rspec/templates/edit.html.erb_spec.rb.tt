@@ -1,0 +1,8 @@
+require 'rails_helper'
+
+RSpec.describe "<%= plural_name %>/edit", type: :view do
+  viewsSetup object: :create_<%= name %>,
+      	    user: :admin_user
+
+  views_edit
+end

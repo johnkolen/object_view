@@ -8,6 +8,7 @@ module ObjectView
     include FieldsHelper
     include FormsHelper
     include MessagesHelper
+    include NavigationHelper
     include ModalsHelper
     include TablesHelper
   end

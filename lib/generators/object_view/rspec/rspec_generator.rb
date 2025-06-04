@@ -31,20 +31,6 @@ module ObjectView
       ", class: '#{class_name}'"
     end
 
-    NORMAL = {
-      binary: "binary",
-      boolean: true,
-      date: Date.new(2025, 6, 29),
-      datetime: DateTime.new(2025, 6, 29, 8, 9, 10),
-      decimal: BigDecimal("1.23"),
-      float: 1.234,
-      integer: 1,
-      string: "string",
-      text: "text",
-      time: Time.new(2025, 6, 29, 8, 9, 10),
-      timestamp: DateTime.new(2025, 6, 29, 8, 9, 10),
-    }
-
     class Code
       def initialize str
         @str = str
@@ -53,6 +39,20 @@ module ObjectView
         @str
       end
     end
+
+    NORMAL = {
+      binary: "binary",
+      boolean: true,
+      date: Code.new("Date.new(2025, 6, 29)"),
+      datetime: Code.new("DateTime.new(2025, 6, 29, 8, 9, 10)"),
+      decimal: Code.new("BigDecimal(\"1.23\")"),
+      float: 1.234,
+      integer: 1,
+      string: "string",
+      text: "text",
+      time: Code.new("Time.new(2025, 6, 29, 8, 9, 10)"),
+      timestamp: Code.new("DateTime.new(2025, 6, 29, 8, 9, 10)"),
+    }
 
     SAMPLE = {
       binary: Code.new("'binary:' + Faker::Alphanumeric.alphanumeric(number: 10)"),
@@ -74,6 +74,34 @@ module ObjectView
         template "#{fname}.tt",
                  "spec/requests/#{name.pluralize}_spec.rb"
       end
+    end
+
+    def create_views_files
+      %w[edit index new show].each do |x|
+        fname = "#{x}.html.erb_spec.rb"
+        template "#{fname}.tt",
+                 "spec/views/#{plural_name}/#{fname}"
+      end
+    end
+
+    def create_model_files
+      %w[model].each do |x|
+        fname = "#{x}.rb"
+        template "#{fname}.tt",
+                 "spec/models/#{name}_spec.rb"
+      end
+    end
+
+    def create_standard_rspec
+      generate "rspec:scaffold",
+               name,
+               "--no-controller_specs",
+               "--no-request_specs",
+               "--no-view_specs"
+      generate "rspec:feature",
+               plural_name
+      generate "rspec:system",
+               plural_name
     end
 
     def add_to_rails_helper

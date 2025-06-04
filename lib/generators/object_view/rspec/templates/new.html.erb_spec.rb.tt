@@ -1,0 +1,8 @@
+require 'rails_helper'
+
+RSpec.describe "<%= plural_name %>/new", type: :view do
+  viewsSetup object: :build_<%= name %>,
+            user: :admin_user
+
+  views_new
+end

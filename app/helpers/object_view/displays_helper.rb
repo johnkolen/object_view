@@ -3,8 +3,8 @@ module ObjectView
     def ov_display(obj = nil, **options, &block)
       raise "ov_diplay object is nil" if obj.nil?
       _ov_hold_state do
-        puts "*" * 30
-        puts "display node: #{ov_access_class.node.inspect}"
+        # puts "*" * 30
+        # puts "display node: #{ov_access_class.node.inspect}"
         rv = "<!-- access block display #{obj.class} -->"
         # options[:allow] = {why: true}
         ov_allow? obj, :view, **(options[:allow] || {}) do
