@@ -42,6 +42,15 @@ module ObjectView
     end
     alias ov_boolean_field ov_checkbox
 
+    def ov_select_field(oattr, **options)
+      _ov_x_field(oattr,
+                  :_ov_label,
+                  :_ov_select_input,
+                  :_ov_select_display,
+                  **options)
+    end
+    alias ov_select ov_select_field
+
     def ov_date_field(oattr, **options)
       _ov_x_field(oattr,
                   :_ov_label,
@@ -162,6 +171,9 @@ module ObjectView
 
     def _ov_select_input oattr, id, **options
       mthd = "#{oattr}_id".to_sym
+      opts = options_for_select(@ov_obj.send("#{oattr}_options"),
+                                selected: @ov_obj.send(mthd))
+      s_class = "form-select ov-select"
       tag.div(@ov_form.select(mthd,
                               opts,
                               {},

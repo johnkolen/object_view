@@ -1,5 +1,5 @@
 <%%= ov_form  <%= name %> do %>
-<%%= ov_errors %>
+  <%%= ov_errors %>
 <% klass = eval(class_name) -%>
 <% klass.attribute_types.each do |attr, type| -%>
 <% next if attr == "id" -%>
@@ -15,5 +15,5 @@
   <%%= ov_<%= type.type %>_field :<%= attr -%> %>
 <% end -%>
 <% end -%>
-<%%= ov_submit %>
+  <%%= ov_submit %>
 <%% end %>

@@ -15,10 +15,6 @@ module ObjectView
       @klass_p_str = @klass.to_s.pluralize
     end
 
-    def current_user
-      @current_user
-    end
-
     def set_access_user
       ObjectView::AccessAlways.user = current_user
     end
