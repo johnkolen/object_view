@@ -125,6 +125,20 @@ module CommonHelper
     end
   end
 
+  def assert_select elem, obj, attr, **options, &block
+    expect(elem).not_to be_nil, "elem not generated"
+    pp(elem) if options[:pp]
+    klass = obj.class_name_u
+    node = Nokogiri::HTML(elem)
+    assert_dom node, "label[for=?]", attr
+    assert_dom node, "select[name=?]", "#{klass}[#{attr}_id]" do
+      assert_dom "option", {minimum: 3}
+    end
+    if block_given?
+      yield node, klass
+    end
+  end
+
   DELTA = { form: 0, display: 1 }
   def _assert_comp elem, kind, obj, *rest, **options
     pp(elem) if options[:pp]

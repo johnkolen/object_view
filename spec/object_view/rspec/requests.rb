@@ -5,19 +5,32 @@ module ObjectView
     module Requests
       include Common
 
+      def failure_notice response, action, path, attributes=nil
+        unless [200, 302].member?(response.status)
+          puts "#{action.to_s.upcase} #{path} failed:"
+          puts "Attributes: #{attributes.inspect}" if attributes
+          puts "Status: #{response.status}"
+          e = errors_from(response.body)
+          puts "Errors: \n#{e}" if e
+        end
+      end
+
       def requests_get path, **options
         get path
         if options[:pp]
           puts "Status: #{response.status}"
           pp response.body
         end
+        failure_notice response, :get, path
         expect(response).to be_successful
       end
 
       def requests_create klass, attributes, num
+        path = polymorphic_url(klass)
         expect {
-          post polymorphic_url(klass),
+          post path,
                params: { object.class_name_u => attributes }
+          failure_notice(response, :post, path, attributes) if 0 < num
         }.to change(klass, :count).by(num)
       end
 
@@ -33,7 +46,12 @@ module ObjectView
           before :all do
             setup_object
             setup_objects
+          end
+          before :each do
             setup_user
+          end
+          after :each do
+            cleanup_user
           end
           after :all do
             cleanup_objects

@@ -6,6 +6,16 @@ module ObjectView
         puts node.to_xhtml(indent: 2)
       end
 
+      def errors_from x
+        node = Nokogiri::HTML(x)
+        errors = node.css('.ov-error')
+        if errors
+          errors.to_xhtml(indent: 2)
+        else
+          nil
+        end
+      end
+
       def process_attributes attrx, &block
         if attrx.is_a? Hash
           yield attrx

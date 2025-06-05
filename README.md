@@ -23,7 +23,7 @@ $ rails new myapp -c bootstrap
 $ cd myapp
 ```
 
-Add this line to your application's Gemfile:
+Add these lines to your application's Gemfile:
 
 ```ruby
 gem "object_view", path: "../object_view"
@@ -43,12 +43,19 @@ $ bundle install
 $ bin/rails generate rspec:install
 $ bin/rake object_view:install
 ```
+### Adding model support
 
-Or install it yourself as:
 ```bash
-$ gem install object_view
+bin/rails generate model dog name:string age:integer
+bin/rails db:migrate
+# edit spec/factories/dogs.rb to make sure values are reasonable for the model
+rspec spec/models/dogs.rb
+# edit app/views/_form.html.erb and app/views/_dog.html.erb to make sure field directives are correct
+rspec spec/views/dogs
+# edit app/controllers/dogs_controller.rb to make sure dog_params are reasonable for the model
+# edit spec/requests/dogs_spec.b to add attributes
+rspec spec/requests/dogs_spec.b
 ```
-
 ## Contributing
 Contribution directions go here.
 

@@ -116,8 +116,14 @@ module ObjectView
         config.before(:each) { DatabaseCleaner.start }
         config.before(:each) { DatabaseCleaner.clean }
         config.include FactoryBot::Syntax::Methods
+        if defined? Devise
+          config.include Devise::Test::IntegrationHelpers, type: :controller
+          config.include Devise::Test::IntegrationHelpers, type: :request
+        end
         config.include ObjectView::Rspec::Setup, type: :request
         config.include ObjectView::Rspec::Requests, type: :request
+        config.include ObjectView::Rspec::Setup, type: :view
+        config.include ObjectView::Rspec::Views, type: :view
         RUBY
         after_tgt = "# config.filter_gems_from_backtrace(\"gem name\")\n"
         inject_into_file "spec/rails_helper.rb",

@@ -4,7 +4,11 @@ module ObjectView
 
       def klass_setup
         if controller
-          @klass = controller.controller_path.classify.constantize
+          begin
+            @klass = controller.controller_path.classify.constantize
+          rescue NameError
+            return
+          end
           @klass_str = @klass.to_s
           @klass_sym = @klass.to_s.underscore.to_sym
           @klass_p_str = @klass.to_s.pluralize
@@ -57,16 +61,25 @@ module ObjectView
       end
 
       def setup_user
-        if access_class
-          u = build(self.class.user)
-          if u.respond_to? :email
-            unless u.class.find_by(email: u.email)
-              u = create(self.class.user)
-              self.class.destroy_list << u
-            end
-          else
-            raise "user does not have email field"
+        return unless defined?(Devise::Test::IntegrationHelpers) ||
+                      access_class
+
+        u = build(self.class.user)
+        email = u.email
+        if u.respond_to? :email
+          u = u.class.find_by(email: email)
+          unless u
+            u = create(self.class.user)
+            self.class.destroy_list << u
           end
+        else
+          raise "user does not have email field"
+        end
+        if defined? Devise::Test::IntegrationHelpers
+          login_as u, scope: :user
+        end
+
+        if access_class
           access_class.user = user
           if respond_to? :sign_in
             sign_in(access_class.user, scope: :user) if access_class.user
@@ -77,6 +90,12 @@ module ObjectView
       def cleanup_objects
         until self.class.destroy_list.empty?
           self.class.destroy_list.pop.destroy
+        end
+      end
+
+      def cleanup_user
+        if defined? Devise::Test::IntegrationHelpers
+          logout :user
         end
       end
 

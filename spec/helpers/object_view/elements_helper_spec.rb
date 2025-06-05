@@ -142,4 +142,21 @@ module ObjectView
       end
     end
   end
+
+  context "select" do
+    let(:object) { User.new }
+    it "in form" do
+      fake_form do
+        elem = helper.ov_select(:role)
+        assert_select elem, object, :role
+      end
+    end
+    it "in display" do
+      fake_display do
+        elem = helper.ov_select(:role)
+        assert_display elem, object, :role
+      end
+    end
+  end
+
 end
