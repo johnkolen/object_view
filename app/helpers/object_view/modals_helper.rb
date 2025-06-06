@@ -97,8 +97,27 @@ module ObjectView
     def ov_modal_objects_view klass, turbo_content, **options, &block
       if @turbo || options[:turbo]
         id = "#{klass.to_s.underscore}_frame"
-        turbo_frame_tag id do
-          turbo_content
+        if options[:object]
+          obj = options[:object]
+          edit_path = edit_polymorphic_path(obj, params: { tf: 1 })
+          view_path = polymorphic_path(obj, params: { tf: 1 })
+          x = turbo_frame_tag(id,
+                              data: {
+                                "modal-object-target": :frame,
+                                #edit: edit_path,
+                                #view: view_path,
+                                "object-id": options[:object].id
+                              }) do
+            turbo_content
+          end
+          puts x
+          x
+        else
+          x = turbo_frame_tag(id) do
+            turbo_content
+          end
+          puts x
+          x
         end
       else
         capture(&block)

@@ -9,10 +9,24 @@ export default class extends Controller {
   }
   connect() {
     console.log("connected modal object");
-    let self = this
+    let self = this;
     this.element.addEventListener('hide.bs.modal',
 				  function(event) {
-				    self.close()})
+				    self.close()});
+    console.log(this.frameTarget);
+    this.frameTarget.
+      addEventListener('turbo:before-frame-render',
+		       function(event) {
+			 console.log("turbo:before-frame-render caught");
+			 const id = event.detail.newFrame.getAttribute("data-object-id");
+			 console.log("object id: ", id);
+			 self.set_path("edit", id);
+			 self.set_path("view", id);
+			 //event.detail.render = (currentElement, newElement) => {
+			 //  console.log(currentElement);
+			 //  console.log(newElement);
+			 //}
+		       });
   }
   set_path(action, id) {
     const attr = "data-" + action;

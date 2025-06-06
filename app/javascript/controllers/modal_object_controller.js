@@ -1,5 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
 
+/* NOT LOADED */
 console.log("modal_object loaded");
 
 export default class extends Controller {
@@ -13,6 +14,16 @@ export default class extends Controller {
     this.element.addEventListener('hide.bs.modal',
 				  function(event) {
 				    self.close()})
+    console.log(this.frameTarget);
+    this.frameTarget.
+      addEventListener('turbo:before-frame-render',
+		       function(event) {
+			 console.log("turbo:before-frame-render caught");
+			 event.detail.render = (currentElement, newElement) => {
+			   console.log(currentElement);
+			   console.log(newElement);
+			 }
+		       });
   }
   set_path(action, id) {
     const attr = "data-" + action;
