@@ -1,9 +1,16 @@
 module ObjectView
   module FieldsHelper
     def ov_fields_for(oattr, **options, &block)
-      obj = @ov_obj.send(oattr)
-      if options[:if] == :exists
-        return nil unless obj
+      if oattr == :author
+        puts @ov_obj.inspect
+        puts oattr
+        #raise "found"
+      end
+      unless @ov_obj.is_a? ObjectView::TablesHelper::HeaderFor
+        obj = @ov_obj.send(oattr)
+        if options[:if] == :exists
+          return nil unless obj
+        end
       end
       # return nil unless obj
       # raise "missing attribute: #{oattr} in #{@ov_obj.class}" unless obj

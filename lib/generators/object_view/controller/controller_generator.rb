@@ -73,11 +73,8 @@ module ObjectView
       klass = eval(class_name)
       obj = klass.new
       klass.reflect_on_all_associations.inject({}) do |h, a|
-        puts a.inspect
-        puts a.plural_name
         na = "#{a.plural_name}_attributes"
         if true || obj.respond_to?("#{na}=")
-          puts a.macro
           c = "#{a.plural_name}_controller".classify
           cx = Object.const_get(c) rescue nil
           if cx
@@ -89,10 +86,8 @@ module ObjectView
             when :has_one
               h[na.to_sym] = p.map(&:to_sym)
             end
-            puts h.inspect
           end
         end
-        puts "-" * 30
         h
       end.map { |k, v| "#{k}: #{v}" }.join(", ")
     end

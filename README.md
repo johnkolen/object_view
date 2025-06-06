@@ -48,9 +48,10 @@ $ bin/rake object_view:install
 ```bash
 bin/rails generate model dog name:string age:integer
 bin/rails db:migrate
+bin/rails generate object_view:scaffold dog
 # edit spec/factories/dogs.rb to make sure values are reasonable for the model
 rspec spec/models/dogs.rb
-# edit app/views/_form.html.erb and app/views/_dog.html.erb to make sure field directives are correct
+# edit app/views/_form.html.erb, app/views/_dog.html.erb, and  app/views/_table_row.html.erb to make sure field directives are correct
 rspec spec/views/dogs
 # edit app/controllers/dogs_controller.rb to make sure dog_params are reasonable for the model
 # edit spec/requests/dogs_spec.b to add attributes

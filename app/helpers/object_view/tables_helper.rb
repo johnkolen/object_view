@@ -14,7 +14,9 @@ module ObjectView
         @obj.class_name_u
       end
       def method_missing(name, *args, &block)
-        return @obj.send(name) if /^(.*)_label$/ =~ name
+        return @obj.send("#{name}") if /^(.*)_label$/ =~ name.to_s
+        puts @obj.inspect
+        puts name.inspect
         super
       end
     end

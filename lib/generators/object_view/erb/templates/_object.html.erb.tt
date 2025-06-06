@@ -1,5 +1,5 @@
 <%%= ov_display <%= name %> do %>
-<% klass = eval(class_name) -%>
+<% klass = class_name.constantize -%>
 <% klass.attribute_types.each do |attr, type| -%>
 <% next if attr == "id" -%>
 <% if type.type == :integer && klass.respond_to?(:fields_for?) && klass.fields_for?(attr) -%>
