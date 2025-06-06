@@ -66,6 +66,8 @@ namespace :object_view do
     FileUtils.mkdir_p tgt, verbose: true
     if File.directory?(tgt) && !File.symlink?(tgt)
       FileUtils.rmdir tgt, verbose: true # makes room for the symlink
+    elsif File.symlink?(tgt)
+      FileUtils.rm tgt, verbose: true # makes room for the symlink
     end
     FileUtils.ln_s(ObjectView::Engine.root.join("app/assets/stylesheets"),
                    tgt,
