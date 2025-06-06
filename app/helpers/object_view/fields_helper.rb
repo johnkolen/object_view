@@ -1,12 +1,9 @@
 module ObjectView
   module FieldsHelper
     def ov_fields_for(oattr, **options, &block)
-      if oattr == :author
-        puts @ov_obj.inspect
-        puts oattr
-        #raise "found"
-      end
-      unless @ov_obj.is_a? ObjectView::TablesHelper::HeaderFor
+      if @ov_obj.is_a? ObjectView::TablesHelper::HeaderFor
+        return ov_col(oattr, **options)
+      else
         obj = @ov_obj.send(oattr)
         if options[:if] == :exists
           return nil unless obj
@@ -51,8 +48,17 @@ module ObjectView
             rv = capture(&block)
           end
           return rv || _ov_blocked(@ov_obj, oattr)
+        elsif ov_belongs_to? oattr
+          # treat the attributes at the same level as parent
+          obj = @ov_obj.send(oattr)
+          rv = nil
+          @ov_obj = obj
+          ov_allow? @ov_obj, @ov_access, **(options[:allow] || {}) do
+            rv = capture(&block)
+          end
+          return rv || _ov_blocked(@ov_obj, oattr)
         else
-          raise "TODO"
+          raise "TODO #{@ov_obj} #{oattr}"
         end
       end
 
@@ -103,7 +109,13 @@ module ObjectView
 
     def ov_one_to_one?(oattr)
       r = @ov_obj.class.reflect_on_association(oattr)
+      raise "one_to_one failed #{oattr.inspect} missing inverse_of" unless r.inverse_of
       r.macro == :belongs_to && r.inverse_of.macro == :has_one
+    end
+
+    def ov_belongs_to?(oattr)
+      r = @ov_obj.class.reflect_on_association(oattr)
+      r.macro == :belongs_to
     end
 
     # Generate the content for all the fields of a single oattr
@@ -149,8 +161,8 @@ module ObjectView
 
     # name should be kebab as it's used for css classes
     def _ov_fields_for_form_element(oattr, obj, css_name, num, **options, &block)
-      puts "*" * 30
-      puts "fields_for_form_element node: #{ov_access_class.node.inspect}"
+      # puts "*" * 30
+      # puts "fields_for_form_element node: #{ov_access_class.node.inspect}"
       # puts "_ov_fields_for_form_element"
       _ov_hold_state do
         @ov_form.fields_for oattr, obj  do |form|
