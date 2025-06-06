@@ -62,9 +62,11 @@ namespace :object_view do
     root = Rails.root
     tgt_b = "vendor/object_view/stylesheets"
     tgt = root.join(tgt_b)
-    FileUtils.rm tgt, force: true # makes room for the symlink
+    #FileUtils.rm tgt, force: true # makes room for the symlink
     FileUtils.mkdir_p tgt, verbose: true
-    FileUtils.rm tgt, force: true # makes room for the symlink
+    if File.directory?(tgt) && !File.symlink?(tgt)
+      FileUtils.rmdir tgt, verbose: true # makes room for the symlink
+    end
     FileUtils.ln_s(ObjectView::Engine.root.join("app/assets/stylesheets"),
                    tgt,
                    force: true, verbose: true)
