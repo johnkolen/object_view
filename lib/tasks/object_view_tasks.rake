@@ -49,17 +49,10 @@ end
 namespace :object_view do
   desc "Add CSS path to package.json"
   task :package do
-    root = Rails.root
-    tgt_b = "vendor/object_view/stylesheets"
-    tgt = root.join(tgt_b)
-    FileUtils.mkdir_p tgt, verbose: true
-    FileUtils.rmdir tgt # makes room for the symlink
-    FileUtils.ln_s(ObjectView::Engine.root.join("app/assets/stylesheets"),
-                   tgt,
-                   force: true, verbose: true)
+    tgt = "vendor/object_view/stylesheets"
     replace root.join("package.json"),
             "--load-path=node_modules",
-            " --load-path=#{tgt_b}",
+            " --load-path=#{tgt}",
             after: true
     puts "Added CSS path to package.json"
   end
@@ -69,6 +62,7 @@ namespace :object_view do
     root = Rails.root
     tgt_b = "vendor/object_view/stylesheets"
     tgt = root.join(tgt_b)
+    FileUtils.rm tgt, force: true # makes room for the symlink
     FileUtils.mkdir_p tgt, verbose: true
     FileUtils.rm tgt, force: true # makes room for the symlink
     FileUtils.ln_s(ObjectView::Engine.root.join("app/assets/stylesheets"),
@@ -108,13 +102,8 @@ namespace :object_view do
   task :install => :environment do
     Rake::Task["object_view:route"].invoke
     Rake::Task["object_view:package"].invoke
+    Rake::Task["object_view:vendor_link"].invoke
     Rake::Task["object_view:css"].invoke
     Rake::Task["object_view:js"].invoke
-    #root = Rails.root
-    #local = File.expand_path("#{File.dirname(__FILE__)}../../..")
-    #FileUtils::cp("#{local}/bin/gemlink.sh", "#{root}/bin/gemlink.sh")
-    #system "#{root}/bin/gemlink.sh"
-    #system("ln -sf #{local}/app #{root}/vendor/object_view")
-    #puts "add '--load-path=vendor/object_view/assets/stylesheets' to package.json at end of 'build:css:compile' line"
   end
 end

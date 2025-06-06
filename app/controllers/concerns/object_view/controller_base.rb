@@ -4,8 +4,8 @@ module ObjectView
   module ControllerBase
     extend ActiveSupport::Concern
 
-    included do
-      before_action :set_access_user
+    included do |base|
+      base.before_action :set_access_user
     end
 
     def set_klass
