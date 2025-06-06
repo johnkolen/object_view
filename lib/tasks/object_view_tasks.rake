@@ -64,6 +64,18 @@ namespace :object_view do
     puts "Added CSS path to package.json"
   end
 
+  desc "update vendor/object_view"
+  task :vendor_link do
+    root = Rails.root
+    tgt_b = "vendor/object_view/stylesheets"
+    tgt = root.join(tgt_b)
+    FileUtils.mkdir_p tgt, verbose: true
+    FileUtils.rm tgt, force: true # makes room for the symlink
+    FileUtils.ln_s(ObjectView::Engine.root.join("app/assets/stylesheets"),
+                   tgt,
+                   force: true, verbose: true)
+  end
+
   desc "Add object_view/bootstrap to css"
   task :css => :environment do
     root = Rails.root
