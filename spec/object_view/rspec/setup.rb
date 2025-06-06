@@ -88,8 +88,21 @@ module ObjectView
       end
 
       def cleanup_objects
+        delayed = []
+        dlsize = self.class.destroy_list.size
         until self.class.destroy_list.empty?
-          self.class.destroy_list.pop.destroy
+          begin
+            m = self.class.destroy_list.pop
+            m.destroy!
+          rescue ActiveRecord::InvalidForeignKey
+            delayed << m
+          end
+          unless delayed.empty?
+            unless dlsize == delayed.size
+              self.class.destroy_list = delayed
+              cleanup_objects
+            end
+          end
         end
       end
 
