@@ -1,6 +1,6 @@
 module ObjectView
   module TablesHelper
-    puts "loading #{self}"
+    # puts "loading #{self}"
 
     class HeaderFor
       attr_reader :obj

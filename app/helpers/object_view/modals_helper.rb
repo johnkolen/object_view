@@ -101,23 +101,19 @@ module ObjectView
           obj = options[:object]
           edit_path = edit_polymorphic_path(obj, params: { tf: 1 })
           view_path = polymorphic_path(obj, params: { tf: 1 })
-          x = turbo_frame_tag(id,
-                              data: {
-                                "modal-object-target": :frame,
-                                #edit: edit_path,
-                                #view: view_path,
-                                "object-id": options[:object].id
-                              }) do
+          turbo_frame_tag(id,
+                          data: {
+                            "modal-object-target": :frame,
+                            #edit: edit_path,
+                            #view: view_path,
+                            "object-id": options[:object].id
+                          }) do
             turbo_content
           end
-          puts x
-          x
         else
-          x = turbo_frame_tag(id) do
+          turbo_frame_tag(id) do
             turbo_content
           end
-          puts x
-          x
         end
       else
         capture(&block)

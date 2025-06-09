@@ -84,4 +84,5 @@ RSpec.configure do |config|
     end
   end
   config.include CommonHelper, type: :helper
+  #config.include Rails::Generators::Testing, type: generator
 end

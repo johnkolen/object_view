@@ -1,6 +1,6 @@
 module ObjectView
   module FormsHelper
-    puts "loading #{self}"
+    # puts "loading #{self}"
 
     def ov_form(obj = nil, **options, &block)
       raise "ov_form object is nil" if obj.nil?

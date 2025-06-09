@@ -1,6 +1,6 @@
 module ObjectView
   module ApplicationHelper
-    puts "loading ObjectView::ApplicationHellper"
+    #puts "loading ObjectView::ApplicationHellper"
     include BaseHelper
     include ButtonsHelper
     include DisplaysHelper

@@ -1,6 +1,6 @@
 module ObjectView
   module BaseHelper
-    puts "loading #{self}"
+    # puts "loading #{self}"
 
     def ov_obj=(obj)
       @ov_obj = obj
@@ -23,8 +23,21 @@ module ObjectView
     #  @ov_obj = obj
     # end
 
+
     def ov_access_class
-      @ov_access_class || ObjectView::AccessAlways
+      unless @ov_access_class
+        cfg = Rails.configuration.x.object_view.access_class
+        case cfg
+        when Class
+          @ov_access_class = cfg
+        when String, Symbol
+          @ov_access_class = cfg.to_s.constantize
+          Rails.configuration.x.object_view.access_class = @ov_access_class
+        else
+          @ov_access_class = ObjectView::AccessAlways
+        end
+      end
+      @ov_access_class
     end
 
     def ov_access_class=(klass)
