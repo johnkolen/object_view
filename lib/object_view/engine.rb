@@ -1,4 +1,4 @@
-require 'importmap-rails'
+require "importmap-rails"
 
 module ObjectView
   class << self
@@ -7,7 +7,7 @@ module ObjectView
   class Engine < ::Rails::Engine
     isolate_namespace ObjectView
     paths["app/assets"]
-    #paths["app/javascript"]
+    # paths["app/javascript"]
     config.generators do |g|
       g.test_framework :rspec
       g.assets false
@@ -20,7 +20,7 @@ module ObjectView
         Rails.root.join("../object_view/app/javascript")
       if false
       ObjectView.importmap = Importmap::Map.new
-      #ObjectView.importmap.draw(app.root.join("config/importmap.rb"))
+      # ObjectView.importmap.draw(app.root.join("config/importmap.rb"))
       puts root.join("config/importmap.rb")
       ObjectView.importmap.draw(root.join("config/importmap.rb"))
       puts ObjectView.importmap.to_json(resolver: ActionController::Base.helpers)

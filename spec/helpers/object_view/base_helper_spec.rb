@@ -44,6 +44,32 @@ module ObjectView
       helper.ov_obj = Person.new
       expect(helper.ov_obj_path).to eq "/people"
     end
+    context "ov_access_class intitialization" do
+      it "from config as symbol" do
+        helper.ov_access_class = nil
+        hold = Rails.configuration.x.object_view.access_class
+        Rails.configuration.x.object_view.access_class = "ObjectView::AccessRBAC"
+        expect(helper.ov_access_class).to be ObjectView::AccessRBAC
+      ensure
+        Rails.configuration.x.object_view.access_class = hold
+      end
+      it "from config as class" do
+        helper.ov_access_class = nil
+        hold = Rails.configuration.x.object_view.access_class
+        Rails.configuration.x.object_view.access_class = ObjectView::AccessRBAC
+        expect(helper.ov_access_class).to be ObjectView::AccessRBAC
+      ensure
+        Rails.configuration.x.object_view.access_class = hold
+      end
+      it "default" do
+        helper.ov_access_class = nil
+        hold = Rails.configuration.x.object_view.access_class
+        Rails.configuration.x.object_view.access_class = nil
+        expect(helper.ov_access_class).to be ObjectView::AccessAlways
+      ensure
+        Rails.configuration.x.object_view.access_class = hold
+      end
+    end
     it do
       obj = create(:user)
       expect(helper.ov_render(partial: _partial_src(obj),

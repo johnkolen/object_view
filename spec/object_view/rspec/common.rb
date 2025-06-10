@@ -1,12 +1,12 @@
 module ObjectView
   module Rspec
     module Common
-      def pp x
+      def pp(x)
         node = Nokogiri::HTML(x)
         puts node.to_xhtml(indent: 2)
       end
 
-      def errors_from x
+      def errors_from(x)
         node = Nokogiri::HTML(x)
         errors = node.css('.ov-error')
         if errors
@@ -16,7 +16,7 @@ module ObjectView
         end
       end
 
-      def process_attributes attrx, &block
+      def process_attributes(attrx, &block)
         if attrx.is_a? Hash
           yield attrx
         elsif attrx.is_a? Enumerable
@@ -28,7 +28,7 @@ module ObjectView
         end
       end
 
-      def one attrx
+      def one(attrx)
         if attrx.is_a? Array
           attrx.first
         else

@@ -1,4 +1,4 @@
-def grep? file, content
+def grep?(file, content)
   if File.exist? file
     File.open(file, "r") do |f|
       f.each_line do |line|
@@ -9,7 +9,7 @@ def grep? file, content
   false
 end
 
-def append file, content
+def append(file, content)
   if File.exist? file
     unless grep? file, content
       File.open(file, "a") do |f|
@@ -62,7 +62,7 @@ namespace :object_view do
     root = Rails.root
     tgt_b = "vendor/object_view/stylesheets"
     tgt = root.join(tgt_b)
-    #FileUtils.rm tgt, force: true # makes room for the symlink
+    # FileUtils.rm tgt, force: true # makes room for the symlink
     FileUtils.mkdir_p tgt, verbose: true
     if File.directory?(tgt) && !File.symlink?(tgt)
       FileUtils.rmdir tgt, verbose: true # makes room for the symlink
@@ -75,7 +75,7 @@ namespace :object_view do
   end
 
   desc "Add object_view/bootstrap to css"
-  task :css => :environment do
+  task css: :environment do
     root = Rails.root
     append "#{root}/app/assets/stylesheets/application.bootstrap.scss",
            '@import "object_view/bootstrap"' do
@@ -86,7 +86,7 @@ namespace :object_view do
   end
 
   desc "Add object_view/controller to application.js"
-  task :js => :environment do
+  task js: :environment do
     root = Rails.root
     append "#{root}/app/javascript/application.js",
            'import "object_view/controllers"'
@@ -103,7 +103,7 @@ namespace :object_view do
   end
 
   desc "Install object_view"
-  task :install => :environment do
+  task install: :environment do
     Rake::Task["object_view:route"].invoke
     Rake::Task["object_view:package"].invoke
     Rake::Task["object_view:vendor_link"].invoke

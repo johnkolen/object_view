@@ -1,15 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe "phone_numbers/index", type: :view do
-  before(:each) do
-    assign(:phone_numbers, [
-      PhoneNumber.create!(),
-      PhoneNumber.create!()
-    ])
-  end
+  viewsSetup objects: [
+               :create_phone_number_sample,
+               :create_phone_number_sample
+             ],
+             user: :admin_user
 
-  it "renders a list of phone_numbers" do
-    render
-    cell_selector = 'div>p'
-  end
+  views_index
 end

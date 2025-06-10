@@ -111,7 +111,7 @@ module CommonHelper
     end
   end
 
-  def assert_table(klass, object=nil, **options, &block)
+  def assert_table(klass, object = nil, **options, &block)
     elem = yield
     node = Nokogiri::HTML(elem)
     pp(elem) if options[:pp]
@@ -132,7 +132,7 @@ module CommonHelper
     node = Nokogiri::HTML(elem)
     assert_dom node, "label[for=?]", attr
     assert_dom node, "select[name=?]", "#{klass}[#{attr}_id]" do
-      assert_dom "option", {minimum: 3}
+      assert_dom "option", { minimum: 3 }
     end
     if block_given?
       yield node, klass

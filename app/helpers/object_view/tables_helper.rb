@@ -1,10 +1,10 @@
 module ObjectView
   module TablesHelper
-    puts "loading #{self}"
+    # puts "loading #{self}"
 
     class HeaderFor
       attr_reader :obj
-      def initialize obj
+      def initialize(obj)
         @obj = obj
       end
       def class_name_plural_u

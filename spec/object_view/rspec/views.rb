@@ -31,8 +31,8 @@ module ObjectView
             # ignoring associaitons
             next unless object.attribute_names.member?(k)
             assert_select "label[for=?]", k.to_s
-            #TODO: assert_select "name[for=?]", "#{name}[#{k}]"
-            #TODO: assert_select "input[name=?]", "story_task[title]"
+            # TODO: assert_select "name[for=?]", "#{name}[#{k}]"
+            # TODO: assert_select "input[name=?]", "story_task[title]"
           end
         end
       end
@@ -107,7 +107,6 @@ module ObjectView
             end
           end
         end
-
       end
     end
   end

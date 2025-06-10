@@ -50,19 +50,18 @@ class PhoneNumbersController < ApplicationController
 
   def self.phone_number_params
     [
-    :number, :active, :person_id
-
+      :number, :active, :person_id
     ]
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_phone_number
-      @phone_number = PhoneNumber.find(params.expect(:id))
+      @object = @phone_number = PhoneNumber.find(params.expect(:id))
     end
 
     # Only allow a list of trusted parameters through.
     def phone_number_params
-      params.fetch(:phone_number, {})
+      params.expect! phone_number: self.class.phone_number_params
     end
 end

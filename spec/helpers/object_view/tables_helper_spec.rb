@@ -14,9 +14,9 @@ module ObjectView
   RSpec.describe TablesHelper, type: :helper do
     # RSpec automatically loads ButtonHelper, but not the rest
     # so we do it explicitly
-    #include ObjectView::ApplicationHelper
+    # include ObjectView::ApplicationHelper
 
     let(:object) { create(:person) }
-    it { assert_table(Person, object) { helper.ov_table(Person, [object]) } }
+    it { assert_table(Person, object) { helper.ov_table(Person, [ object ]) } }
   end
 end

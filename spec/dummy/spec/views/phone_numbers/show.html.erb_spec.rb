@@ -1,11 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe "phone_numbers/show", type: :view do
-  before(:each) do
-    assign(:phone_number, PhoneNumber.create!())
-  end
+  viewsSetup object: :create_phone_number,
+             user: :admin_user
 
-  it "renders attributes in <p>" do
-    render
-  end
+  views_show
 end

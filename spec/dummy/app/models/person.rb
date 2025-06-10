@@ -21,6 +21,7 @@ class Person < ApplicationRecord
             }
 
   include ObjectView::MetaAttributes
+  include ObjectView::ToParams
 
   def add_builds!
     phone_numbers.build
