@@ -1,7 +1,6 @@
 module ObjectView
   module Rspec
     module Setup
-
       def klass_setup
         if controller
           begin
@@ -131,7 +130,7 @@ module ObjectView
           @object || @options[:object]
         end
 
-        def object= obj
+        def object=(obj)
           @object = obj
         end
 
@@ -139,7 +138,7 @@ module ObjectView
           @objects || @options[:objects]
         end
 
-        def objects= objs
+        def objects=(objs)
           @objects = objs
         end
 
@@ -147,7 +146,7 @@ module ObjectView
           @user || @options[:user]
         end
 
-        def user= user
+        def user=(user)
           @user = user
         end
 

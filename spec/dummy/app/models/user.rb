@@ -2,6 +2,7 @@ class User < ApplicationRecord
   belongs_to :person, inverse_of: :user, optional: true
 
   include ObjectView::MetaAttributes
+  include ObjectView::ToParams
   include ObjectView::Dims
 
   def password_label

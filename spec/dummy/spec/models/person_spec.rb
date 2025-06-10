@@ -1,5 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe Person, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  it { expect(create(:person)).to be_a Person }
+  it { expect(create(:person_sample)).to be_a Person }
 end

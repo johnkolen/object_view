@@ -1,7 +1,9 @@
 class PhoneNumber < ApplicationRecord
-  belongs_to :person
+  belongs_to :person,
+             inverse_of: :phone_numbers
 
   include ObjectView::MetaAttributes
+  include ObjectView::ToParams
   include ObjectView::Dims
 
   # use same regex for both client- and server-side validation

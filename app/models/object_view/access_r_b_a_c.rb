@@ -1,6 +1,6 @@
 module ObjectView
   class AccessRBAC < ApplicationRecord
-    def self.allow? resource, label, role=nil, &block
+    def self.allow?(resource, label, role = nil, &block)
       yield if block_given?
       true
     end
@@ -10,7 +10,7 @@ module ObjectView
     def self.user
       @user || :nouser
     end
-    def self.user= u
+    def self.user=(u)
       @user = u
     end
     def self.explain

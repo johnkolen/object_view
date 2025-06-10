@@ -4,7 +4,7 @@ require 'rails/generators/named_base'
 require ObjectView::Engine.root.join('lib/generators/object_view/controller/controller_generator')
 
 RSpec.describe ObjectView::ControllerGenerator, type: :generator do
-  #pending "add some scenarios (or delete) #{__FILE__}"
+  # pending "add some scenarios (or delete) #{__FILE__}"
   if false
     puts self.inspect
     destination File.expand_path("../../dummy", __FILE__)
@@ -16,9 +16,9 @@ RSpec.describe ObjectView::ControllerGenerator, type: :generator do
       system "bin/rake db:rollback"
       system "bin/rails destroy model house color:string age:integer person:references"
     end
-    #tests ObjectView::ControllerGenerator
+    # tests ObjectView::ControllerGenerator
     it "does something" do
-      #system "bin/rails generate object_view:controller house"
+      # system "bin/rails generate object_view:controller house"
       run_generator %w[house]
       expect("app/controllers/houses_controler.rb").
         to contain(/@objects/)

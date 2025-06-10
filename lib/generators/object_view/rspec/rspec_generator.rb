@@ -32,7 +32,7 @@ module ObjectView
     end
 
     class Code
-      def initialize str
+      def initialize(str)
         @str = str
       end
       def inspect
@@ -51,7 +51,7 @@ module ObjectView
       string: "string",
       text: "text",
       time: Code.new("Time.new(2025, 6, 29, 8, 9, 10)"),
-      timestamp: Code.new("DateTime.new(2025, 6, 29, 8, 9, 10)"),
+      timestamp: Code.new("DateTime.new(2025, 6, 29, 8, 9, 10)")
     }
 
     SAMPLE = {
@@ -65,7 +65,7 @@ module ObjectView
       string: Code.new("Faker::Alphanumeric.alphanumeric(number: 10)"),
       text: Code.new("Faker::Alphanumeric.alphanumeric(number: 10)"),
       time: Code.new("DateTime.new(Faker::Time.between(from: 2.years.ago, to: Date.today))"),
-      timestamp: Code.new("DateTime.new(Faker::Time.between(from: 2.years.ago, to: Date.today))"),
+      timestamp: Code.new("DateTime.new(Faker::Time.between(from: 2.years.ago, to: Date.today))")
     }
 
     def request_files
@@ -127,14 +127,14 @@ module ObjectView
         RUBY
         after_tgt = "# config.filter_gems_from_backtrace(\"gem name\")\n"
         inject_into_file "spec/rails_helper.rb",
-                         "\n"+includes.gsub(/^/,"  "),
+                         "\n"+includes.gsub(/^/, "  "),
                          after: after_tgt
       end
     end
 
     private
 
-    def factory_attributes src
+    def factory_attributes(src)
       attributes_map(class_name) do |attr, type|
         "#{attr} { #{src[type.type].inspect} }"
       end.join("\n")

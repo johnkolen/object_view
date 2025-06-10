@@ -1,11 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe "people/show", type: :view do
-  before(:each) do
-    assign(:person, Person.create!())
-  end
+  viewsSetup object: :create_person,
+             user: :admin_user
 
-  it "renders attributes in <p>" do
-    render
-  end
+  views_show
 end

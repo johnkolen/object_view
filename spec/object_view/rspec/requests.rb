@@ -5,8 +5,8 @@ module ObjectView
     module Requests
       include Common
 
-      def failure_notice response, action, path, attributes=nil
-        unless [200, 302].member?(response.status)
+      def failure_notice(response, action, path, attributes = nil)
+        unless [ 200, 302 ].member?(response.status)
           puts "#{action.to_s.upcase} #{path} failed:"
           puts "Attributes: #{attributes.inspect}" if attributes
           puts "Status: #{response.status}"
@@ -25,7 +25,7 @@ module ObjectView
         expect(response).to be_successful
       end
 
-      def requests_create klass, attributes, num
+      def requests_create(klass, attributes, num)
         path = polymorphic_url(klass)
         expect {
           post path,
@@ -95,7 +95,7 @@ module ObjectView
           @zzz.join " "
         end
 
-        def itx label, &block
+        def itx(label, &block)
           it "#{ctx_path} #{label}", &block
         end
 
@@ -138,7 +138,7 @@ module ObjectView
               itx "updates the requested #{object_entity}" do
                 obj = object.class.create! one(valid_attributes)
                 patch polymorphic_url(obj),
-                      params: {object.class_name_u => new_attributes}
+                      params: { object.class_name_u => new_attributes }
                 expect(response).to redirect_to(polymorphic_url(obj))
                 obj.reload
                 new_attributes.each do |attr, value|
@@ -151,7 +151,7 @@ module ObjectView
               itx "redirects to #{object_entity}" do
                 obj = object.class.create! one(valid_attributes)
                 patch polymorphic_url(obj),
-                      params: {object.class_name_u => new_attributes}
+                      params: { object.class_name_u => new_attributes }
                 obj.reload
                 expect(response).to redirect_to(polymorphic_url(obj))
               end
@@ -160,7 +160,7 @@ module ObjectView
               itx "renders a response with 422 status (i.e. to display the 'edit' template)" do
                 obj = object.class.create! one(valid_attributes)
                 patch polymorphic_url(obj),
-                      params: {object.class_name_u => invalid_attributes}
+                      params: { object.class_name_u => invalid_attributes }
                 expect(response).to have_http_status(:unprocessable_entity)
               end
             end

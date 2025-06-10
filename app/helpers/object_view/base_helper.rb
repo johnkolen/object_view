@@ -111,7 +111,7 @@ module ObjectView
       render *args, **opts
     end
 
-    def ov_render_partial obj=nil, f=nil
+    def ov_render_partial(obj = nil, f = nil)
       p = _partial_src(obj || @ov_obj, f)
       l = _locals(obj || @ov_obj)
       ov_render(partial: p, locals: l)

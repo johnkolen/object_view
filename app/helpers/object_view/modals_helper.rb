@@ -104,8 +104,8 @@ module ObjectView
           turbo_frame_tag(id,
                           data: {
                             "modal-object-target": :frame,
-                            #edit: edit_path,
-                            #view: view_path,
+                            # edit: edit_path,
+                            # view: view_path,
                             "object-id": options[:object].id
                           }) do
             turbo_content

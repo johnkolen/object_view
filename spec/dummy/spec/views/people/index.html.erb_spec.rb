@@ -1,15 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe "people/index", type: :view do
-  before(:each) do
-    assign(:people, [
-      Person.create!(),
-      Person.create!()
-    ])
-  end
+  viewsSetup objects: [
+               :create_person_sample,
+               :create_person_sample
+             ],
+             user: :admin_user
 
-  it "renders a list of people" do
-    render
-    cell_selector = 'div>p'
-  end
+  views_index
 end

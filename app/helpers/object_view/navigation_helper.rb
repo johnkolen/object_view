@@ -40,7 +40,7 @@ module ObjectView
                                    class: path[:class] || "nav-link active"))
                 end
               end
-              #lis << _ov_user_list_dropdown
+              # lis << _ov_user_list_dropdown
               lis.join.html_safe
             end
           end

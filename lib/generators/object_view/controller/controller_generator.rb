@@ -1,7 +1,7 @@
 require "rails/generators/rails/scaffold_controller/scaffold_controller_generator"
 puts "loading"
-#require "rails/generators/named_base"
-#require "rails/generators/resource_helpers"
+# require "rails/generators/named_base"
+# require "rails/generators/resource_helpers"
 
 module ObjectView
   # class ControllerGenerator < Rails::Generators::ScaffoldControllerGenerator

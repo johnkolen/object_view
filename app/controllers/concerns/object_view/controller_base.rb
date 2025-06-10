@@ -16,7 +16,11 @@ module ObjectView
     end
 
     def set_access_user
-      ObjectView::AccessAlways.user = current_user
+      if defined? current_user
+        ObjectView::AccessAlways.user = current_user
+      else
+        ObjectView::AccessAlways.user = nil
+      end
     end
 
     def set_turbo

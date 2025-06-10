@@ -1,5 +1,5 @@
 module ObjectView
-  class AccessAlways #< ApplicationRecord
+  class AccessAlways # < ApplicationRecord
     def self.allow?(resource, label, role = nil, &block)
       yield if block_given?
       true

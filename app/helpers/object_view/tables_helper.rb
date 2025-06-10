@@ -4,7 +4,7 @@ module ObjectView
 
     class HeaderFor
       attr_reader :obj
-      def initialize obj
+      def initialize(obj)
         @obj = obj
       end
       def class_name_plural_u

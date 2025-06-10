@@ -1,18 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe "phone_numbers/edit", type: :view do
-  let(:phone_number) {
-    PhoneNumber.create!()
-  }
+  viewsSetup object: :create_phone_number,
+            user: :admin_user
 
-  before(:each) do
-    assign(:phone_number, phone_number)
-  end
-
-  it "renders the edit phone_number form" do
-    render
-
-    assert_select "form[action=?][method=?]", phone_number_path(phone_number), "post" do
-    end
-  end
+  views_edit
 end

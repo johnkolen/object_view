@@ -1,5 +1,5 @@
 module ObjectView::GeneratorHelpers
-  def grep? file, content
+  def grep?(file, content)
     if File.exist? file
       File.open(file, "r") do |f|
         f.each_line do |line|

@@ -1,17 +1,17 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 require 'spec_helper'
 ENV['RAILS_ENV'] ||= 'test'
-require File.expand_path('../dummy/config/environment.rb', __FILE__)
+require_relative '../config/environment'
 # Prevent database truncation if the environment is production
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 # Uncomment the line below in case you have `--require rails_helper` in the `.rspec` file
 # that will avoid rails generators crashing because migrations haven't been run yet
 # return unless Rails.env.test?
 require 'rspec/rails'
-require "capybara/rails"
-require 'database_cleaner/active_record'
-require_relative 'common_helper.rb'
-
+require 'factory_bot_rails'
+require 'faker'
+I18n.reload!
+require ObjectView::Engine.root.join("spec/object_view/rspec/helpers")
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
@@ -67,22 +67,25 @@ RSpec.configure do |config|
   # behaviour is considered legacy and will be removed in a future version.
   #
   # To enable this behaviour uncomment the line below.
-  config.infer_spec_type_from_file_location!
+  # config.infer_spec_type_from_file_location!
 
   # Filter lines from Rails gems in backtraces.
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
+
+  config.before(:suite) { DatabaseCleaner.clean_with(:truncation) }
+  config.before(:each) { DatabaseCleaner.strategy = :transaction }
+  config.before(:each, js: true) { DatabaseCleaner.strategy = :transaction }
+  config.before(:each) { DatabaseCleaner.start }
+  config.before(:each) { DatabaseCleaner.clean }
   config.include FactoryBot::Syntax::Methods
-  config.before(:suite) do
-    DatabaseCleaner.clean_with(:truncation)
-    DatabaseCleaner.strategy = :transaction
+  if defined? Devise
+    config.include Devise::Test::IntegrationHelpers, type: :controller
+    config.include Devise::Test::IntegrationHelpers, type: :request
   end
-  config.around(:each) do |example|
-    DatabaseCleaner.cleaning do
-      example.run
-    end
-  end
-  config.include CommonHelper, type: :helper
-  # config.include Rails::Generators::Testing, type: generator
+  config.include ObjectView::Rspec::Setup, type: :request
+  config.include ObjectView::Rspec::Requests, type: :request
+  config.include ObjectView::Rspec::Setup, type: :view
+  config.include ObjectView::Rspec::Views, type: :view
 end
