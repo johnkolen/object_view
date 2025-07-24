@@ -13,7 +13,15 @@ module ObjectView
     end
 
     def ov_integer_field(oattr, **options)
-      ov_text_field oattr, **options
+      ov_text_field oattr,
+                    pattern: "^[0-9]+$" ,
+                    **options
+    end
+
+    def ov_decimal_field(oattr, **options)
+      ov_text_field oattr,
+                    pattern: "^[0-9]+(\.[0-9]+)?$" ,
+                    **options
     end
 
     def ov_textarea(oattr, **options)
@@ -67,6 +75,13 @@ module ObjectView
                   **options)
     end
 
+    def ov_hidden_field(oattr, **options)
+      _ov_x_field(oattr,
+                  :_ov_no_label,
+                  :_ov_hidden_input,
+                  nil,
+                  **options)
+    end
     ##############################################################
 
     def _ov_label oattr, id, **options
@@ -84,7 +99,7 @@ module ObjectView
     def _ov_text_input oattr, id, **options
       @ov_form.text_field(oattr,
                           class: "form-control",
-                          pattern: @ov_obj.send("#{oattr}_pattern"),
+                          pattern: @ov_obj.send("#{oattr}_pattern") || options[:pattern],
                           id: id,
                           **options)
     end
@@ -171,13 +186,17 @@ module ObjectView
 
     def _ov_select_input oattr, id, **options
       mthd = "#{oattr}_id".to_sym
+      if /(.+able)_type$/ =~ oattr
+        mthd = oattr
+      end
       opts = options_for_select(@ov_obj.send("#{oattr}_options"),
                                 selected: @ov_obj.send(mthd))
       s_class = "form-select ov-select"
       tag.div(@ov_form.select(mthd,
                               opts,
                               {},
-                              { class: s_class }
+                              { class: s_class,
+                                data: options[:data]}
                              )
              )
     end
@@ -228,6 +247,13 @@ module ObjectView
 
     ##############################################################
 
+    def _ov_hidden_input oattr, id, **options
+      @ov_form.hidden_field(oattr,
+                            **options)
+    end
+
+    ##############################################################
+
     def _ov_x_field(oattr, labelx, inputx, displayx, **options)
       rv = ov_allow? oattr, @ov_access # , why: true
       can_edit = @ov_access == :edit && @ov_form && rv
@@ -255,5 +281,6 @@ module ObjectView
         out.join.html_safe
       end
     end
+
   end
 end

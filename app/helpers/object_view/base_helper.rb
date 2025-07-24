@@ -106,9 +106,21 @@ module ObjectView
       @ov_access, @ov_allow_override = hold
     end
 
-    def ov_render *args, **opts
-      # puts "render #{args.inspect}, #{opts.inspect}"
-      render *args, **opts
+    def ov_with(oattr, &block)
+      _ov_hold_state do
+        @ov_obj =
+          if @ov_obj.is_a? Array
+            [ @ov_obj.first.send(oattr) ]
+          else
+            @ov_obj.send(oattr)
+          end
+        capture &block
+      end
+    end
+
+    def ov_render *args, **options
+      # puts "render #{args.inspect}, #{options.inspect}"
+      render *args, **options
     end
 
     def ov_render_partial(obj = nil, f = nil)
@@ -118,8 +130,12 @@ module ObjectView
     end
 
     # TODO: change to _ov_*
-    def _partial(oattr)
-      "#{oattr.to_s.pluralize}/#{oattr}"
+    def _partial(oattr, **options)
+      if options[:delegated]
+        "#{options[:delegated].to_s.pluralize}/#{oattr}"
+      else
+        "#{oattr.to_s.pluralize}/#{oattr}"
+      end
     end
 
     def _partial_src(obj, f = nil)
@@ -132,6 +148,13 @@ module ObjectView
 
     def _template(oattr)
       "#{oattr.to_s.pluralize}/#{oattr}"
+    end
+    def _form(oattr, **options)
+      if options[:delegated]
+        "#{options[:delegated].pluralize}/#{oattr}"
+      else
+        "#{oattr.to_s.pluralize}/form"
+      end
     end
 
     def _locals(oattr)

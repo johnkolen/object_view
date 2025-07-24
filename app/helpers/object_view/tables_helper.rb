@@ -61,7 +61,7 @@ module ObjectView
       end
     end
 
-    def ov_col(oattr)
+    def ov_col(oattr, **options)
       if @ov_obj.is_a? HeaderFor
         tag.td(@ov_obj.send("#{oattr}_label"), class: "ov-table-hdr")
       else

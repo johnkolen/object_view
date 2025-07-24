@@ -72,7 +72,7 @@ module ObjectView
 
         def requests_get_show **options
           it "GET /show renders a successful response" do
-            requests_get new_polymorphic_url(object), **options
+            requests_get polymorphic_url(object), **options
           end
         end
 
@@ -102,7 +102,7 @@ module ObjectView
         def requests_post_create **options
           ctx "POST /create" do
             ctx "with valid parameters" do
-              itx "creates a new #{object_class}" do
+              itx "creates a new #{object_entity}" do
                 process_attributes valid_attributes do |attributes|
                   requests_create object.class, attributes, 1
                 end
@@ -116,7 +116,7 @@ module ObjectView
               end
             end
             ctx "with invalid parameters" do
-              itx "does not create a new #{object_class}" do
+              itx "does not create a new #{object_entity}" do
                 process_attributes invalid_attributes do |attributes|
                   requests_create object.class, attributes, 0
                 end

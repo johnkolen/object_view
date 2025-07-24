@@ -24,10 +24,45 @@ module ObjectView
     ###################################
 
     # Generate the content for all the fields of oattr
+    def _ov_fields_for_delegated_form(oattr, **options, &block)
+      t = @ov_obj.send("#{oattr}_type")
+      obj = @ov_obj.send(oattr)
+      if options[:using] && options[:using] != t
+        k = options[:using]
+        k = k.constantize if k.is_a? String
+        obj = k.new
+        #@ov_obj.send("#{oattr}=", obj) if k
+        t = k.to_s
+      end
+      #oattr = t.underscore.to_sym
+      #_ov_fields_for_form_one oattr, **options, &block
+      # raise "no obj: one(#{oattr}) #{@ov_obj}" unless obj
+      return "" unless obj
+      body = _ov_fields_for_form_element(oattr,
+                                         obj,
+                                         ov_obj_class_name_k,
+                                         0,
+                                         **options,
+                                         delegated: t.underscore.to_s,
+                                         &block)
+      tag.div(id:"#{oattr}-#{t.underscore.dasherize}",
+              name: t,
+              data: options[:delegated_data]) do
+        #@ov_form.hidden_field("#{oattr}_type", value: t) + body
+        body
+      end
+    end
+
+    ###################################
+    # Generate the content for all the fields of oattr
     def _ov_fields_for_form(oattr, **options, &block)
       hold = @ov_obj
       if ov_one_to_one?(oattr)
-        _ov_fields_for_form_one oattr, **options, &block
+        if ov_delegated?(oattr)
+          _ov_fields_for_delegated_form oattr, **options, &block
+        else
+          _ov_fields_for_form_one oattr, **options, &block
+        end
       else
         _ov_fields_for_form_many oattr, **options, &block
       end.html_safe
@@ -41,6 +76,9 @@ module ObjectView
         # process the fields from the block
         if one2one
           # treat the attributes at the same level as parent
+          if ov_delegated?(oattr)
+            oattr = @ov_obj.send("#{oattr}_type").underscore.to_sym
+          end
           obj = @ov_obj.send(oattr)
           rv = nil
           @ov_obj = obj
@@ -62,8 +100,18 @@ module ObjectView
         end
       end
 
+      #raise "#{oattr} #{ov_obj.send(oattr).inspect}"
       # include all the allowable fields in attribute value
       elems = _get_all_objects oattr
+
+      if ov_delegated? oattr
+        #raise "delegated"
+        return elems
+      end
+      if ov_superclass? oattr
+        #raise "super"
+        return elems
+      end
       str = tag.div class: "ov-field" do
         [ tag.label(@ov_obj.send("#{oattr}_label"),
                     for: oattr,
@@ -79,9 +127,13 @@ module ObjectView
     def _get_all_objects(oattr, **options)
       elems = []
       if ov_one_to_one? oattr
+        dclass = nil
+        if ov_delegated?(oattr)
+          dclass = @ov_obj.send("#{oattr}_type").underscore.to_sym
+        end
         ov_with oattr do
           elems = [
-            ov_render(partial: _partial(oattr),
+            ov_render(partial: _partial(oattr, delegated: dclass),
                       locals: _locals(oattr))
           ]
         end
@@ -107,8 +159,28 @@ module ObjectView
       end
     end
 
+    def ov_delegated?(oattr)
+      r = @ov_obj.class.reflect_on_association(oattr)
+      return /able$/ =~ oattr.to_s &&
+             r.inverse_of.nil? &&
+             r.active_record.has_attribute?("#{oattr}_type") &&
+             r.active_record.has_attribute?("#{oattr}_id")
+    end
+
+    def ov_superclass?(oattr)
+      r = @ov_obj.class.reflect_on_association(oattr)
+      return r.inverse_of && r.inverse_of.macro == :belongs_to
+      puts r.inspect.gsub(", ", ",\n  ")
+      puts r.inverse_of.macro.inspect
+      return /able$/ =~ (r.inverse_of || "") &&
+             r.active_record.has_attribute?("#{oattr}_type") &&
+             r.active_record.has_attribute?("#{oattr}_id")
+    end
+
     def ov_one_to_one?(oattr)
       r = @ov_obj.class.reflect_on_association(oattr)
+      return true if ov_delegated? oattr
+      return true if ov_superclass? oattr
       raise "one_to_one failed #{oattr.inspect} missing inverse_of" unless r.inverse_of
       r.macro == :belongs_to && r.inverse_of.macro == :has_one
     end
@@ -164,6 +236,8 @@ module ObjectView
       # puts "*" * 30
       # puts "fields_for_form_element node: #{ov_access_class.node.inspect}"
       # puts "_ov_fields_for_form_element"
+      # raise "#{oattr.inspect} #{options.inspect}"
+
       _ov_hold_state do
         @ov_form.fields_for oattr, obj  do |form|
           @ov_form = form
@@ -178,8 +252,15 @@ module ObjectView
                      end
                      rv
           else
-                     # no allow? since render will do it
-                     ov_render(_template(oattr), oattr => @ov_obj)
+            # no allow? since render will do it
+            #ov_render(_template(oattr), oattr => @ov_obj)
+            #hold = @ov_neseted_form
+            #@ov_neseted_form = oattr
+            rv = ov_render(_form(oattr,
+                                 delegated: options[:delegated]),
+                                 oattr => @ov_obj)
+            #@ov_nested_form = hold
+            rv
           end
           li_id = "#{css_name}-li-#{num}"
           # include object"s id  if it's been persisted

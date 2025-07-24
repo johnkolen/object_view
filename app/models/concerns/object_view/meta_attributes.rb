@@ -24,6 +24,12 @@ module ObjectView
           if is_field? $1
             return nil
           end
+        when /^(.*)_attributes$/
+          if is_field?("#{$1}_type") && is_field?("#{$1}_id")
+            t = send("#{$1}_type")
+            return send(t.underscore) if t
+            return nil
+          end
         end
         super
       end

@@ -17,13 +17,20 @@ module ObjectView
             p = { tf: 1 }
           end
           if block_given?
-            rv = tag.div class: "ov-form-wrapper" do
-              form_with(model: @ov_obj,
-                        url: ov_obj_path(p),
-                        class: "ov-form",
-                        **options) do |form|
-                @ov_form = form
-                capture &block
+            rv = tag.div class: "ov-form-wrapper", data: options[:wrapper_data] do
+              if @ov_nested_form
+                raise @ov_nested_form.inspect
+                ov_fields_for @ov_nested_form,
+                              **options,
+                              &block
+              else
+                form_with(model: @ov_obj,
+                          url: ov_obj_path(p),
+                          class: "ov-form",
+                          **options) do |form|
+                  @ov_form = form
+                  capture &block
+                end
               end
             end
           else

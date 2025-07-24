@@ -62,7 +62,6 @@ module ObjectView
       def setup_user
         return unless defined?(Devise::Test::IntegrationHelpers) ||
                       access_class
-
         u = build(self.class.user)
         email = u.email
         if u.respond_to? :email
@@ -74,8 +73,13 @@ module ObjectView
         else
           raise "user does not have email field"
         end
-        if defined? Devise::Test::IntegrationHelpers
-          login_as u, scope: :user
+        if self.class.user_path
+          put send(self.class.user_path, u)
+        else
+          if defined? Devise::Test::IntegrationHelpers
+            login_as u, scope: :user
+            sign_in u, scope: :user
+          end
         end
 
         if access_class
@@ -144,6 +148,10 @@ module ObjectView
 
         def user
           @user || @options[:user]
+        end
+
+        def user_path
+          @user_path || @options[:user_path]
         end
 
         def user=(user)

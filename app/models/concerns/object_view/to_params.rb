@@ -6,6 +6,7 @@ module ObjectView
 
     included do
       def to_params
+        raise "dep"
         h = attributes
         h.delete_if { |k, v| v.nil? }
         hx = {}
@@ -33,11 +34,22 @@ module ObjectView
       def add_values(h, keys)
         case keys
         when Symbol
-          h[keys.to_sym] = send(keys)
+          v = send(keys)
+          if v.is_a? ActiveRecord::Base
+            v = v.to_params
+          end
+          h[keys.to_sym] = v
         when Hash
           keys.each do |k, attrs|
             if /(.*)_attributes/ =~ k.to_s
-              r = send($1)
+              # For some reason, when using has_one with a delegate_type
+              # shoes up as a pluralized attribute (e.g. assets_attributes)
+              if respond_to? $1
+                r = send($1)
+              else
+                r = send($1.singularize)
+              end
+              next unless r
               if r.respond_to? :each_with_index
                 z = {}
                 r.each_with_index do |v, idx|

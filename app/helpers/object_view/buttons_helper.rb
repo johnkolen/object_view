@@ -96,6 +96,7 @@ module ObjectView
 
   def ov_submit(label = "Submit")
     return unless ov_allow? @ov_obj, @ov_access
+    return if @ov_nested_form
     tag.button label, type: :submit, class: BUTTON_PRIMARY_CLASS
   end
   end

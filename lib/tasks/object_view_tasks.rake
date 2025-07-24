@@ -50,7 +50,7 @@ namespace :object_view do
   desc "Add CSS path to package.json"
   task :package do
     tgt = "vendor/object_view/stylesheets"
-    replace root.join("package.json"),
+    replace Rails.root.join("package.json"),
             "--load-path=node_modules",
             " --load-path=#{tgt}",
             after: true
