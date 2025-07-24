@@ -85,7 +85,13 @@ module ObjectView
             when :has_many
               h[na.to_sym] = [ p.map(&:to_sym) ]
             when :has_one
-              h[na.to_sym] = p.map(&:to_sym)
+              h[na.to_sym] = p.map do |x|
+                if x.is_a? String
+                  x.to_sym
+                else
+                  x
+                end
+              end
             end
           end
         end
