@@ -11,7 +11,6 @@ module ObjectView
       end
       # return nil unless obj
       # raise "missing attribute: #{oattr} in #{@ov_obj.class}" unless obj
-
       _ov_hold_state do
         if @ov_form
           _ov_fields_for_form oattr, **options, &block

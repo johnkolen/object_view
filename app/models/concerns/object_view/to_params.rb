@@ -34,6 +34,7 @@ module ObjectView
       def add_values(h, keys)
         case keys
         when Symbol
+          return h unless respond_to? keys
           v = send(keys)
           if v.is_a? ActiveRecord::Base
             v = v.to_params

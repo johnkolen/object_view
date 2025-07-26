@@ -178,7 +178,7 @@ module ObjectView
               obj.destroy
             end
 
-            itx "redirects to the people list" do
+            itx "redirects to the index list" do
               obj = object.class.create! one(valid_attributes)
               delete polymorphic_url(obj)
               expect(response).to redirect_to(polymorphic_url(object.class))
