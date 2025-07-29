@@ -160,10 +160,10 @@ module ObjectView
 
     def ov_delegated?(oattr)
       r = @ov_obj.class.reflect_on_association(oattr)
-      return /able$/ =~ oattr.to_s &&
-             r.inverse_of.nil? &&
-             r.active_record.has_attribute?("#{oattr}_type") &&
-             r.active_record.has_attribute?("#{oattr}_id")
+      /able$/ =~ oattr.to_s &&
+        r.inverse_of.nil? &&
+        r.active_record.has_attribute?("#{oattr}_type") &&
+        r.active_record.has_attribute?("#{oattr}_id")
     end
 
     def ov_superclass?(oattr)
@@ -237,6 +237,8 @@ module ObjectView
       # puts "_ov_fields_for_form_element"
       # raise "#{oattr.inspect} #{options.inspect}"
 
+      delegated = ov_delegated? oattr
+
       _ov_hold_state do
         @ov_form.fields_for oattr, obj  do |form|
           @ov_form = form
@@ -269,9 +271,14 @@ module ObjectView
             r = ov_remove(li_id)
             li_body += r if r
           end
-          elem = tag.li(li_body.html_safe,
-                        id: li_id,
-                        class: "ov-object collapse show").html_safe
+          #raise "delegated #{oattr}" if delegated
+          if delegated
+            elem = li_body.html_safe
+          else
+            elem = tag.li(li_body.html_safe,
+                          id: li_id,
+                          class: "ov-object collapse show").html_safe
+          end
           if options[:template]
             tag.template(elem,
                          id: "ov-#{css_name}-template",
