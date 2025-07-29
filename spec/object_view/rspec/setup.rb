@@ -59,6 +59,23 @@ module ObjectView
         end
       end
 
+      def sign_in_user u
+        if self.class.user_path &&
+           respond_to?(self.class.user_path)
+          begin
+            put send(self.class.user_path, u)
+            return
+          rescue
+          end
+        end
+        if defined? Devise::Test::IntegrationHelpers
+          login_as u, scope: :user
+          sign_in u, scope: :user
+          return
+        end
+        rasie "could not log #{u.inspect} in"
+      end
+
       def setup_user
         return unless defined?(Devise::Test::IntegrationHelpers) ||
                       access_class
@@ -73,14 +90,8 @@ module ObjectView
         else
           raise "user does not have email field"
         end
-        if self.class.user_path
-          put send(self.class.user_path, u)
-        else
-          if defined? Devise::Test::IntegrationHelpers
-            login_as u, scope: :user
-            sign_in u, scope: :user
-          end
-        end
+
+        sign_in_user u
 
         if access_class
           access_class.user = user
