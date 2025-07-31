@@ -57,7 +57,7 @@ module ObjectView
     SAMPLE = {
       binary: Code.new("'binary:' + Faker::Alphanumeric.alphanumeric(number: 10)"),
       boolean: Code.new("rand(2) == 1"),
-      date: Code.new("Date.new(Faker::Date.between(from: 2.years.ago, to: Date.today))"),
+      date: Code.new("Faker::Date.between(from: 2.years.ago, to: Date.today)"),
       datetime: Code.new("DateTime.new(Faker::Time.between(from: 2.years.ago, to: Date.today))"),
       decimal: Code.new("BigDecimal(\"%d.%02d\" % [rand(100), rand(100)])"),
       float: Code.new("rand(10000) / 100.0"),

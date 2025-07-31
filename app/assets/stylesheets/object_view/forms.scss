@@ -1,3 +1,4 @@
+
 .ov-form {
     @extend .container;
     .ov-field {
@@ -18,6 +19,15 @@
 	}
 	.ov-checkbox-label {
 	    @extend .col-md-3;
+	}
+	.ov-select {
+	    margin-left: 2em !important;
+	}
+	.ov-select-label {
+	    padding-top: 6px;
+	}
+	.ov-check-label {
+	    margin-left: 1em !important;
 	}
     }
     .ov-fields-for {

@@ -52,7 +52,7 @@ module ObjectView
 
     def ov_select_field(oattr, **options)
       _ov_x_field(oattr,
-                  :_ov_label,
+                  :_ov_select_label,
                   :_ov_select_input,
                   :_ov_select_display,
                   **options)
@@ -88,6 +88,12 @@ module ObjectView
       tag.label(@ov_obj.send("#{oattr}_label"),
                 for: id,
                 class: @ov_form ? "form-label" : "ov-label")
+    end
+
+    def _ov_select_label oattr, id, **options
+      tag.label(@ov_obj.send("#{oattr}_label"),
+                for: id,
+                class: @ov_form ? "form-label ov-select-label" : "ov-select-label")
     end
 
     def _ov_no_label oattr, id, **options
@@ -165,7 +171,7 @@ module ObjectView
                           **options),
         tag.label(@ov_obj.send("#{oattr}_label"),
                   for: id,
-                  class: "form-check-label")
+                  class: "form-check-label ov-check-label")
       ]
     end
 
