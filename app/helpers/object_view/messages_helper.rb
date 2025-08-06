@@ -8,7 +8,7 @@ module ObjectView
         out = [ tag.h2("#{pluralize(@ov_obj.errors.count, "error")} " +
                        "prohibited this " +
                        ov_obj_class_name_h +
-                       "from being saved:",
+                       " from being saved:",
                        class: "ov-error-header"), "<ul>" ]
         @ov_obj.errors.each do |error|
           out << tag.li(error.full_message, class: "ov-error-item")

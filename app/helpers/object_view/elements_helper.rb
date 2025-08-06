@@ -87,7 +87,7 @@ module ObjectView
     def _ov_label oattr, id, **options
       tag.label(@ov_obj.send("#{oattr}_label"),
                 for: id,
-                class: @ov_form ? "form-label" : "ov-label")
+                class: @ov_form ? "form-label ov-label" : "ov-label")
     end
 
     def _ov_select_label oattr, id, **options
@@ -104,7 +104,7 @@ module ObjectView
 
     def _ov_text_input oattr, id, **options
       @ov_form.text_field(oattr,
-                          class: "form-control",
+                          class: "form-control ov-text",
                           pattern: @ov_obj.send("#{oattr}_pattern") || options[:pattern],
                           id: id,
                           **options)
@@ -118,25 +118,9 @@ module ObjectView
 
     ##############################################################
 
-    def _ov_text_input oattr, id, **options
-      @ov_form.text_field(oattr,
-                          class: "form-control",
-                          pattern: @ov_obj.send("#{oattr}_pattern"),
-                          id: id,
-                          **options)
-    end
-
-    def _ov_text_display oattr, id, **options
-      tag.div(@ov_obj.send("#{oattr}"),
-              class: "ov-textarea display-#{oattr}",
-              **options)
-    end
-
-    ##############################################################
-
     def _ov_text_area_input oattr, id, **options
       @ov_form.text_area(oattr,
-                         class: "form-control",
+                         class: "form-control ov-textarea",
                          pattern: @ov_obj.send("#{oattr}_pattern"),
                          id: id,
                          **options)
@@ -150,7 +134,7 @@ module ObjectView
 
     def _ov_password_input oattr, id, **options
       @ov_form.password_field(oattr,
-                              class: "form-control",
+                              class: "form-control ov-text",
                               pattern: @ov_obj.send("#{oattr}_pattern"),
                               id: id,
                               **options)
@@ -197,13 +181,14 @@ module ObjectView
       end
       opts = options_for_select(@ov_obj.send("#{oattr}_options"),
                                 selected: @ov_obj.send(mthd))
-      s_class = "form-select ov-select"
+      s_class = "form-select"
       tag.div(@ov_form.select(mthd,
                               opts,
                               {},
                               { class: s_class,
                                 data: options[:data]}
-                             )
+                             ),
+              class: "ov-select"
              )
     end
 

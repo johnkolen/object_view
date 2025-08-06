@@ -36,9 +36,10 @@ module ObjectView
     end
 
     def ov_modal **options, &block
-      id = "ov-modal"
+      id = options[:id] || "ov-modal"
+      #raise "#{id} #{options.inspect}"
       tag.div class: "modal fade ov-modal",
-              id: "ov-modal",
+              id: id,
               tabindex: -1,
               # data: {action:"show.bs.modal->fill hide.bs.modal->close"},
               aria: { labelledby: "#{id}Label", hidden: "true" } do

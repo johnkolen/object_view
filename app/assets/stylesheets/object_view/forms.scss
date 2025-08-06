@@ -21,13 +21,23 @@
 	    @extend .col-md-3;
 	}
 	.ov-select {
-	    margin-left: 2em !important;
+	    @extend .col-md-8;
+	    /*margin-left: 2em !important;*/
 	}
 	.ov-select-label {
+	    @extend .col-md-3;
 	    padding-top: 6px;
 	}
 	.ov-check-label {
 	    margin-left: 1em !important;
+	}
+	.field_with_errors {
+	    @extend .col-md-8;
+	    :first-child {
+		@extend .w-100;
+		background: rgb(248, 215, 218);
+		border-color: rgb(241, 174, 181);
+	    }
 	}
     }
     .ov-fields-for {
