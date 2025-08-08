@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-RSpec.describe "/people", type: :request do
-  requestsSetup object: :create_<%= name %>,
+RSpec.describe "/<%= name.pluralize %>", type: :request do
+  requestsSetup object: :create_<%= name %>_sample,
                 objects: [:create_<%= name %>_sample,
                           :create_<%= name %>_sample],
                 user: :admin_user

@@ -122,10 +122,11 @@ module ObjectView
                 end
               end
               itx "renders a response with 422 status (i.e. to display the 'new' template)" do
+                #raise "cain #{object.class}"
                 process_attributes invalid_attributes do |attributes|
                   post polymorphic_url(object.class),
                        params: { object.class_name_u => attributes }
-                  expect(response).to have_http_status(:unprocessable_entity)
+                  expect(response).to have_http_status(:unprocessable_content)
                 end
               end
             end
@@ -161,7 +162,7 @@ module ObjectView
                 obj = object.class.create! one(valid_attributes)
                 patch polymorphic_url(obj),
                       params: { object.class_name_u => invalid_attributes }
-                expect(response).to have_http_status(:unprocessable_entity)
+                expect(response).to have_http_status(:unprocessable_content)
               end
             end
           end
