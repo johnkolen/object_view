@@ -1,6 +1,15 @@
 
 .ov-form {
     @extend .container;
+    .ov-multi {
+	> .ov-label {
+	    @extend .col-md-1;
+	    font-weight: bold;
+	}
+	> .ov-fields-for {
+	    @extend .col-md-10;
+	}
+    }
     .ov-field {
 	@include make-row();
 	.ov-label {

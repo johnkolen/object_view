@@ -21,7 +21,7 @@ module ObjectView
       end
     end
 
-    def ov_table(klass, objs = [])
+    def ov_table(klass, objs = [], **options)
       unless klass.is_a? Class
         raise "ov_table received a non-class argument: #{klass.inspect}"
       end
@@ -36,9 +36,13 @@ module ObjectView
       content = [
         ov_render_partial(HeaderFor.new(obj), "table_row")
       ]
+
+      @ov_exclude = options[:exclude]
       objs.each do |obj|
         content << ov_render_partial(obj, "table_row")
       end
+      @ov_exclude = nil
+
       tag.table content.join.html_safe,
                 id: "#{klass.to_s.underscore}_table",
                 class: "ov-display"
@@ -65,7 +69,12 @@ module ObjectView
       if @ov_obj.is_a? HeaderFor
         tag.td(@ov_obj.send("#{oattr}_label"), class: "ov-table-hdr")
       else
-        tag.td(@ov_obj.send("#{oattr}_str"), class: "ov-table-col")
+        if options[:display]
+          tag.td(send(options[:display], oattr, oattr, **options),
+                 class: "ov-table-col")
+        else
+          tag.td(@ov_obj.send("#{oattr}_str"), class: "ov-table-col")
+        end
       end
     end
   end

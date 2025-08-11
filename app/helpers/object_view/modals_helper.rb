@@ -57,7 +57,7 @@ module ObjectView
     def ov_modal_objects klass, **options, &block
       obj = klass.first || klass
       id = "#{klass.to_s.underscore}_frame"
-      tag.div data: { controller: "modal-object" } do
+      tag.div data: { controller: "ov-modal-object" } do
         [ capture(&block),
           ov_modal_object_modal(id, obj)
         ].join.html_safe
@@ -68,11 +68,11 @@ module ObjectView
       buttons = [
         tag.button("Edit",
                    type: "button",
-                   data: { action: "click->modal-object#edit" },
+                   data: { action: "click->ov-modal-object#edit" },
                    class: "btn btn-primary"),
         tag.button("Show",
                    type: "button",
-                   data: { action: "click->modal-object#view" },
+                   data: { action: "click->-ovmodal-object#view" },
                    class: "btn btn-primary")
       ]
       if obj.is_a? Class
@@ -88,7 +88,7 @@ module ObjectView
                         src: nil,
                         # loading: :lazy,
                         data: {
-                          "modal-object-target": :frame,
+                          "ov-modal-object-target": :frame,
                           edit: edit_path,
                           view: view_path
                         }
@@ -104,7 +104,7 @@ module ObjectView
           view_path = polymorphic_path(obj, params: { tf: 1 })
           turbo_frame_tag(id,
                           data: {
-                            "modal-object-target": :frame,
+                            "ov-modal-object-target": :frame,
                             # edit: edit_path,
                             # view: view_path,
                             "object-id": options[:object].id

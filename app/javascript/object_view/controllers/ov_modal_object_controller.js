@@ -1,6 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
 
-console.log("modal_object loaded");
+console.log("ov_modal_object loaded");
 
 export default class extends Controller {
   static targets = ["frame"]

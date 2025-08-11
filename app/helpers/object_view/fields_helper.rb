@@ -1,5 +1,6 @@
 module ObjectView
   module FieldsHelper
+
     def ov_fields_for(oattr, **options, &block)
       if @ov_obj.is_a? ObjectView::TablesHelper::HeaderFor
         return ov_col(oattr, **options)
@@ -57,6 +58,7 @@ module ObjectView
     def _ov_fields_for_form(oattr, **options, &block)
       hold = @ov_obj
       if ov_one_to_one?(oattr)
+        raise "one-one"
         if ov_delegated?(oattr)
           _ov_fields_for_delegated_form oattr, **options, &block
         else
@@ -99,19 +101,21 @@ module ObjectView
         end
       end
 
-      #raise "#{oattr} #{ov_obj.send(oattr).inspect}"
+      # raise "#{oattr} #{@ov_obj.inspect} #{@ov_obj.send(oattr).count}"
+      # raise "#{oattr} #{ov_obj.send(oattr).inspect}"
+
       # include all the allowable fields in attribute value
       elems = _get_all_objects oattr
 
       if ov_delegated? oattr
-        #raise "delegated"
+        # raise "delegated"
         return elems
       end
       if ov_superclass? oattr
-        #raise "super"
+        # raise "super #{oattr}"
         return elems
       end
-      str = tag.div class: "ov-field" do
+      str = tag.div class: "ov-field ov-multi" do
         [ tag.label(@ov_obj.send("#{oattr}_label"),
                     for: oattr,
                     class: @ov_form ? "form-label" : "ov-label"),
@@ -137,11 +141,13 @@ module ObjectView
           ]
         end
       else
+        singular = ov_one_to_one?(oattr) ? oattr : oattr.to_s.singularize.to_sym
         ov_with oattr do
           elems = @ov_obj.map do |obj|
             @ov_obj = obj
-            raise "???"
-            ov_render "#{oattr}/#{oattr}"  # Why isn't first pluralized?
+            # raise "???"
+            ov_render "#{oattr}/#{singular}",
+                      singular => @ov_obj
           end.map do |x|
             tag.li x, class: "ov-object"
           end
@@ -158,34 +164,36 @@ module ObjectView
       end
     end
 
-    def ov_delegated?(oattr)
-      r = @ov_obj.class.reflect_on_association(oattr)
+    def ov_delegated?(oattr, r=nil)
+      r ||= @ov_obj.class.reflect_on_association(oattr)
       /able$/ =~ oattr.to_s &&
         r.inverse_of.nil? &&
         r.active_record.has_attribute?("#{oattr}_type") &&
         r.active_record.has_attribute?("#{oattr}_id")
     end
 
-    def ov_superclass?(oattr)
-      r = @ov_obj.class.reflect_on_association(oattr)
+    def ov_superclass?(oattr, r=nil)
+      r ||= @ov_obj.class.reflect_on_association(oattr)
+      return false unless r
+      return false if r.macro == :has_many
       return r.inverse_of && r.inverse_of.macro == :belongs_to
-      puts r.inspect.gsub(", ", ",\n  ")
-      puts r.inverse_of.macro.inspect
+      # dead code
       return /able$/ =~ (r.inverse_of || "") &&
              r.active_record.has_attribute?("#{oattr}_type") &&
              r.active_record.has_attribute?("#{oattr}_id")
     end
 
-    def ov_one_to_one?(oattr)
-      r = @ov_obj.class.reflect_on_association(oattr)
-      return true if ov_delegated? oattr
-      return true if ov_superclass? oattr
+    def ov_one_to_one?(oattr, r=nil)
+      r ||= @ov_obj.class.reflect_on_association(oattr)
+      return false if r && r.macro == :has_many
+      return true if ov_delegated? oattr, r
+      return true if ov_superclass? oattr, r
       raise "one_to_one failed #{oattr.inspect} missing inverse_of" unless r.inverse_of
       r.macro == :belongs_to && r.inverse_of.macro == :has_one
     end
 
-    def ov_belongs_to?(oattr)
-      r = @ov_obj.class.reflect_on_association(oattr)
+    def ov_belongs_to?(oattr, r=nil)
+      r ||= @ov_obj.class.reflect_on_association(oattr)
       r.macro == :belongs_to
     end
 
@@ -238,6 +246,7 @@ module ObjectView
       # raise "#{oattr.inspect} #{options.inspect}"
 
       delegated = ov_delegated? oattr
+      singular = ov_one_to_one?(oattr) ? oattr : oattr.to_s.singularize.to_sym
 
       _ov_hold_state do
         @ov_form.fields_for oattr, obj  do |form|
@@ -257,9 +266,10 @@ module ObjectView
             #ov_render(_template(oattr), oattr => @ov_obj)
             #hold = @ov_neseted_form
             #@ov_neseted_form = oattr
-            rv = ov_render(_form(oattr,
+            #raise oattr.inspect
+            rv = ov_render(_form(singular,
                                  delegated: options[:delegated]),
-                                 oattr => @ov_obj)
+                           singular => @ov_obj)
             #@ov_nested_form = hold
             rv
           end

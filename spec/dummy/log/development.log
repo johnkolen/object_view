@@ -1318,3 +1318,84 @@ Started GET "/.well-known/appspecific/com.chrome.devtools.json" for ::1 at 2025-
   
 ActionController::RoutingError (No route matches [GET] "/.well-known/appspecific/com.chrome.devtools.json"):
   
+Started GET "/" for ::1 at 2025-08-09 16:39:15 -0600
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='Dummy'*/[0m
+Processing by Rails::WelcomeController#index as HTML
+  Rendering /home/jkolen/.rvm/gems/ruby-3.3.3@data4he/gems/railties-8.0.2/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /home/jkolen/.rvm/gems/ruby-3.3.3@data4he/gems/railties-8.0.2/lib/rails/templates/rails/welcome/index.html.erb (Duration: 0.5ms | GC: 0.0ms)
+Completed 200 OK in 992ms (Views: 3.6ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 177.4ms)
+
+
+Started GET "/people/new" for ::1 at 2025-08-09 16:39:24 -0600
+Processing by PeopleController#new as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering people/new.html.erb within layouts/application
+  Rendered people/_form.html.erb (Duration: 6.6ms | GC: 0.0ms)
+  Rendered people/new.html.erb within layouts/application (Duration: 7.4ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 19.0ms | GC: 0.0ms)
+Completed 200 OK in 100ms (Views: 20.0ms | ActiveRecord: 1.3ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/assets/application-c18d8b45.css" for ::1 at 2025-08-09 16:39:24 -0600
+Started GET "/people" for ::1 at 2025-08-09 16:39:28 -0600
+Processing by PeopleController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering people/index.html.erb within layouts/application
+  Rendered people/_table_row.html.erb (Duration: 0.7ms | GC: 0.0ms)
+  [1m[36mPerson Load (0.2ms)[0m  [1m[34mSELECT "people".* FROM "people" /*action='index',application='Dummy',controller='people'*/[0m
+  ↳ app/views/people/index.html.erb:9
+  Rendered people/_table_row.html.erb (Duration: 3.6ms | GC: 0.0ms)
+  Rendered people/index.html.erb within layouts/application (Duration: 7.3ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 7.8ms | GC: 0.0ms)
+Completed 200 OK in 20ms (Views: 8.0ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/people/1" for ::1 at 2025-08-09 16:39:35 -0600
+Processing by PeopleController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mPerson Load (0.2ms)[0m  [1m[34mSELECT "people".* FROM "people" WHERE "people"."id" = 1 LIMIT 1 /*action='show',application='Dummy',controller='people'*/[0m
+  ↳ app/controllers/people_controller.rb:61:in `set_person'
+  Rendering layout layouts/application.html.erb
+  Rendering people/show.html.erb within layouts/application
+  Rendered people/_person.html.erb (Duration: 1.1ms | GC: 0.0ms)
+  Rendered people/show.html.erb within layouts/application (Duration: 11.5ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 11.9ms | GC: 0.0ms)
+Completed 200 OK in 26ms (Views: 12.3ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/people" for ::1 at 2025-08-09 16:39:45 -0600
+Processing by PeopleController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering people/index.html.erb within layouts/application
+  Rendered people/_table_row.html.erb (Duration: 0.3ms | GC: 0.0ms)
+  [1m[36mPerson Load (0.1ms)[0m  [1m[34mSELECT "people".* FROM "people" /*action='index',application='Dummy',controller='people'*/[0m
+  ↳ app/views/people/index.html.erb:9
+  Rendered people/_table_row.html.erb (Duration: 1.0ms | GC: 0.0ms)
+  Rendered people/index.html.erb within layouts/application (Duration: 2.9ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 3.3ms | GC: 0.0ms)
+Completed 200 OK in 15ms (Views: 3.5ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/people/new" for ::1 at 2025-08-09 16:39:51 -0600
+Processing by PeopleController#new as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering people/new.html.erb within layouts/application
+  Rendered people/_form.html.erb (Duration: 1.3ms | GC: 0.0ms)
+  Rendered people/new.html.erb within layouts/application (Duration: 1.6ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 2.0ms | GC: 0.0ms)
+Completed 200 OK in 13ms (Views: 2.3ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/people/1/edit" for ::1 at 2025-08-09 16:41:04 -0600
+Processing by PeopleController#edit as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mPerson Load (0.1ms)[0m  [1m[34mSELECT "people".* FROM "people" WHERE "people"."id" = 1 LIMIT 1 /*action='edit',application='Dummy',controller='people'*/[0m
+  ↳ app/controllers/people_controller.rb:61:in `set_person'
+  Rendering layout layouts/application.html.erb
+  Rendering people/edit.html.erb within layouts/application
+  Rendered people/_form.html.erb (Duration: 2.3ms | GC: 0.0ms)
+  Rendered people/edit.html.erb within layouts/application (Duration: 3.7ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 4.2ms | GC: 0.0ms)
+Completed 200 OK in 17ms (Views: 4.6ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+

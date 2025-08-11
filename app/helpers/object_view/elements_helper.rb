@@ -111,6 +111,11 @@ module ObjectView
     end
 
     def _ov_text_display oattr, id, **options
+      if options[:link]
+        return link_to(@ov_obj.send(oattr),
+                       @ov_obj.send(options[:link]),
+                       **options)
+      end
       tag.div(@ov_obj.send("#{oattr}"),
               class: "ov-text display-#{oattr}",
               **options)
@@ -193,7 +198,13 @@ module ObjectView
     end
 
     def _ov_select_display oattr, id, **options
-      tag.div(@ov_obj.send("#{oattr}_str"), class: "ov-text")
+      r ||= @ov_obj.class.reflect_on_association(oattr)
+      if r && r.macro == :belongs_to
+        x = @ov_obj.send(oattr)
+        link_to(x.link_name, polymorphic_path(x))
+      else
+        tag.div(@ov_obj.send("#{oattr}_str"), class: "ov-text")
+      end
     end
 
     ##############################################################
@@ -246,6 +257,7 @@ module ObjectView
     ##############################################################
 
     def _ov_x_field(oattr, labelx, inputx, displayx, **options)
+      return "" if @ov_exclude && @ov_exclude.member?(oattr)
       rv = ov_allow? oattr, @ov_access # , why: true
       can_edit = @ov_access == :edit && @ov_form && rv
       # puts "can_edit #{oattr} = #{can_edit}"
@@ -254,7 +266,7 @@ module ObjectView
       blocked = "<!-- access block #{@ov_obj.class}.#{oattr} -->"
 
       return blocked unless can_edit || can_view
-      return ov_col(oattr, **options) if @ov_table_row
+      return ov_col(oattr, display: displayx, **options) if @ov_table_row
       return if @ov_obj.is_a? TablesHelper::HeaderFor  # table header
       id = oattr
       raise "wtf @ov_obj is nil" if @ov_obj.nil?

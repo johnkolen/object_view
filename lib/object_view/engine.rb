@@ -13,23 +13,13 @@ module ObjectView
       g.assets false
       g.helper false
     end
-    initializer "morphing.importmap", before: "importmap" do |app|
-      app.config.assets.paths <<
-        Rails.root.join("../object_view/app/assets/stylesheets")
-      app.config.assets.paths <<
-        Rails.root.join("../object_view/app/javascript")
-      if false
-      ObjectView.importmap = Importmap::Map.new
-      # ObjectView.importmap.draw(app.root.join("config/importmap.rb"))
-      puts root.join("config/importmap.rb")
-      ObjectView.importmap.draw(root.join("config/importmap.rb"))
-      puts ObjectView.importmap.to_json(resolver: ActionController::Base.helpers)
-      ObjectView.importmap.directories.each do |d|
-        puts d.inspect
-      end
-      end
-    end
+
     initializer "object_view.importmap", before: "importmap" do |app|
+      root = File.expand_path("../..", __dir__)
+      css = File.expand_path("app/assets/stylesheets", root)
+      app.config.assets.paths << css
+      js = File.expand_path("app/javascript", root)
+      app.config.assets.paths << js
       app.config.importmap.paths << Engine.root.join("config/importmap.rb")
     end
   end
