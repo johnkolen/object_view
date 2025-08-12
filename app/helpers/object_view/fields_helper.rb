@@ -73,6 +73,7 @@ module ObjectView
 
     def _ov_fields_for_display(oattr, **options, &block)
       one2one = ov_one_to_one? oattr
+      elems = nil
       if block_given?
         # process the fields from the block
         if one2one
@@ -97,7 +98,18 @@ module ObjectView
           end
           return rv || _ov_blocked(@ov_obj, oattr)
         else
-          raise "TODO #{@ov_obj} #{oattr}"
+          cur_obj = @ov_obj
+          elems = @ov_obj.send(oattr).map do |obj|
+            @ov_obj = obj
+            elem = nil
+            ov_allow? @ov_obj, @ov_access, **(options[:allow] || {}) do
+              elem = capture(@ov_obj, &block)
+            end
+            elem || _ov_blocked(@ov_obj, oattr)
+          end
+          @ov_obj = cur_obj
+          #puts rv.inspect
+          elems = elems.join("\n").html_safe
         end
       end
 
@@ -105,7 +117,7 @@ module ObjectView
       # raise "#{oattr} #{ov_obj.send(oattr).inspect}"
 
       # include all the allowable fields in attribute value
-      elems = _get_all_objects oattr
+      elems ||= _get_all_objects oattr
 
       if ov_delegated? oattr
         # raise "delegated"
@@ -115,6 +127,7 @@ module ObjectView
         # raise "super #{oattr}"
         return elems
       end
+
       str = tag.div class: "ov-field ov-multi" do
         [ tag.label(@ov_obj.send("#{oattr}_label"),
                     for: oattr,

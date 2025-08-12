@@ -8,7 +8,7 @@ export default class extends Controller {
     formId: Number
   }
   connect() {
-    console.log("connected modal object");
+    console.log("connected ov modal object");
     let self = this;
     this.element.addEventListener('hide.bs.modal',
 				  function(event) {

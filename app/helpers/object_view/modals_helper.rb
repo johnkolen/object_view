@@ -72,7 +72,7 @@ module ObjectView
                    class: "btn btn-primary"),
         tag.button("Show",
                    type: "button",
-                   data: { action: "click->-ovmodal-object#view" },
+                   data: { action: "click->ov-modal-object#view" },
                    class: "btn btn-primary")
       ]
       if obj.is_a? Class
