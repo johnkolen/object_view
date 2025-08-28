@@ -93,7 +93,7 @@ module ObjectView
     def _ov_select_label oattr, id, **options
       tag.label(@ov_obj.send("#{oattr}_label"),
                 for: id,
-                class: @ov_form ? "form-label ov-select-label" : "ov-select-label")
+                class: @ov_form ? "form-label ov-select-label" : "ov-label")
     end
 
     def _ov_no_label oattr, id, **options
@@ -112,8 +112,13 @@ module ObjectView
 
     def _ov_text_display oattr, id, **options
       if options[:link]
-        return link_to(@ov_obj.send(oattr),
-                       @ov_obj.send(options[:link]),
+        path = options[:link]==true ?
+                 polymorphic_path(@ov_obj.send(oattr)) :
+                 @ov_obj.send(options[:link])
+        value = @ov_obj.send(oattr)
+        value = value.link_name if value.respond_to? :link_name
+        return link_to(value,
+                       path,
                        **options)
       end
       tag.div(@ov_obj.send("#{oattr}"),
@@ -132,7 +137,9 @@ module ObjectView
     end
 
     def _ov_text_area_display oattr, id, **options
-      tag.div(@ov_obj.send("#{oattr}"), class: "ov-textarea display-#{oattr}")
+      t = @ov_obj.send("#{oattr}")
+      t = t.gsub("\n", "<br/>").html_safe if t.is_a? String
+      tag.div(t, class: "ov-textarea display-#{oattr}")
     end
 
     ##############################################################
@@ -201,7 +208,7 @@ module ObjectView
       r ||= @ov_obj.class.reflect_on_association(oattr)
       if r && r.macro == :belongs_to
         x = @ov_obj.send(oattr)
-        link_to(x.link_name, polymorphic_path(x))
+        tag.div(link_to(x.link_name, polymorphic_path(x)), class: "ov-text")
       else
         tag.div(@ov_obj.send("#{oattr}_str"), class: "ov-text")
       end
@@ -244,7 +251,10 @@ module ObjectView
     end
 
     def _ov_datetime_display oattr, id, **options
-      tag.div(@ov_obj.send("#{oattr}_str"), class: "ov-datetime")
+      t = @ov_obj.respond_to?("#{oattr}_localtime") ?
+            @ov_obj.send("#{oattr}_localtime") :
+            @ov_obj.send("#{oattr}_str")
+      tag.div(t, class: "ov-datetime")
     end
 
     ##############################################################

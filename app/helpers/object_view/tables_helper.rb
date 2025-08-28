@@ -21,7 +21,7 @@ module ObjectView
       end
     end
 
-    def ov_table(klass, objs = [], **options)
+    def ov_table(klass, objs = [], **options, &block)
       unless klass.is_a? Class
         raise "ov_table received a non-class argument: #{klass.inspect}"
       end
@@ -34,12 +34,20 @@ module ObjectView
       obj.add_builds!
 
       content = [
-        ov_render_partial(HeaderFor.new(obj), "table_row")
+        if block_given?
+          ov_table_row(HeaderFor.new(obj), **options, &block)
+        else
+          ov_render_partial(HeaderFor.new(obj), "table_row")
+        end
       ]
 
       @ov_exclude = options[:exclude]
       objs.each do |obj|
-        content << ov_render_partial(obj, "table_row")
+        if block_given?
+          content << ov_table_row(obj, **options, &block)
+        else
+          content << ov_render_partial(obj, "table_row")
+        end
       end
       @ov_exclude = nil
 

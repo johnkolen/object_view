@@ -24,6 +24,11 @@ module ObjectView
           if is_field? $1
             return nil
           end
+        when /^(.*)_localtime$/
+          if is_field? $1
+            t = send($1)
+            return t ? t.localtime.to_s : t
+          end
         when /^(.*)_attributes$/
           if is_field?("#{$1}_type") && is_field?("#{$1}_id")
             t = send("#{$1}_type")
@@ -38,7 +43,8 @@ module ObjectView
         case name
         when /^(.*)_str$/,
              /^(.*)_label$/,
-             /^(.*)_pattern$/
+             /^(.*)_pattern$/,
+             /^(.*)_localtime$/
           return true if is_field? $1
         end
         super
