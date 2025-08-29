@@ -10,7 +10,7 @@ gem "sqlite3"
 gem "propshaft"
 
 gem "importmap-rails"
-gem "turbo-rails", "~> 2.0.13"
+gem "turbo-rails", "~> 2.0.16"
 gem "stimulus-rails"
 gem "cssbundling-rails"
 gem "dartsass-rails"
