@@ -1,5 +1,8 @@
 .ov-display {
     @extend .container;
+    table {
+	@extend .container;
+    }
     .ov-multi {
 	> .ov-label {
 	    @extend .col-md-1;
@@ -50,6 +53,30 @@
 	.ov-label {
 	    @extend .col-md-2;
 	    align: left;
+	}
+    }
+    .ov-search-form {
+	@include make-row();
+	margin: 5px;
+	padding: 5px;
+	background-color: lightgrey;
+
+	.ov-search-field {
+	    @extend .col-md-1;
+	    label {
+		font-weight: 700;
+	    }
+	}
+	.ov-button-bag {
+	    @extend .col-md-1;
+	    padding-top: 20px;
+	    padding-left: 20px;
+	}
+	.ov-search-leader {
+	    @extend .col-md-1;
+	    padding-top: 20px;
+	    padding-left: 20px;
+	    font-weight: 700;
 	}
     }
 }

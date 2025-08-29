@@ -50,10 +50,29 @@ module ObjectView
         end
       end
       @ov_exclude = nil
+      out = []
+      if klass.respond_to? :ransackable_attributes
+        out << ov_ransack_form(klass)
+      end
+      out << tag.table(content.join.html_safe,
+                       id: "#{klass.to_s.underscore}_table")
+      out << pagy_bootstrap_nav(@pagy) if @pagy && @pagy.pages > 1
+      tag.div(out.join.html_safe,
+              class: "ov-display")
+    end
 
-      tag.table content.join.html_safe,
-                id: "#{klass.to_s.underscore}_table",
-                class: "ov-display"
+    def ov_ransack_form klass
+      sf = search_form_for @q, class:"ov-search-form" do |f|
+        s=klass.ransackable_attributes.
+          map do |a|
+          tag.div(f.label(a, class: "form-label ov-label") +
+                  f.search_field("#{a}_start", class:"form-control ov-text"),
+                  class: "ov-search-field")
+        end
+        s.unshift tag.div("Search", class: 'ov-search-leader')
+        s << tag.div(ov_submit, class: 'ov-button-bag')
+        s.join.html_safe
+      end
     end
 
     def ov_table_row(obj = nil, &block)

@@ -11,5 +11,6 @@ module ObjectView
     include NavigationHelper
     include ModalsHelper
     include TablesHelper
+    include Pagy::Frontend
   end
 end

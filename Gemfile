@@ -14,6 +14,8 @@ gem "turbo-rails", "~> 2.0.13"
 gem "stimulus-rails"
 gem "cssbundling-rails"
 gem "dartsass-rails"
+gem "pagy", "~> 9.4"
+gem "ransack", "~>4.3"
 
 # Start debugger with binding.b [https://github.com/ruby/debug]
 # gem "debug", ">= 1.0.0"

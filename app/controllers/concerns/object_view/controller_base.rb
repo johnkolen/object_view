@@ -5,6 +5,7 @@ module ObjectView
     extend ActiveSupport::Concern
 
     included do |base|
+      include Pagy::Backend
       base.before_action :set_access_user
     end
 
@@ -13,6 +14,11 @@ module ObjectView
       @klass_str = @klass.to_s
       @klass_sym = @klass.to_s.underscore.to_sym
       @klass_p_str = @klass.to_s.pluralize
+    end
+
+    def pagy_ransack klass
+      @q = Student.ransack(params[:q])
+      @pagy, @objects = pagy(@q.result(distinct: true))
     end
 
     def set_access_user
