@@ -62,6 +62,7 @@ module ObjectView
     end
 
     def ov_ransack_form klass
+      return nil unless @q
       sf = search_form_for @q, class:"ov-search-form" do |f|
         s=klass.ransackable_attributes.
           map do |a|
