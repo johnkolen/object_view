@@ -81,9 +81,9 @@ GEM
     addressable (2.8.7)
       public_suffix (>= 2.0.2, < 7.0)
     ast (2.4.3)
-    base64 (0.2.0)
-    benchmark (0.4.0)
-    bigdecimal (3.1.9)
+    base64 (0.3.0)
+    benchmark (0.4.1)
+    bigdecimal (3.2.2)
     builder (3.3.0)
     capybara (3.40.0)
       addressable
@@ -102,9 +102,9 @@ GEM
     dartsass-rails (0.5.1)
       railties (>= 6.0.0)
       sass-embedded (~> 1.63)
-    database_cleaner-active_record (2.2.1)
+    database_cleaner-active_record (2.2.2)
       activerecord (>= 5.a)
-      database_cleaner-core (~> 2.0.0)
+      database_cleaner-core (~> 2.0)
     database_cleaner-core (2.0.1)
     date (3.4.1)
     diff-lcs (1.6.2)
@@ -375,7 +375,7 @@ DEPENDENCIES
   capybara (>= 2.15)
   cssbundling-rails
   dartsass-rails
-  database_cleaner-active_record (~> 2.2.1)
+  database_cleaner-active_record (~> 2.2.2)
   factory_bot_rails (~> 6.4)
   faker (~> 3.5)
   importmap-rails
