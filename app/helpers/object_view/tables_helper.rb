@@ -33,6 +33,7 @@ module ObjectView
       obj = klass.new
       obj.add_builds!
 
+      @ov_search = []
       content = [
         if block_given?
           ov_table_row(HeaderFor.new(obj), **options, &block)
@@ -54,6 +55,7 @@ module ObjectView
       if @g && klass.respond_to?(:ransackable_attributes)
         out << ov_ransack_form(klass)
       end
+      @ov_search = nil
       out << tag.table(content.join.html_safe,
                        id: "#{klass.to_s.underscore}_table")
       out << pagy_bootstrap_nav(@pagy) if @pagy && @pagy.pages > 1
@@ -62,11 +64,11 @@ module ObjectView
     end
 
     def ov_ransack_form klass
+      return nil unless @q && @ov_search && !@ov_search.empty?
       sf = search_form_for @q, class:"ov-search-form" do |f|
-        s=klass.ransackable_attributes.
-          map do |a|
-          tag.div(f.label(a, class: "form-label ov-label") +
-                  f.search_field("#{a}_start", class:"form-control ov-text"),
+        s=@ov_search.map do |oattr, sfield|
+          tag.div(f.label(oattr, class: "form-label ov-label") +
+                  f.search_field(sfield, class:"form-control ov-text"),
                   class: "ov-search-field")
         end
         s.unshift tag.div("Search", class: 'ov-search-leader')
@@ -94,6 +96,9 @@ module ObjectView
 
     def ov_col(oattr, **options)
       if @ov_obj.is_a? HeaderFor
+        if options[:search]
+          @ov_search << [oattr, :"#{oattr}_#{options[:search]}"]
+        end
         tag.td(@ov_obj.send("#{oattr}_label"), class: "ov-table-hdr")
       else
         if options[:display]

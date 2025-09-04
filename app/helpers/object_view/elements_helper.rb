@@ -277,7 +277,9 @@ module ObjectView
 
       return blocked unless can_edit || can_view
       return ov_col(oattr, display: displayx, **options) if @ov_table_row
-      return if @ov_obj.is_a? TablesHelper::HeaderFor  # table header
+      if @ov_obj.is_a? TablesHelper::HeaderFor  # table header
+        return
+      end
       id = oattr
       raise "wtf @ov_obj is nil" if @ov_obj.nil?
 

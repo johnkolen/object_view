@@ -16,9 +16,12 @@ module ObjectView
       @klass_p_str = @klass.to_s.pluralize
     end
 
-    def pagy_ransack klass
-      @q = Student.ransack(params[:q])
-      @pagy, @objects = pagy(@q.result(distinct: true))
+    def pagy_ransack klass, **options
+      @q = klass.ransack(params[:q])
+      res = @q.result(distinct: true)
+      res = res.includes(*options[:includes]) if options[:includes]
+      res = res.joins(*options[:joins]) if options[:joins]
+      @pagy, @objects = pagy(res)
     end
 
     def set_access_user
