@@ -51,7 +51,7 @@ module ObjectView
       end
       @ov_exclude = nil
       out = []
-      if klass.respond_to? :ransackable_attributes
+      if @g && klass.respond_to?(:ransackable_attributes)
         out << ov_ransack_form(klass)
       end
       out << tag.table(content.join.html_safe,

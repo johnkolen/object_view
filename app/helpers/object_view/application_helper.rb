@@ -1,6 +1,7 @@
 module ObjectView
   module ApplicationHelper
     # puts "loading ObjectView::ApplicationHellper"
+    # ObjectView Helpers
     include BaseHelper
     include ButtonsHelper
     include DisplaysHelper
@@ -11,6 +12,8 @@ module ObjectView
     include NavigationHelper
     include ModalsHelper
     include TablesHelper
+
+    # Suplimental Helpers
     include Pagy::Frontend
   end
 end
