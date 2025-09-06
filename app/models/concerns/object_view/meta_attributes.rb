@@ -16,9 +16,27 @@ module ObjectView
           if is_field? $1
             return send($1).to_s
           end
+          if /^(.*?)_(.*)$/ =~ name
+            assoc = $1
+            rest = $2
+            if respond_to? assoc
+              # puts "sending #{assoc} #{rest}"
+              return send(assoc).send(rest)
+            end
+          end
         when /^(.*)_label$/
           if is_field? $1
             return $1.humanize
+          end
+          if /^(.*?)_(.*)$/ =~ name
+            assoc = $1
+            rest = $2
+            if respond_to? assoc
+              # puts "sending #{assoc} #{rest}"
+              a = send(assoc) || send("build_#{assoc}")
+              raise "cain #{assoc} / #{rest}" unless a
+              return a.send(rest)
+            end
           end
         when /^(.*)_pattern$/
           if is_field? $1
@@ -34,6 +52,16 @@ module ObjectView
             t = send("#{$1}_type")
             return send(t.underscore) if t
             return nil
+          end
+        else
+          if /^(.*?)_(.*)$/ =~ name
+            assoc = $1
+            rest = $2
+            if respond_to? assoc
+              a = send(assoc) || send("build_#{assoc}")
+              raise "cain #{assoc} / #{rest}" unless a
+              return a.send(rest)
+            end
           end
         end
         super

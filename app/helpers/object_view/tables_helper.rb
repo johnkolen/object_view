@@ -34,6 +34,7 @@ module ObjectView
       obj.add_builds!
 
       @ov_search = []
+      @ov_sort = []
       content = [
         if block_given?
           ov_table_row(HeaderFor.new(obj), **options, &block)
@@ -52,7 +53,7 @@ module ObjectView
       end
       @ov_exclude = nil
       out = []
-      if @g && klass.respond_to?(:ransackable_attributes)
+      if @q && klass.respond_to?(:ransackable_attributes)
         out << ov_ransack_form(klass)
       end
       @ov_search = nil
@@ -67,12 +68,12 @@ module ObjectView
       return nil unless @q && @ov_search && !@ov_search.empty?
       sf = search_form_for @q, class:"ov-search-form" do |f|
         s=@ov_search.map do |oattr, sfield|
-          tag.div(f.label(oattr, class: "form-label ov-label") +
+          tag.div(f.label(@ov_obj.send("#{oattr}_label"),
+                          class: "form-label ov-label") +
                   f.search_field(sfield, class:"form-control ov-text"),
                   class: "ov-search-field")
         end
-        s.unshift tag.div("Search", class: 'ov-search-leader')
-        s << tag.div(ov_submit, class: 'ov-button-bag')
+        s << tag.div(ov_submit('Search'), class: 'ov-button-bag')
         s.join.html_safe
       end
     end
@@ -99,7 +100,12 @@ module ObjectView
         if options[:search]
           @ov_search << [oattr, :"#{oattr}_#{options[:search]}"]
         end
-        tag.td(@ov_obj.send("#{oattr}_label"), class: "ov-table-hdr")
+        label = @ov_obj.send("#{oattr}_label")
+        if @q && options[:sort]
+          tag.td(sort_link(@q, oattr, label), class: "ov-table-hdr")
+        else
+          tag.td(label, class: "ov-table-hdr")
+        end
       else
         if options[:display]
           tag.td(send(options[:display], oattr, oattr, **options),

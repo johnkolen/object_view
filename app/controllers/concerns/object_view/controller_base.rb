@@ -18,9 +18,10 @@ module ObjectView
 
     def pagy_ransack klass, **options
       @q = klass.ransack(params[:q])
-      res = @q.result(distinct: true)
+      res = @q.result()#distinct: true)
       res = res.includes(*options[:includes]) if options[:includes]
       res = res.joins(*options[:joins]) if options[:joins]
+      #raise res.to_sql if params[:q]["s"]
       @pagy, @objects = pagy(res)
     end
 
