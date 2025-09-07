@@ -35,6 +35,7 @@ module ObjectView
 
       @ov_search = []
       @ov_sort = []
+      @ov_exclude = options[:exclude]
       content = [
         if block_given?
           ov_table_row(HeaderFor.new(obj), **options, &block)
@@ -43,7 +44,6 @@ module ObjectView
         end
       ]
 
-      @ov_exclude = options[:exclude]
       objs.each do |obj|
         if block_given?
           content << ov_table_row(obj, **options, &block)
@@ -97,6 +97,7 @@ module ObjectView
 
     def ov_col(oattr, **options)
       if @ov_obj.is_a? HeaderFor
+        return "" if @ov_exclude && @ov_exclude.member?(oattr)
         if options[:search]
           @ov_search << [oattr, :"#{oattr}_#{options[:search]}"]
         end

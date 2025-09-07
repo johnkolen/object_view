@@ -110,17 +110,19 @@ module ObjectView
                           **options)
     end
 
+    def _ov_link oattr, **options
+      path = options[:link]==true ?
+               polymorphic_path(@ov_obj.send(oattr)) :
+               @ov_obj.send(options[:link])
+      value = @ov_obj.send(oattr)
+      value = value.link_name if value.respond_to? :link_name
+      return link_to(value,
+                     path,
+                     **options)
+    end
+
     def _ov_text_display oattr, id, **options
-      if options[:link]
-        path = options[:link]==true ?
-                 polymorphic_path(@ov_obj.send(oattr)) :
-                 @ov_obj.send(options[:link])
-        value = @ov_obj.send(oattr)
-        value = value.link_name if value.respond_to? :link_name
-        return link_to(value,
-                       path,
-                       **options)
-      end
+      return _ov_link(oattr, **options) if options[:link]
       tag.div(@ov_obj.send("#{oattr}"),
               class: "ov-text display-#{oattr}",
               **options)
@@ -205,6 +207,7 @@ module ObjectView
     end
 
     def _ov_select_display oattr, id, **options
+      return _ov_link(oattr, **options) if options[:link]
       r ||= @ov_obj.class.reflect_on_association(oattr)
       if r && r.macro == :belongs_to
         x = @ov_obj.send(oattr)
