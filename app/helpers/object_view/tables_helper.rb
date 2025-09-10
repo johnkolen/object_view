@@ -103,7 +103,12 @@ module ObjectView
         end
         label = @ov_obj.send("#{oattr}_label")
         if @q && options[:sort]
-          tag.td(sort_link(@q, oattr, label), class: "ov-table-hdr")
+          #raise oattr.inspect
+          nmkey = "#{oattr}_name"
+          #raise oattr.inspect if oattr == :name
+          #raise @ov_obj.obj.respond_to?(nmkey).inspect if oattr == :name
+          key = @ov_obj.obj.respond_to?(nmkey) ? nmkey : oattr
+          tag.td(sort_link(@q, key, label), class: "ov-table-hdr")
         else
           tag.td(label, class: "ov-table-hdr")
         end

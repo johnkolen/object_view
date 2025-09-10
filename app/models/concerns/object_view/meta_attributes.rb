@@ -74,6 +74,16 @@ module ObjectView
              /^(.*)_pattern$/,
              /^(.*)_localtime$/
           return true if is_field? $1
+        else
+          if /^(.*?)_(.*)$/ =~ name
+            assoc = $1
+            rest = $2
+            if respond_to? assoc
+              a = send(assoc) ||
+                  (respond_to?("build_#{assoc}") && send("build_#{assoc}"))
+              return a && a.respond_to?(rest)
+            end
+          end
         end
         super
       end
