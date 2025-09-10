@@ -66,7 +66,7 @@ module ObjectView
 
     def ov_ransack_form klass
       return nil unless @q && @ov_search && !@ov_search.empty?
-      sf = search_form_for @q, class:"ov-search-form" do |f|
+      sf = search_form_for(@q, class:"ov-search-form") do |f|
         s=@ov_search.map do |oattr, sfield|
           tag.div(f.label(@ov_obj.send("#{oattr}_label"),
                           class: "form-label ov-label") +
@@ -99,7 +99,9 @@ module ObjectView
       if @ov_obj.is_a? HeaderFor
         return "" if @ov_exclude && @ov_exclude.member?(oattr)
         if options[:search]
-          @ov_search << [oattr, :"#{oattr}_#{options[:search]}"]
+          nmkey = "#{oattr}_name"
+          key = @ov_obj.obj.respond_to?(nmkey) ? nmkey : oattr
+          @ov_search << [oattr, :"#{key}_#{options[:search]}"]
         end
         label = @ov_obj.send("#{oattr}_label")
         if @q && options[:sort]
