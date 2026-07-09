@@ -157,7 +157,8 @@ module ObjectView
     end
 
     def _ov_password_display oattr, id, **options
-      tag.div(@ov_obj.send("#{oattr}"), class: "ov-password display-#{oattr}")
+      text = @ov_obj.send("#{oattr}").present? ? "••••••" : ""
+      tag.div(text, class: "ov-password display-#{oattr}")
     end
 
     ##############################################################

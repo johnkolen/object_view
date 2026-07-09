@@ -100,6 +100,24 @@ module ObjectView
         assert_display elem, object, :name, div_class: "ov-password"
       end
     end
+
+    it "does not expose the password value in display" do
+      object.name = "secret123"
+      html = fake_display elements: :only do
+        helper.ov_password_field(:name)
+      end
+      expect(html).not_to include("secret123")
+      expect(html).to include("••••••")
+    end
+
+    it "shows an empty display when no password is set" do
+      object.name = nil
+      html = fake_display elements: :only do
+        helper.ov_password_field(:name)
+      end
+      expect(html).not_to include("••••••")
+      expect(html).to include('class="ov-password display-name"')
+    end
   end
 
   context "checkbox" do
