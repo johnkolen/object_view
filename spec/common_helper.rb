@@ -102,7 +102,7 @@ module CommonHelper
     elem = yield
     node = Nokogiri::HTML(elem)
     pp(elem) if options[:pp]
-    assert_dom node, "div[data-controller=?]", "modal-object" do
+    assert_dom node, "div[data-controller=?]", "ov-modal-object" do
       assert_dom node, "div[class*=?]", "ov-modal" do
         assert_dom node, "div[class*=?]", "ov-modal-header"
         assert_dom node, "div[class*=?]", "ov-modal-body"
@@ -115,12 +115,14 @@ module CommonHelper
     elem = yield
     node = Nokogiri::HTML(elem)
     pp(elem) if options[:pp]
-    assert_dom node, "table[class*=?]", "ov-display" do
-      assert_dom "tr[class*=?]", "ov-table-row-head", 1 do
-        assert_dom node, "td[class*=?]", "ov-table-hdr"
-      end
-      assert_dom "tr[class*=?]", "ov-table-row" do
-        assert_dom node, "td[class*=?]", "ov-table-col"
+    assert_dom node, "div[class*=?]", "ov-display" do
+      assert_dom node, "table" do
+        assert_dom node, "tr[class*=?]", "ov-table-row-head", 1 do
+          assert_dom node, "td[class*=?]", "ov-table-hdr"
+        end
+        assert_dom node, "tr[class*=?]", "ov-table-row" do
+          assert_dom node, "td[class*=?]", "ov-table-col"
+        end
       end
     end
   end

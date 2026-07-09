@@ -58,7 +58,6 @@ module ObjectView
     def _ov_fields_for_form(oattr, **options, &block)
       hold = @ov_obj
       if ov_one_to_one?(oattr)
-        raise "one-one"
         if ov_delegated?(oattr)
           _ov_fields_for_delegated_form oattr, **options, &block
         else
@@ -213,9 +212,10 @@ module ObjectView
     # Generate the content for all the fields of a single oattr
     # from a one-to-one association
     def _ov_fields_for_form_one(oattr, **options, &block)
-      # puts "_ov_fields_for_form_one"
       obj = @ov_obj.send(oattr)
-      # raise "no obj: one(#{oattr}) #{@ov_obj}" unless obj
+      if obj.nil? && @ov_obj.respond_to?("build_#{oattr}")
+        obj = @ov_obj.send("build_#{oattr}")
+      end
       return "" unless obj
       _ov_fields_for_form_element(oattr,
                                   obj,
@@ -230,7 +230,7 @@ module ObjectView
     def _ov_fields_for_form_many(oattr, **options, &block)
       # puts "_ov_fields_for_form_many"
       label = @ov_obj.send("#{oattr}_label")
-      out = [ '<ul class="ov-fields-for" data-ov-fields-for-target="list">',
+      out = [ '<ul class="ov-fields-for" data-controller="ov-fields-for" data-ov-fields-for-target="list">',
               ov_add ]
       num = -1
       @ov_obj.send(oattr).each do |obj|
@@ -280,8 +280,8 @@ module ObjectView
             #hold = @ov_neseted_form
             #@ov_neseted_form = oattr
             #raise oattr.inspect
-            rv = ov_render(_form(singular,
-                                 delegated: options[:delegated]),
+            rv = ov_render(_form_fields(singular,
+                                        delegated: options[:delegated]),
                            singular => @ov_obj)
             #@ov_nested_form = hold
             rv
@@ -302,7 +302,7 @@ module ObjectView
                           id: li_id,
                           class: "ov-object collapse show").html_safe
           end
-          if options[:template]
+          elem = if options[:template]
             tag.template(elem,
                          id: "ov-#{css_name}-template",
                          data: { "ov-fields-for-target": "template" })

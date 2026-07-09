@@ -140,7 +140,9 @@ module ObjectView
 
     def _ov_text_area_display oattr, id, **options
       t = @ov_obj.send("#{oattr}")
-      t = t.gsub("\n", "<br/>").html_safe if t.is_a? String
+      if t.is_a?(String)
+        t = ERB::Util.html_escape(t).gsub("\n", "<br />").html_safe
+      end
       tag.div(t, class: "ov-textarea display-#{oattr}")
     end
 

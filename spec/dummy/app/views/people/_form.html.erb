@@ -5,6 +5,10 @@
   <%= ov_string_field :ssn %>
   <%= ov_integer_field :age %>
   <%= ov_boolean_field :happy %>
+  <%= ov_fields_for :phone_numbers do %>
+    <%= ov_string_field :number %>
+    <%= ov_boolean_field :active %>
+  <% end %>
   <%= ov_datetime_field :created_at %>
   <%= ov_datetime_field :updated_at %>
 <%= ov_submit %>

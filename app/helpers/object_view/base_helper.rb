@@ -157,6 +157,14 @@ module ObjectView
       end
     end
 
+    def _form_fields(oattr, **options)
+      if options[:delegated]
+        "#{options[:delegated].pluralize}/#{oattr}_fields"
+      else
+        "#{oattr.to_s.pluralize}/form_fields"
+      end
+    end
+
     def _locals(oattr)
       if oattr.is_a? Symbol
         { oattr => @ov_obj }

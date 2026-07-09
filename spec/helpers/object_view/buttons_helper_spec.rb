@@ -43,6 +43,15 @@ module ObjectView
             helper.ov_remove(5)
           end
         end}
+    it "renders a disabled destroy field for nested remove" do
+      html = fake_form elements: :only do
+        helper.ov_remove("person-li-0")
+      end
+      node = Nokogiri::HTML(html)
+      assert_dom node, "input.ov-hidden-destroy[name$='[_destroy]'][disabled]"
+      assert_dom node, "button[data-action=?]", "click->ov-fields-for#remove"
+      assert_dom node, "button[data-bs-target=?]", "#person-li-0"
+    end
     it { assert_button "Submit", nil, nil do
           ov_submit
         end}

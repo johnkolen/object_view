@@ -73,6 +73,17 @@ module ObjectView
         assert_display elem, object, :name
       end
     end
+
+    it "escapes HTML and preserves line breaks in display" do
+      object.name = "line one\n<script>alert(1)</script>"
+      html = fake_display elements: :only do
+        helper.ov_textarea(:name)
+      end
+      expect(html).to include("line one")
+      expect(html).to include("<br")
+      expect(html).not_to include("<script>")
+      expect(html).to include("&lt;script&gt;alert(1)&lt;/script&gt;")
+    end
   end
 
   context "password field" do

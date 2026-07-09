@@ -25,10 +25,14 @@ module ObjectView
           end
         end
       end
-      it "containing a multiple attributes" do
-        assert_form object, :email  do
-          helper.ov_form object
+      it "containing multiple attributes" do
+        html = helper.ov_form(object) do
+          helper.ov_text_field(:email) + helper.ov_integer_field(:role_id)
         end
+        node = Nokogiri::HTML(html)
+        assert_dom node, "form[class*=?]", "ov-form", 1
+        assert_dom node, "input[name=?]", "user[email]"
+        assert_dom node, "input[name=?]", "user[role_id]"
       end
     end
   end

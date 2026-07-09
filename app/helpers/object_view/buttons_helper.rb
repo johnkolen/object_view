@@ -83,9 +83,10 @@ module ObjectView
         "remove-#{ov_obj_class_name_k}-btn",
         BUTTON_DANGER_CLASS
       ].join " "
-      (@ov_form.hidden_field("_destroy",
-                             class: "ov-hidden-destroy",
-                             value: "true").gsub("_destroy", "DESTROY") +
+      ( @ov_form.hidden_field(:_destroy,
+                               value: "1",
+                               class: "ov-hidden-destroy",
+                               disabled: true) +
        tag.button("Remove",
                   class: button_class,
                   type: "button",
